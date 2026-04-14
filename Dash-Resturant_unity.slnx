@@ -1,2 +1,5 @@
 ﻿<Solution>
+  <Project Path="Models.csproj" />
+  <Project Path="Controllers.csproj" />
+  <Project Path="Views.csproj" />
 </Solution>
