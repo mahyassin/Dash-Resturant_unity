@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelDesginer : MonoBehaviour
+public class LevelDesginer
 {
     string[] _map =
     {
@@ -23,28 +23,40 @@ public class LevelDesginer : MonoBehaviour
       
     };
 
+
+    public GameState GetState()
+    {
+        return BuildGame(_map);
+    }
+
     public GameState BuildGame(string[] mapCode)
     {
         int mapHieght = mapCode.Length;
-        int mapWidth  = mapCode[0].Length;
+        int mapWidth  = mapCode[0].Replace(" ","").Length/ 2;
 
         Dictionary<Vector2Int, CellState> map = new();
         PlayerState player = null;
 
-        for(int y = 0; y < mapHieght; y++)
+        int y = 0;
+        foreach(var line in mapCode)
         {
+
             char basetile = '?';
             char ontile = '?';
 
-            for(int x = 0; x < mapWidth; x++)
+            int x = 0;
+            foreach(var symbol in _map[y].Replace(" ", ""))
             {
-                if(basetile == '?') {basetile = mapCode[y][x]; continue;}
-                if(ontile == '?') {ontile = mapCode[y][x];}
+
+                Debug.Log(symbol);
+                if(basetile == '?') {basetile = symbol; continue;}
+                if(ontile == '?') {ontile = symbol;}
 
                 int oncell = ontile switch
                 {
                     _ => Code.EMPTY,
                 };
+
 
                 int baseCell = basetile switch
                 {
@@ -53,22 +65,33 @@ public class LevelDesginer : MonoBehaviour
                     _   => Code.EMPTY,
                 };
 
+                if (baseCell == Code.WALL) oncell = Code.WALL;
+
                 if (baseCell == Code.PLAYER ) player = new(new(x, y));
-                map[new(x, mapHieght - y -1)] = new(oncell: oncell, baseCell: baseCell);
+                map[new(x, y)] = new(oncell: oncell, baseCell: baseCell);
+
+                Debug.Log($"base tile is {baseCell} read tile {basetile}");
+
+                basetile = '?';
+                ontile = '?';
+
+                x++;
+
             }
+            y++;
         }
         
-        return new(map, player);
+        return new(map, player, mapWidth, mapHieght);
     }
 }
 
 
 public readonly struct Code
 {
-    public static   int EMPTY     => 0;
-    public static   int PLAYER    => 1;
-    public static   int WALL      => 2;
-    public static   int GENERATOR => 4;
+    public const int EMPTY     = 0;
+    public const int PLAYER    = 1;
+    public const int WALL      = 2;
+    public const int GENERATOR = 4;
 
    
 }
