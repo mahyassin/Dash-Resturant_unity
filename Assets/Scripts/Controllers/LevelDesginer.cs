@@ -5,21 +5,21 @@ public class LevelDesginer
 {
     string[] _map =
     {
-        "WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW",
-        "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
-        "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
-        "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
-        "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
-        "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
-        "WW WW WW WW WW .. WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW .. WW WW WW WW WW WW WW WW WW",
-        "WW .. .. .. .. .. .. .. .. .. .. .. WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
-        "WW .. .. .. .. .. .. .. .. .. .. .. WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
-        "WW .. .. ▼. .. .. .. .. .. .. .. .. WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
-        "WW .. .. .. .. .. .. .. .. .. .. .. WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
-        "WW .. .. .. .. .. .. .. .. .. .. .. WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
-        "WW .. .. .. .. .. .. .. .. .. .. .. WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
-        "WW .. .. .. .. .. .. .. .. .. .. .. WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
-        "WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW",
+        "WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW",
+        "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
+        "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
+        "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
+        "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
+        "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
+        "WW WW WW WW WW .. WW WW WW WW WW WW .. WW WW WW",
+        "WW Go .. .. .. .. .. .. .. .. S. WW .. .. .. WW",
+        "WW Gt .. .. .. .. .. .. .. .. C. WW .. .. .. WW",
+        "WW Gp .. ▼. .. .. .. .. .. .. .. WW .. .. .. WW",
+        "WW .. .. .. .. .. .. .. .. .. .. WW .. .. .. WW",
+        "WW .. .. .. .. .. .. .. .. .. .. WW .. .. .. WW",
+        "WW .. .. .. .. .. .. .. .. .. .. WW .. .. .. WW",
+        "WW .. .. .. .. .. .. .. .. .. .. WW .. .. .. WW",
+        "WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW",
       
     };
 
@@ -41,6 +41,7 @@ public class LevelDesginer
         foreach(var line in mapCode)
         {
 
+            int j = mapHieght - y -1;
             char basetile = '?';
             char ontile = '?';
 
@@ -48,7 +49,6 @@ public class LevelDesginer
             foreach(var symbol in _map[y].Replace(" ", ""))
             {
 
-                Debug.Log(symbol);
                 if(basetile == '?') {basetile = symbol; continue;}
                 if(ontile == '?') {ontile = symbol;}
 
@@ -58,19 +58,18 @@ public class LevelDesginer
                 };
 
 
-                int baseCell = basetile switch
+                IOcuppier ocuppier = basetile switch
                 {
-                    'W' => Code.WALL,
-                    '▼' => Code.PLAYER,
-                    _   => Code.EMPTY,
+                    'W' => new Wall(),
+                    '▼' => new PlayerState(new(x, j)),
+                    _   => null,
                 };
 
-                if (baseCell == Code.WALL) oncell = Code.WALL;
 
-                if (baseCell == Code.PLAYER ) player = new(new(x, y));
-                map[new(x, y)] = new(oncell: oncell, baseCell: baseCell);
+                if (ocuppier is PlayerState p ) player = p;
+                map[new(x, j)] = new(ocuppier);
 
-                Debug.Log($"base tile is {baseCell} read tile {basetile}");
+                Debug.Log($"base tile is {ocuppier} read tile {basetile}");
 
                 basetile = '?';
                 ontile = '?';

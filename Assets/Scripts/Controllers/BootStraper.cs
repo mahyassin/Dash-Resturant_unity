@@ -7,13 +7,22 @@ public class BootStraper : MonoBehaviour
     private MapController mapController;
     [SerializeField]private MapView mapView;
     private GameState state;
+    private InputReader inputs;
 
 
     void Awake()
     {
         levelDesginer = new();
-        state = levelDesginer.GetState();
-        mapController = new(state, mapView);
+        inputs = new();
 
+        state = levelDesginer.GetState();
+        mapController = new(state, mapView,inputs);
+
+        inputs.Moved += Test;
+    }
+
+    private void Test(Vector2 dir)
+    {
+        Debug.Log(dir);
     }
 }
