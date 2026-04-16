@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class MapViewModel
 {
      public string[] DecodeState(GameState state)
@@ -23,7 +25,20 @@ public class MapViewModel
                     baseCell = "W";
                     ontile = "W ";
                 }
-                else
+                else if(occupier is Generator gen) {
+                    baseCell = "G";
+                    ontile   = DecodeCarriable(new Ingredient(gen.IngredientType));
+                }
+                else if(occupier is Stove s)
+                {
+                    baseCell = "S";
+                    ontile   = DecodeCarriable(s.OnStove);
+                } else if(occupier is CuttingBoard c)
+                {
+                    baseCell = "C";
+                    ontile   = DecodeCarriable(c.OnBoard);
+                }
+                else 
                 {
                     baseCell = ".";
                     ontile = ". ";
@@ -41,7 +56,16 @@ public class MapViewModel
     {
         return carriable switch
         {
-            _ => ". ",
+            Ingredient i =>  i.Type switch
+            {
+                IngredientType.TOMATO => "t ",
+                IngredientType.ONION  => "o ",
+                IngredientType.POTATO => "p ",
+                _                     => ". ",
+            },
+            Pot => "P ",
+            _   => ". ",
         };
     }
+
 }
