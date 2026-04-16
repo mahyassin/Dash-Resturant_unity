@@ -1,5 +1,6 @@
 using Codice.Client.BaseCommands;
 using JetBrains.Annotations;
+using NUnit.Framework;
 using UnityEngine;
 
 public class MapController
@@ -7,45 +8,36 @@ public class MapController
 
     private GameState _gameState;
     private MapView _mapview;
-    public MapController(GameState gameState, MapView mapView)
+    private MapViewModel _viewModel;
+    private MapSystem _system;
+    public InputReader _inputs;
+
+    public MapController(GameState gameState, MapView mapView, InputReader inputs)
     {
         _gameState = gameState;
         _mapview = mapView;
+        _inputs = inputs;
+        _viewModel = new();
+        _system = new();
 
-        _mapview.DisplayMap(DecodeState(_gameState));
+
+
+        _mapview.DisplayMap(_viewModel.DecodeState(_gameState));
+
+        inputs.Moved += OnPlayerMoved;
+        _system.MapChanged += OnMapChanged;
     }
 
-
-    public string[] DecodeState(GameState state)
+    private void OnPlayerMoved(Vector2 dirction)
     {
-        string[] output = new string[state.MapHieght];
-        for(int j = 0; j < state.MapHieght; j++)
-        {
-            for(int i = 0; i < state.MapWidth; i++)
-            {
-                var cell = state.Map[new(i, j)];
+        Vector2Int dir = new((int)dirction.x, (int)dirction.y) ;
 
-
-                char ontile = cell.OnCell switch
-                {
-                    Code.WALL => 'W',
-                    _         => '.',
-                };
-
-
-                char baseCell = cell.BaseCell switch
-                {
-                    Code.PLAYER => '▼',
-                    Code.WALL => 'W',
-                    _ => '.',
-                };
-
-                output[j] +=  $"{baseCell}{ontile} ";
-
-
-            }
-        }
-
-        return output;
+        _system.MoveOccupier(_gameState.PlayerState, _gameState, dir);
     }
+
+    private void OnMapChanged(GameState state)
+    {
+        _mapview.DisplayMap(_viewModel.DecodeState(state));
+    }
+
 }

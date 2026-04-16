@@ -1,12 +1,12 @@
 public readonly struct CellState
 {
-    public int  BaseCell {get;}
-    public int  OnCell {get;}
+    public IOcuppier Ocuppier {get;}
+   
+    public bool IsWalkable => Ocuppier == null;
 
-    public CellState(int baseCell, int oncell)
+    public CellState(IOcuppier ocuppier)
     {
-        BaseCell = baseCell;
-        OnCell = oncell;
+        Ocuppier = ocuppier;
     }
 
 }

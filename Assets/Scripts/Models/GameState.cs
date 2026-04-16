@@ -21,7 +21,6 @@ public class GameState
         MapWidth = mapWidth;
     }
 
-    public void UpdateCell(Vector2Int pos, int baseCell, int oncell) => Map[pos] = new(baseCell, oncell);
 }
 
 

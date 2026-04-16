@@ -8,19 +8,19 @@ public class MapView : MonoBehaviour
 {
 
     [SerializeField]private TextMeshProUGUI mapPrinter; 
+    [SerializeField]private TextMeshProUGUI progress;
 
-    
     public void DisplayMap(string[] mapCode)
     {
         string text = "";
         foreach(var line in mapCode)
         {
-            text += "\n" + line ;
+            text =  "\n \n" + line + text ;
         };
 
         string coloredText = $"<color=red> {text} </color>";
 
-        mapPrinter.text = $"<mspace=10> {coloredText} </mspace>";
+        mapPrinter.text = $"<mspace=14> {coloredText} </mspace>";
     }
 }
 
