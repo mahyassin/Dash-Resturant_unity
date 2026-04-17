@@ -75,7 +75,7 @@ public class LevelDesginer
                 if (ocuppier is PlayerState p ) player = p;
                 map[new(x, j)] = new(ocuppier);
 
-                Debug.Log($"base tile is {ocuppier} read tile {basetile}");
+                // Debug.Log($"base tile is {ocuppier} read tile {basetile}");
 
                 basetile = '?';
                 ontile = '?';

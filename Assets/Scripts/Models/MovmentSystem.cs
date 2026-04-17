@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class MapSystem: GameSystem
 {
-
+  
     public event Action<GameState> MapChanged;
+    public event Action<int> ClockTicked;
     public void  MoveOccupier(IOcuppier player, GameState state, Vector2Int dir)
     {
         var map = state.Map;
@@ -23,6 +24,8 @@ public class MapSystem: GameSystem
         MapChanged.Invoke(state);
 
     }
+
+   
 }
 
 public interface GameSystem{}
