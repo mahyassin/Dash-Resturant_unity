@@ -7,6 +7,7 @@ public interface IOcuppier
     public void ChangePos(Vector2Int v);
 };
 
-public interface ICarriable{};
+public interface IInteractable{}
+public interface ICarriable{}
 
 

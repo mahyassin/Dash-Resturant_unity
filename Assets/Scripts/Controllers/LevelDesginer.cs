@@ -52,16 +52,22 @@ public class LevelDesginer
                 if(basetile == '?') {basetile = symbol; continue;}
                 if(ontile == '?') {ontile = symbol;}
 
-                int oncell = ontile switch
+                ICarriable oncell = ontile switch
                 {
-                    _ => Code.EMPTY,
-                };
+                    'o' => new Ingredient(IngredientType.ONION),
+                    'p' => new Ingredient(IngredientType.POTATO),
+                    't' => new Ingredient(IngredientType.TOMATO),
+                    _   => null,
+                }; 
 
 
                 IOcuppier ocuppier = basetile switch
                 {
                     'W' => new Wall(),
                     '▼' => new PlayerState(new(x, j)),
+                    'G' => new Generator(10, (oncell is Ingredient i)? i.Type: IngredientType.NONE),
+                    'S' => new Stove(),
+                    'C' => new CuttingBoard(),
                     _   => null,
                 };
 
@@ -69,7 +75,7 @@ public class LevelDesginer
                 if (ocuppier is PlayerState p ) player = p;
                 map[new(x, j)] = new(ocuppier);
 
-                Debug.Log($"base tile is {ocuppier} read tile {basetile}");
+                // Debug.Log($"base tile is {ocuppier} read tile {basetile}");
 
                 basetile = '?';
                 ontile = '?';
@@ -82,15 +88,4 @@ public class LevelDesginer
         
         return new(map, player, mapWidth, mapHieght);
     }
-}
-
-
-public readonly struct Code
-{
-    public const int EMPTY     = 0;
-    public const int PLAYER    = 1;
-    public const int WALL      = 2;
-    public const int GENERATOR = 4;
-
-   
 }

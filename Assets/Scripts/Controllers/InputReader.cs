@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputReader : MonoBehaviour
+public class InputReader
 {
     private NewActions inputActions;
     public event Action<Vector2> Moved;

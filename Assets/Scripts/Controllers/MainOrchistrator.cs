@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using NUnit.Framework;
 using UnityEngine;
 
-public class MapController
+public class MainOrchistrator
 {
 
     private GameState _gameState;
@@ -11,14 +11,18 @@ public class MapController
     private MapViewModel _viewModel;
     private MapSystem _system;
     public InputReader _inputs;
+    private Timer _timer;
 
-    public MapController(GameState gameState, MapView mapView, InputReader inputs)
+    public MainOrchistrator(GameState gameState, MapView mapView, InputReader inputs, Timer timer)
     {
         _gameState = gameState;
         _mapview = mapView;
         _inputs = inputs;
+        _timer = timer;
         _viewModel = new();
         _system = new();
+
+        _timer.OnTimerTick += OnClockTic;
 
 
 
@@ -38,6 +42,11 @@ public class MapController
     private void OnMapChanged(GameState state)
     {
         _mapview.DisplayMap(_viewModel.DecodeState(state));
+    }
+
+    private void OnClockTic(int clock)
+    {
+        _mapview.DisplayClock(clock);
     }
 
 }
