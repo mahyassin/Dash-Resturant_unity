@@ -24,10 +24,15 @@ public class MapView : MonoBehaviour
         mapPrinter.text = $"<mspace=14> {coloredText} </mspace>";
     }
 
-    public void DisplayClock(int clock)
+    public void DisplayClock(int clock, Dictionary<string, int> stationsProgress)
     {
 
         progress.text = $"Clock: {new string('.', clock)}";
+
+        foreach(var station in stationsProgress)
+        {
+            progress.text += $"\n{station.Key}: {new string('.', station.Value)}";
+        }
     }
 }
 

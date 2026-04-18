@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MapViewModel
@@ -17,7 +19,7 @@ public class MapViewModel
                 if (occupier is PlayerState player)
                 {
                     baseCell = "▼";
-                    ontile = DecodeCarriable(player.onPlayer);
+                    ontile = DecodeCarriable(player.OnCarrier);
 
                 }
                 else if (occupier is Wall)
@@ -27,16 +29,16 @@ public class MapViewModel
                 }
                 else if(occupier is Generator gen) {
                     baseCell = "G";
-                    ontile   = DecodeCarriable(new Ingredient(gen.IngredientType));
+                    ontile   = DecodeCarriable(gen.OnCarrier);
                 }
                 else if(occupier is Stove s)
                 {
                     baseCell = "S";
-                    ontile   = DecodeCarriable(s.OnStove);
+                    ontile   = DecodeCarriable(s.OnCarrier);
                 } else if(occupier is CuttingBoard c)
                 {
                     baseCell = "C";
-                    ontile   = DecodeCarriable(c.OnBoard);
+                    ontile   = DecodeCarriable(c.OnCarrier);
                 }
                 else 
                 {
@@ -68,4 +70,22 @@ public class MapViewModel
         };
     }
 
+    public Dictionary<string, int> DecodeStations(GameState state)
+    {
+        var output = new Dictionary<string, int>();
+        int id = 0;
+        foreach(var station in state.interactables)
+        {
+            id++;
+            string name = station switch
+            {
+                Stove        => $"Stove{id}",
+                CuttingBoard => $"Cutting board{id}",
+                _            => "??"
+            };
+
+        }
+
+        return output;
+    }
 }

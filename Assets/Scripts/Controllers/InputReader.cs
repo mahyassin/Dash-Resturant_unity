@@ -26,7 +26,7 @@ public class InputReader
 
     private void OnMoveCancel(InputAction.CallbackContext ctx)
     {
-        Moved?.Invoke(ctx.ReadValue<Vector2>());
+        // Moved?.Invoke(ctx.ReadValue<Vector2>());
     }
 
     private void InterActionPressed(InputAction.CallbackContext ctx)
