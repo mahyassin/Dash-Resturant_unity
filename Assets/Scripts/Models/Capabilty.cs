@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public interface IOcuppier
@@ -12,6 +13,7 @@ public interface IInteractable
     public void Interact();
 }
 public interface ICarriable{}
+
 public interface ICarrier
 {
     public ICarriable OnCarrier {get;}
@@ -19,5 +21,13 @@ public interface ICarrier
 
 }
 public interface IActor{}
+
+public interface IContainer
+{
+    public IEnumerable<ICarriable> Carriables {get;}
+    public void AddToContainer(ICarriable carriable);
+    public void EmptyTheContainer();
+}
+
 
 

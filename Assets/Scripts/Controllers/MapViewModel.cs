@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MapViewModel
@@ -77,13 +78,21 @@ public class MapViewModel
         foreach(var station in state.interactables)
         {
             id++;
-            string name = station switch
+            var pair = ("stove " + id, 0);
+            if(station is Stove stove)
             {
-                Stove        => $"Stove{id}",
-                CuttingBoard => $"Cutting board{id}",
-                _            => "??"
-            };
+                if(stove.OnCarrier is not Pot pot) continue;
+                int total = pot.Carriables.Sum(it => (it as Ingredient).CookingProgress);
+                pair.Item2 = total;
 
+                output.Add(pair.Item1, pair.Item2);
+            }
+
+            if(station is CuttingBoard cb)
+            {
+                if(cb.OnCarrier is not Ingredient ingredient) continue;
+                output["cutting Board" + id] = ingredient.CuttingProgress;
+            }
         }
 
         return output;

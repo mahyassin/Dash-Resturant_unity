@@ -12,7 +12,7 @@ public class LevelDesginer
         "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
         "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
         "WW WW WW WW WW .. WW WW WW WW WW WW .. WW WW WW",
-        "WW Go .. .. .. .. .. .. .. .. S. WW .. .. .. WW",
+        "WW Go .. .. .. .. .. .. .. .. SP WW .. .. .. WW",
         "WW Gt .. .. .. .. .. .. .. .. C. WW .. .. .. WW",
         "WW Gp .. ▼. .. .. .. .. .. .. .. WW .. .. .. WW",
         "WW .. .. .. .. .. .. .. .. .. .. WW .. .. .. WW",
@@ -58,6 +58,7 @@ public class LevelDesginer
                     'o' => new Ingredient(IngredientType.ONION),
                     'p' => new Ingredient(IngredientType.POTATO),
                     't' => new Ingredient(IngredientType.TOMATO),
+                    'P' => new Pot(),
                     _   => null,
                 }; 
 
@@ -67,7 +68,7 @@ public class LevelDesginer
                     'W' => new Wall(),
                     '▼' => new PlayerState(new(x, j)),
                     'G' => new Generator(10, oncell),
-                    'S' => new Stove(),
+                    'S' => new Stove(oncell as Pot),
                     'C' => new CuttingBoard(),
                     _   => null,
                 };

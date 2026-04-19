@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Generic;
-using Codice.Client.BaseCommands;
 using UnityEngine;
 
 public class MapSystem: GameSystem
 {
   
     public event Action<GameState> MapChanged;
-    public event Action<int> ClockTicked;
 
     public void VarifiyMovment(IOcuppier player, GameState state, Vector2Int dir)
     {
@@ -32,8 +29,27 @@ public class MapSystem: GameSystem
         MapChanged?.Invoke(state);
 
     }
+    public void VarrifyCarrying(IOcuppier actor, GameState state, Vector2Int dir)
+    {
 
-    public void  MoveOccupier(IOcuppier player, GameState state, Vector2Int targetPos)
+        var targetPos = new Vector2Int(actor.Pos.x + dir.x, actor.Pos.y + dir.y);
+        if (state.Map[targetPos].Ocuppier is not ICarrier  holder) return;
+        if (actor is not ICarrier taker) return;
+
+        if (taker.OnCarrier == null)
+        {
+            Take(holder: holder, taker: taker);
+            
+        }
+        else
+        {
+            Take(holder: taker, taker: holder);
+        }
+
+        MapChanged?.Invoke(state);
+    }
+
+    private void  MoveOccupier(IOcuppier player, GameState state, Vector2Int targetPos)
     {
         var map = state.Map;
 
@@ -44,31 +60,37 @@ public class MapSystem: GameSystem
 
     }
 
-    public void VarrifyCarrying(IOcuppier actor, GameState state, Vector2Int dir)
+   
+    private void Take(ICarrier holder, ICarrier taker)
     {
+        if(taker.OnCarrier is IContainer container) 
+        {
+            container.AddToContainer(holder.OnCarrier);
+            holder.Carry(null);
+            return;
+        }
 
-        //TODO() varification rules 
-        //  1- actor will put if he hold something and take if he doesn't have anything
-        //  
+        if(taker.OnCarrier != null) return;
 
-        var targetPos = new Vector2Int(actor.Pos.x + dir.x, actor.Pos.y + dir.y);
-        if (state.Map[targetPos].Ocuppier is not ICarrier  holder) return;
-        if (actor is not ICarrier taker) return;
+        if(holder.OnCarrier == null) {Debug.Log("there is nothing to take"); return; }
 
-
-        Carrry(holder, taker);
-
-        MapChanged?.Invoke(state);
-
-
-    }
-
-    public void Carrry(ICarrier holder, ICarrier taker)
-    {
         taker.Carry(holder.OnCarrier);
+
+        if (taker.OnCarrier == null) return; 
         holder.Carry(null);
     }
+
+    
 }
 
 
+
+public class TicSystem: GameSystem
+{
+
+    public void VarifiyCooking()
+    {
+        
+    }
+}
 public interface GameSystem{}

@@ -11,6 +11,14 @@ public class Stove: IInteractable, IOcuppier, ICarrier
     public bool IsOn => _isOn;
      private Vector2Int _pos;
     public Vector2Int Pos => _pos;
+
+    public Stove(Pot pot)
+    {
+        _onStove = pot;
+    }
+
+
+
     public void ChangePos(Vector2Int v)
     {
         throw new NotImplementedException();
@@ -22,6 +30,7 @@ public class Stove: IInteractable, IOcuppier, ICarrier
 
     public void Carry(ICarriable carriable)
     {
+        if (carriable == null) _onStove = null;
         if (carriable is not Pot) return;
 
         _onStove = carriable as Pot;
@@ -39,9 +48,13 @@ public class CuttingBoard: IInteractable, IOcuppier, ICarrier
 
     public void Carry(ICarriable carriable)
     {
-        if (carriable is Ingredient ingredient)
+        if (carriable is Ingredient ingredient )
         {
             _onboard = ingredient;
+        }
+        if (carriable == null)
+        {
+            _onboard = null;
         }
     }
 
@@ -52,6 +65,8 @@ public class CuttingBoard: IInteractable, IOcuppier, ICarrier
 
     public void Interact()
     {
+        if (_onboard == null) return;
+        
         _onboard.CuttingProgress++;
     }
 }
@@ -78,11 +93,30 @@ public class Generator: IOcuppier, ICarrier
 
     public void Carry(ICarriable carriable)
     {
+        if(carriable == null)
+        {
+            InStok--;
+            if (InStok > 0) return;
+        }
+       
         _carriable = carriable;
     }
 }
 
-public class Pot: ICarriable
+public class Pot: ICarriable, IContainer
 {
-    public List<Ingredient> ingredients = new();
+    private List<Ingredient> _ingredients = new();
+
+    public IEnumerable<ICarriable> Carriables => _ingredients;
+
+    public void AddToContainer(ICarriable carriable)
+    {
+        if (carriable is not Ingredient ingredient) return;
+        _ingredients.Add(ingredient);
+    }
+
+    public void EmptyTheContainer()
+    {
+        _ingredients = new();
+    }
 }
