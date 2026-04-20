@@ -1,52 +1,147 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class Stove: IInteractable, IOcuppier
+public class Stove: IInteractable, IOcuppier, ICarrier, ICooker
 {
-    public Pot OnStove;
-    public bool isOn = false;
+    public ICarriable OnCarrier => _onStove;
+    
+    private Pot _onStove;
 
-     private Vector2Int _pos;
+    private bool _isOn = false;
+    public bool IsOn => _isOn;
+
+    private Vector2Int _pos;
     public Vector2Int Pos => _pos;
+
+    public Stove(Pot pot)
+    {
+        _onStove = pot;
+    }
+
+
+    public void ChangePos(Vector2Int v)
+    {
+        
+    }
+
+      public void Interact()
+    {
+        _isOn = !_isOn;
+    }
+
+    public void Carry(ICarriable carriable)
+    {
+        if (carriable == null) _onStove = null;
+        if (carriable is not Pot) return;
+
+        _onStove = carriable as Pot;
+    }
+
+    public void Cook()
+    {
+        if(!_isOn) return;
+        _onStove.Cook();
+    }
+
+    public int GetCookingProgress()
+    {
+        return _onStove.Carriables.Sum(it => (it as Ingredient).CookingProgress);
+    }
+}
+
+public class CuttingBoard: IInteractable, IOcuppier, ICarrier
+{
+    public ICarriable OnCarrier => _onboard;
+    
+    private Ingredient _onboard;
+
+    private Vector2Int _pos;
+    public Vector2Int Pos => _pos;
+
+    public void Carry(ICarriable carriable)
+    {
+        if (carriable is Ingredient ingredient )
+        {
+            _onboard = ingredient;
+        }
+        if (carriable == null)
+        {
+            _onboard = null;
+        }
+    }
+
     public void ChangePos(Vector2Int v)
     {
         throw new NotImplementedException();
     }
-}
 
-public class CuttingBoard: IInteractable, IOcuppier
-{
-    public Ingredient OnBoard;
-
-     private Vector2Int _pos;
-    public Vector2Int Pos => _pos;
-    public void ChangePos(Vector2Int v)
+    public void Interact()
     {
-        throw new NotImplementedException();
+        if (_onboard == null) return;
+        
+        _onboard.Chop();
     }
+
 }
 
-public class Generator: IOcuppier
+public class Generator: IOcuppier, ICarrier
 {
+    private IngredientType _ingredientType;
     public int InStok;
-    public IngredientType IngredientType;
+    public ICarriable OnCarrier => _carriable;
 
-    public Generator(int instok, IngredientType type)
+    private ICarriable _carriable;
+
+    public Generator(int instok, ICarriable carriable)
     {
         InStok = instok;
-        IngredientType = type;
+        _carriable = carriable;
+        _ingredientType = (carriable as Ingredient).Type;
     }
 
-     private Vector2Int _pos;
+    private Vector2Int _pos;
     public Vector2Int Pos => _pos;
     public void ChangePos(Vector2Int v)
     {
         throw new NotImplementedException();
     }
+
+    public void Carry(ICarriable carriable)
+    {
+        
+        _carriable = carriable;
+        if(InStok > 0 && _carriable == null)
+        {
+            _carriable = new Ingredient(_ingredientType);
+        }
+    }
 }
 
-public class Pot: ICarriable
+public class Pot: ICarriable, IContainer
 {
-    public List<Ingredient> ingredients = new();
+    private List<Ingredient> _ingredients = new();
+
+    public IEnumerable<ICarriable> Carriables => _ingredients;
+
+    public void AddToContainer(ICarriable carriable)
+    {
+        if (carriable is not Ingredient ingredient) return;
+        _ingredients.Add(ingredient);
+    }
+
+    public void EmptyTheContainer()
+    {
+        _ingredients = new();
+    }
+
+    public void Cook()
+    {
+        foreach(var ingredient in _ingredients)
+        {
+            if(ingredient.cookingGrade == CookingGrade.OVERCOOKED) continue;
+            ingredient.Cook(); return;
+        }
+    }
 }

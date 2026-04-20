@@ -12,7 +12,7 @@ public class LevelDesginer
         "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
         "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
         "WW WW WW WW WW .. WW WW WW WW WW WW .. WW WW WW",
-        "WW Go .. .. .. .. .. .. .. .. S. WW .. .. .. WW",
+        "WW Go .. .. .. .. .. .. .. .. SP WW .. .. .. WW",
         "WW Gt .. .. .. .. .. .. .. .. C. WW .. .. .. WW",
         "WW Gp .. ▼. .. .. .. .. .. .. .. WW .. .. .. WW",
         "WW .. .. .. .. .. .. .. .. .. .. WW .. .. .. WW",
@@ -36,6 +36,7 @@ public class LevelDesginer
 
         Dictionary<Vector2Int, CellState> map = new();
         PlayerState player = null;
+        List<IInteractable> stations = new();
 
         int y = 0;
         foreach(var line in mapCode)
@@ -57,6 +58,7 @@ public class LevelDesginer
                     'o' => new Ingredient(IngredientType.ONION),
                     'p' => new Ingredient(IngredientType.POTATO),
                     't' => new Ingredient(IngredientType.TOMATO),
+                    'P' => new Pot(),
                     _   => null,
                 }; 
 
@@ -65,8 +67,8 @@ public class LevelDesginer
                 {
                     'W' => new Wall(),
                     '▼' => new PlayerState(new(x, j)),
-                    'G' => new Generator(10, (oncell is Ingredient i)? i.Type: IngredientType.NONE),
-                    'S' => new Stove(),
+                    'G' => new Generator(10, oncell),
+                    'S' => new Stove(oncell as Pot),
                     'C' => new CuttingBoard(),
                     _   => null,
                 };
@@ -75,7 +77,7 @@ public class LevelDesginer
                 if (ocuppier is PlayerState p ) player = p;
                 map[new(x, j)] = new(ocuppier);
 
-                // Debug.Log($"base tile is {ocuppier} read tile {basetile}");
+                if (ocuppier is IInteractable interactable) stations.Add(interactable);
 
                 basetile = '?';
                 ontile = '?';
@@ -86,6 +88,6 @@ public class LevelDesginer
             y++;
         }
         
-        return new(map, player, mapWidth, mapHieght);
+        return new(map, player, mapWidth, mapHieght, stations);
     }
 }

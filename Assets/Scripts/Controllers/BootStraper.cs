@@ -25,6 +25,6 @@ public class BootStraper : MonoBehaviour
 
     private void Test(Vector2 dir)
     {
-        Debug.Log(dir);
+        // Debug.Log(dir);
     }
 }

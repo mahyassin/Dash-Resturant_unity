@@ -10,6 +10,8 @@ public class MapView : MonoBehaviour
     [SerializeField]private TextMeshProUGUI mapPrinter; 
     [SerializeField]private TextMeshProUGUI progress;
 
+    private string _stoveProgress, _chopingProgress, _clock;
+
 
     public void DisplayMap(string[] mapCode)
     {
@@ -24,10 +26,36 @@ public class MapView : MonoBehaviour
         mapPrinter.text = $"<mspace=14> {coloredText} </mspace>";
     }
 
-    public void DisplayClock(int clock)
+    public void UpdateClock(int clock)
     {
 
-        progress.text = $"Clock: {new string('.', clock)}";
+        _clock = $"\nClock: {new string('.', clock)}";
+        DisplayProgress();
+    }
+
+    public void UpdateStove(int[] progress)
+    {
+        _stoveProgress = "";
+        foreach(int value in progress)
+        {
+            _stoveProgress += "\nStove: " + new string('.', value);
+        }
+        DisplayProgress();
+    }
+
+    public void UpdateChoppingBoard(int[] progress)
+    {
+        _chopingProgress = "";
+        foreach(int value in progress)
+        {
+            _chopingProgress += "\nChopping board: " + new string('.', value);
+        }
+        DisplayProgress();
+    }
+
+    public void DisplayProgress()
+    {
+        progress.text = _clock + _stoveProgress + _chopingProgress;
     }
 }
 

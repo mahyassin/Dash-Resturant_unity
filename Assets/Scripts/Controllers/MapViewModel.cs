@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MapViewModel
@@ -17,7 +20,7 @@ public class MapViewModel
                 if (occupier is PlayerState player)
                 {
                     baseCell = "▼";
-                    ontile = DecodeCarriable(player.onPlayer);
+                    ontile = DecodeCarriable(player.OnCarrier);
 
                 }
                 else if (occupier is Wall)
@@ -27,16 +30,19 @@ public class MapViewModel
                 }
                 else if(occupier is Generator gen) {
                     baseCell = "G";
-                    ontile   = DecodeCarriable(new Ingredient(gen.IngredientType));
+                    ontile   = DecodeCarriable(gen.OnCarrier);
                 }
                 else if(occupier is Stove s)
                 {
-                    baseCell = "S";
-                    ontile   = DecodeCarriable(s.OnStove);
+                    string color = s.IsOn? "green": "red";
+
+                    baseCell = $"<color={color}>S</color>";
+
+                    ontile   = DecodeCarriable(s.OnCarrier);
                 } else if(occupier is CuttingBoard c)
                 {
                     baseCell = "C";
-                    ontile   = DecodeCarriable(c.OnBoard);
+                    ontile   = DecodeCarriable(c.OnCarrier);
                 }
                 else 
                 {
@@ -68,4 +74,40 @@ public class MapViewModel
         };
     }
 
+    public int[] DecodeStoves(GameState state)
+    {
+        var output = new List<int>();
+        int id = 0;
+        foreach(var station in state.interactables)
+        {
+            id++;
+            var pair = ("stove " + id, 0);
+
+            if(station is not Stove stove) continue;
+            if(stove.OnCarrier is not Pot) continue;
+
+            var total = stove.GetCookingProgress();
+            pair.Item2 = total;
+
+            output.Add(total);
+
+        
+        }
+
+        return output.ToArray();
+    }
+
+    public int[] DecodeCuttingBoards(GameState state)
+    {
+        var output = new List<int>();
+        foreach(var station in state.interactables)
+        {
+            if(station is not CuttingBoard board) continue; 
+            if(board.OnCarrier is not Ingredient ingredient) continue;
+            
+            output.Add(ingredient.CuttingProgress);
+        }
+
+        return output.ToArray();
+    }
 }
