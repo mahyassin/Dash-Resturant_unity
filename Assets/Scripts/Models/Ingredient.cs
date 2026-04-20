@@ -1,16 +1,47 @@
 public class Ingredient: ICarriable
 {
-    public IngredientType Type {get;}
-    public CookingGrade cookingGrade = CookingGrade.RAW;
-    public CuttingGrade cuttingGrade = CuttingGrade.WHOLE;
+   
+    private int _cutting;
+    private int _cooking;
+    private IngredientType _type;
 
-    public int CuttingProgress = 0;
-    public int CookingProgress = 0;
+    
     
     public Ingredient(IngredientType type)
     {
-        Type = type;
+        _type = type;
     }
+
+    public void Cook()
+    {
+        _cooking++;
+    }
+
+    public void Chop()
+    {
+        _cutting++;
+    }
+
+    public IngredientType Type => _type;
+    public CookingGrade cookingGrade => _cooking switch
+    {
+        < 5            => CookingGrade.RAW,
+        >= 5 and < 10  => CookingGrade.MEDUIM_RARE,
+        >= 10 and < 15 => CookingGrade.COOKED,
+        > 15           => CookingGrade.OVERCOOKED,
+        _              => CookingGrade.RAW,
+    };
+
+    public CuttingGrade cuttingGrade => _cutting switch
+    {
+        >= 3 and < 5   => CuttingGrade.BIG,
+        >= 5 and < 7   => CuttingGrade.MEDUIM,
+        >= 7 and < 10  => CuttingGrade.SMALL,
+        _              => CuttingGrade.WHOLE,
+    };
+
+    public int CuttingProgress => _cutting;
+    public int CookingProgress => _cooking;
 }
 
 public enum IngredientType

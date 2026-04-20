@@ -88,9 +88,23 @@ public class MapSystem: GameSystem
 public class TicSystem: GameSystem
 {
 
-    public void VarifiyCooking()
+    public event Action<GameState, int> OnTicProecess;
+    public void VarifiyCooking(GameState state, int clock)
     {
+        foreach(IInteractable station in state.interactables)
+        {
+            if(station is not ICooker cooker) 
+            {
+                Debug.Log($"station  is {station.GetType()}");
+                continue;
+            }
+           
+            cooker.Cook();
+        }
         
+        OnTicProecess?.Invoke(state, clock);
     }
+
+  
 }
 public interface GameSystem{}

@@ -20,7 +20,6 @@ public interface ICarrier
     public void Carry(ICarriable carriable);
 
 }
-public interface IActor{}
 
 public interface IContainer
 {
@@ -28,6 +27,13 @@ public interface IContainer
     public void AddToContainer(ICarriable carriable);
     public void EmptyTheContainer();
 }
+
+public interface ICooker
+{
+    public void Cook();
+    public int GetCookingProgress();
+}
+
 
 
 

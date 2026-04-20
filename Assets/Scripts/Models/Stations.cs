@@ -1,15 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class Stove: IInteractable, IOcuppier, ICarrier
+public class Stove: IInteractable, IOcuppier, ICarrier, ICooker
 {
     public ICarriable OnCarrier => _onStove;
     
     private Pot _onStove;
-     private bool _isOn = false;
+
+    private bool _isOn = false;
     public bool IsOn => _isOn;
-     private Vector2Int _pos;
+
+    private Vector2Int _pos;
     public Vector2Int Pos => _pos;
 
     public Stove(Pot pot)
@@ -18,11 +21,11 @@ public class Stove: IInteractable, IOcuppier, ICarrier
     }
 
 
-
     public void ChangePos(Vector2Int v)
     {
-        throw new NotImplementedException();
+        
     }
+
       public void Interact()
     {
         _isOn = !_isOn;
@@ -34,6 +37,17 @@ public class Stove: IInteractable, IOcuppier, ICarrier
         if (carriable is not Pot) return;
 
         _onStove = carriable as Pot;
+    }
+
+    public void Cook()
+    {
+        if(!_isOn) return;
+        _onStove.Cook();
+    }
+
+    public int GetCookingProgress()
+    {
+        return _onStove.Carriables.Sum(it => (it as Ingredient).CookingProgress);
     }
 }
 
@@ -67,12 +81,14 @@ public class CuttingBoard: IInteractable, IOcuppier, ICarrier
     {
         if (_onboard == null) return;
         
-        _onboard.CuttingProgress++;
+        _onboard.Chop();
     }
+
 }
 
 public class Generator: IOcuppier, ICarrier
 {
+    private IngredientType _ingredientType;
     public int InStok;
     public ICarriable OnCarrier => _carriable;
 
@@ -82,6 +98,7 @@ public class Generator: IOcuppier, ICarrier
     {
         InStok = instok;
         _carriable = carriable;
+        _ingredientType = (carriable as Ingredient).Type;
     }
 
     private Vector2Int _pos;
@@ -93,13 +110,12 @@ public class Generator: IOcuppier, ICarrier
 
     public void Carry(ICarriable carriable)
     {
-        if(carriable == null)
-        {
-            InStok--;
-            if (InStok > 0) return;
-        }
-       
+        
         _carriable = carriable;
+        if(InStok > 0 && _carriable == null)
+        {
+            _carriable = new Ingredient(_ingredientType);
+        }
     }
 }
 
@@ -118,5 +134,14 @@ public class Pot: ICarriable, IContainer
     public void EmptyTheContainer()
     {
         _ingredients = new();
+    }
+
+    public void Cook()
+    {
+        foreach(var ingredient in _ingredients)
+        {
+            if(ingredient.cookingGrade == CookingGrade.OVERCOOKED) continue;
+            ingredient.Cook(); return;
+        }
     }
 }

@@ -34,7 +34,10 @@ public class MapViewModel
                 }
                 else if(occupier is Stove s)
                 {
-                    baseCell = "S";
+                    string color = s.IsOn? "green": "red";
+
+                    baseCell = $"<color={color}>S</color>";
+
                     ontile   = DecodeCarriable(s.OnCarrier);
                 } else if(occupier is CuttingBoard c)
                 {
@@ -71,30 +74,40 @@ public class MapViewModel
         };
     }
 
-    public Dictionary<string, int> DecodeStations(GameState state)
+    public int[] DecodeStoves(GameState state)
     {
-        var output = new Dictionary<string, int>();
+        var output = new List<int>();
         int id = 0;
         foreach(var station in state.interactables)
         {
             id++;
             var pair = ("stove " + id, 0);
-            if(station is Stove stove)
-            {
-                if(stove.OnCarrier is not Pot pot) continue;
-                int total = pot.Carriables.Sum(it => (it as Ingredient).CookingProgress);
-                pair.Item2 = total;
 
-                output.Add(pair.Item1, pair.Item2);
-            }
+            if(station is not Stove stove) continue;
+            if(stove.OnCarrier is not Pot) continue;
 
-            if(station is CuttingBoard cb)
-            {
-                if(cb.OnCarrier is not Ingredient ingredient) continue;
-                output["cutting Board" + id] = ingredient.CuttingProgress;
-            }
+            var total = stove.GetCookingProgress();
+            pair.Item2 = total;
+
+            output.Add(total);
+
+        
         }
 
-        return output;
+        return output.ToArray();
+    }
+
+    public int[] DecodeCuttingBoards(GameState state)
+    {
+        var output = new List<int>();
+        foreach(var station in state.interactables)
+        {
+            if(station is not CuttingBoard board) continue; 
+            if(board.OnCarrier is not Ingredient ingredient) continue;
+            
+            output.Add(ingredient.CuttingProgress);
+        }
+
+        return output.ToArray();
     }
 }
