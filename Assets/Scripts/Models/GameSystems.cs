@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 public class MapSystem: GameSystem
@@ -33,6 +34,7 @@ public class MapSystem: GameSystem
     {
 
         var targetPos = new Vector2Int(actor.Pos.x + dir.x, actor.Pos.y + dir.y);
+
         if (state.Map[targetPos].Ocuppier is not ICarrier  holder) return;
         if (actor is not ICarrier taker) return;
 
@@ -65,6 +67,12 @@ public class MapSystem: GameSystem
     {
         if(taker.OnCarrier is IContainer container) 
         {
+            if(holder.OnCarrier is IContainer giver)
+            {
+                container.AddToContainer(giver.Carriables.ToList());
+                giver.EmptyTheContainer();
+            }
+            
             container.AddToContainer(holder.OnCarrier);
             holder.Carry(null);
             return;
@@ -95,7 +103,6 @@ public class TicSystem: GameSystem
         {
             if(station is not ICooker cooker) 
             {
-                Debug.Log($"station  is {station.GetType()}");
                 continue;
             }
            

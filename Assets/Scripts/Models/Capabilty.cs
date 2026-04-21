@@ -25,6 +25,7 @@ public interface IContainer
 {
     public IEnumerable<ICarriable> Carriables {get;}
     public void AddToContainer(ICarriable carriable);
+    public void AddToContainer(List<ICarriable> carriable);
     public void EmptyTheContainer();
 }
 

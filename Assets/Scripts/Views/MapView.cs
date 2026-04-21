@@ -13,7 +13,7 @@ public class MapView : MonoBehaviour
     private string _stoveProgress, _chopingProgress, _clock;
 
 
-    public void DisplayMap(string[] mapCode)
+    public void DisplayMap(string[] mapCode, string containersContent)
     {
         string text = "";
         foreach(var line in mapCode)
@@ -24,6 +24,7 @@ public class MapView : MonoBehaviour
         string coloredText = $"<color=red> {text} </color>";
 
         mapPrinter.text = $"<mspace=14> {coloredText} </mspace>";
+        mapPrinter.text += "\n \n" + containersContent;
     }
 
     public void UpdateClock(int clock)
@@ -33,22 +34,22 @@ public class MapView : MonoBehaviour
         DisplayProgress();
     }
 
-    public void UpdateStove(int[] progress)
+    public void UpdateStove((string, int)[] progress)
     {
         _stoveProgress = "";
-        foreach(int value in progress)
+        foreach((string, int) value in progress)
         {
-            _stoveProgress += "\nStove: " + new string('.', value);
+            _stoveProgress += $"\n{value.Item1} " + new string('.', value.Item2);
         }
         DisplayProgress();
     }
 
-    public void UpdateChoppingBoard(int[] progress)
+    public void UpdateChoppingBoard((string, int)[] progress)
     {
         _chopingProgress = "";
-        foreach(int value in progress)
+        foreach((string, int) value in progress)
         {
-            _chopingProgress += "\nChopping board: " + new string('.', value);
+            _chopingProgress += $"\n{value.Item1}: " + new string('.', value.Item2);
         }
         DisplayProgress();
     }

@@ -28,7 +28,7 @@ public class MainOrchistrator
 
 
 
-        _mapview.DisplayMap(_viewModel.DecodeState(_gameState));
+        _mapview.DisplayMap(_viewModel.DecodeState(_gameState), _viewModel.ContainersUiState);
 
         inputs.Moved             += OnPlayerMoved;
         inputs.Interacted        += OnPlayerCarrying;
@@ -53,7 +53,7 @@ public class MainOrchistrator
 
     private void OnMapChanged(GameState state)
     {
-        _mapview.DisplayMap(_viewModel.DecodeState(state));
+        _mapview.DisplayMap(_viewModel.DecodeState(state), _viewModel.ContainersUiState);
         _mapview.UpdateChoppingBoard(_viewModel.DecodeCuttingBoards(_gameState));
     }
 

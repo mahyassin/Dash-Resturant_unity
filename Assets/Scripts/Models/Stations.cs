@@ -49,6 +49,13 @@ public class Stove: IInteractable, IOcuppier, ICarrier, ICooker
     {
         return _onStove.Carriables.Sum(it => (it as Ingredient).CookingProgress);
     }
+
+    public CookingGrade GetCookingGrade()
+    {
+        
+        if (_onStove.Carriables.DefaultIfEmpty()?.Last() is not Ingredient ingredient) return CookingGrade.RAW;
+        return ingredient.cookingGrade;
+    }
 }
 
 public class CuttingBoard: IInteractable, IOcuppier, ICarrier
@@ -115,6 +122,7 @@ public class Generator: IOcuppier, ICarrier
         if(InStok > 0 && _carriable == null)
         {
             _carriable = new Ingredient(_ingredientType);
+            InStok--;
         }
     }
 }
@@ -143,5 +151,37 @@ public class Pot: ICarriable, IContainer
             if(ingredient.cookingGrade == CookingGrade.OVERCOOKED) continue;
             ingredient.Cook(); return;
         }
+    }
+
+    public void AddToContainer(List<ICarriable> carriable)
+    {
+        _ingredients.AddRange(carriable.Select(it => it as Ingredient));
+    }
+}
+
+public class Shelf: ICarrier, IOcuppier
+{
+    private ICarriable _onShelf;
+    private Vector2Int _pos;
+   
+
+    public Shelf(ICarriable carriable)
+    {
+        _onShelf = carriable;
+    }
+
+
+    public ICarriable OnCarrier => _onShelf;
+
+    public Vector2Int Pos => _pos;
+
+    public void Carry(ICarriable carriable)
+    {
+        _onShelf = carriable;
+    }
+
+    public void ChangePos(Vector2Int v)
+    {
+        _pos = v;
     }
 }

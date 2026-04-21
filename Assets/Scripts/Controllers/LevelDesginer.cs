@@ -14,14 +14,16 @@ public class LevelDesginer
         "WW WW WW WW WW .. WW WW WW WW WW WW .. WW WW WW",
         "WW Go .. .. .. .. .. .. .. .. SP WW .. .. .. WW",
         "WW Gt .. .. .. .. .. .. .. .. C. WW .. .. .. WW",
-        "WW Gp .. ▼. .. .. .. .. .. .. .. WW .. .. .. WW",
-        "WW .. .. .. .. .. .. .. .. .. .. WW .. .. .. WW",
-        "WW .. .. .. .. .. .. .. .. .. .. WW .. .. .. WW",
-        "WW .. .. .. .. .. .. .. .. .. .. WW .. .. .. WW",
-        "WW .. .. .. .. .. .. .. .. .. .. WW .. .. .. WW",
+        "WW Gp .. ▼. .. .. .. .. .. .. F. WW .. .. .. WW",
+        "WW F. .. .. .. .. .. .. .. .. F. WW .. .. .. WW",
+        "WW F. .. .. .. .. .. .. .. .. F. WW .. .. .. WW",
+        "WW F. .. .. .. .. .. .. .. .. F. WW .. .. .. WW",
+        "WW F. F. F. F. F. F. Fd Fd F. F. WW .. .. .. WW",
         "WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW",
       
     };
+
+    string _mapKey = "1:  ";
 
 
     public GameState GetState()
@@ -59,6 +61,7 @@ public class LevelDesginer
                     'p' => new Ingredient(IngredientType.POTATO),
                     't' => new Ingredient(IngredientType.TOMATO),
                     'P' => new Pot(),
+                    'd' => new Dish(),
                     _   => null,
                 }; 
 
@@ -70,6 +73,7 @@ public class LevelDesginer
                     'G' => new Generator(10, oncell),
                     'S' => new Stove(oncell as Pot),
                     'C' => new CuttingBoard(),
+                    'F' => new Shelf(oncell),
                     _   => null,
                 };
 
