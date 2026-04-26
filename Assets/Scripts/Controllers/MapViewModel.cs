@@ -7,6 +7,26 @@ using UnityEngine;
 public class MapViewModel
 {
     public string ContainersUiState = "";
+    public string OrdersUiState = "";
+
+    public void UpdateOrderState(OrdersState state)
+    {
+        OrdersUiState =  
+        PrintOrders("Completed: ", state.CompletedOrders) + 
+        PrintOrders("Pending: ", state.PendingOrders) + 
+        PrintOrders("Failed: ", state.FialdOrders);
+    }
+
+    private string PrintOrders(string type, List<Order> orders)
+    {
+        string output = type;
+
+        foreach(var order in orders)
+        {
+            output += order.code + ", ";
+        }
+        return output + "\n";
+    }
     public string[] DecodeState(GameState state)
     {
         ContainersUiState = "";
@@ -21,62 +41,36 @@ public class MapViewModel
 
                 string baseCell;
                 string ontile;
+
+                baseCell = occupier switch
+                {
+                    PlayerState => "▼",
+                    Wall        => "W",
+                    Generator   => "G",
+                    Stove s     => $"<color={(s.IsOn()? "green" : "red")}>S</color>",
+                    CuttingBoard=> "C",
+                    Shelf       => "F",
+                    OrderTable  => "O",
+                    TrashCan    => "T",
+                    _           => ".",
+                };
+
+                if( occupier is ICarrier carrier)
+                {
+                    ontile = DecodeCarriable(carrier.OnCarrier);
+                    if(carrier.OnCarrier is IContainer c) container = c;
+
+                } else
+                {
+                    ontile = occupier is Wall? "W ": ". ";
+                }
                 
-                if (occupier is PlayerState player)
-                {
-                    baseCell = "▼";
-                    ontile = DecodeCarriable(player.OnCarrier);
-                    if (player.OnCarrier is IContainer c) container = c;
-
-                }
-                else if (occupier is Wall)
-                {
-                    baseCell = "W";
-                    ontile = "W ";
-                }
-                else if(occupier is Generator gen) {
-                    baseCell = "G";
-                    ontile   = DecodeCarriable(gen.OnCarrier);
-
-                }
-                else if(occupier is Stove s)
-                {
-                    string color = s.IsOn? "green": "red";
-
-                    baseCell = $"<color={color}>S</color>";
-
-                    ontile   = DecodeCarriable(s.OnCarrier);
-
-                    if (s.OnCarrier is IContainer c) container = c;
-
-                } 
-                else if(occupier is CuttingBoard c)
-                {
-                    baseCell = "C";
-                    ontile   = DecodeCarriable(c.OnCarrier);
-
-                    if (c.OnCarrier is IContainer co) container = co;
-
-                } 
-                else if(occupier is Shelf shelf)
-                {
-                    baseCell = "F";
-                    ontile   = DecodeCarriable(shelf.OnCarrier);
-
-                    if (shelf.OnCarrier is IContainer co) container = co;
-
-                }
-                else 
-                {
-                    baseCell = ".";
-                    ontile = ". ";
-                }
 
                 if(container != null)
                 {
                     ContainersUiState += $"{container.GetType()}: ";
 
-                    foreach (var carriable in container.Carriables)
+                    foreach (var carriable in container.Content)
                     {
                         ContainersUiState += DecodeCarriable(carriable) + ", ";
                     }
@@ -119,7 +113,7 @@ public class MapViewModel
             if(station is not Stove stove) continue;
             if(stove.OnCarrier is not Pot) continue;
 
-            var total = stove.GetCookingProgress();
+            int total = stove.GetCookingProgress();
             var pair = ($"stove {id} { stove.GetCookingGrade() }", 0);
 
             pair.Item2 = total;

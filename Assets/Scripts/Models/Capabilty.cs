@@ -23,7 +23,7 @@ public interface ICarrier
 
 public interface IContainer
 {
-    public IEnumerable<ICarriable> Carriables {get;}
+    public IEnumerable<ICarriable> Content {get;}
     public void AddToContainer(ICarriable carriable);
     public void AddToContainer(List<ICarriable> carriable);
     public void EmptyTheContainer();
@@ -33,7 +33,18 @@ public interface ICooker
 {
     public void Cook();
     public int GetCookingProgress();
+    public void UnConfirm();
 }
+
+public interface IOrderMaker
+{
+    public int Id {get;}
+    public bool MakeOrderReady();
+    public void RetrunUncleanDish();
+    
+}
+
+
 
 
 

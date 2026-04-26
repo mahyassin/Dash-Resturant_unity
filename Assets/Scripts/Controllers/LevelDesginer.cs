@@ -11,19 +11,17 @@ public class LevelDesginer
         "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
         "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
         "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
-        "WW WW WW WW WW .. WW WW WW WW WW WW .. WW WW WW",
+        "WW WW WW WW WW O. WW WW WW SP WW WW .. WW WW WW",
         "WW Go .. .. .. .. .. .. .. .. SP WW .. .. .. WW",
         "WW Gt .. .. .. .. .. .. .. .. C. WW .. .. .. WW",
         "WW Gp .. ▼. .. .. .. .. .. .. F. WW .. .. .. WW",
         "WW F. .. .. .. .. .. .. .. .. F. WW .. .. .. WW",
         "WW F. .. .. .. .. .. .. .. .. F. WW .. .. .. WW",
         "WW F. .. .. .. .. .. .. .. .. F. WW .. .. .. WW",
-        "WW F. F. F. F. F. F. Fd Fd F. F. WW .. .. .. WW",
+        "WW F. F. F. T. F. F. Fd Fd F. F. WW .. .. .. WW",
         "WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW",
       
     };
-
-    string _mapKey = "1:  ";
 
 
     public GameState GetState()
@@ -39,6 +37,8 @@ public class LevelDesginer
         Dictionary<Vector2Int, CellState> map = new();
         PlayerState player = null;
         List<IInteractable> stations = new();
+        List<IOrderMaker> orderMakers = new();
+        int orderMakerId = -1;
 
         int y = 0;
         foreach(var line in mapCode)
@@ -74,6 +74,8 @@ public class LevelDesginer
                     'S' => new Stove(oncell as Pot),
                     'C' => new CuttingBoard(),
                     'F' => new Shelf(oncell),
+                    'O' => new OrderTable(orderMakerId++),
+                    'T' => new TrashCan(),
                     _   => null,
                 };
 
@@ -82,6 +84,7 @@ public class LevelDesginer
                 map[new(x, j)] = new(ocuppier);
 
                 if (ocuppier is IInteractable interactable) stations.Add(interactable);
+                if (ocuppier is IOrderMaker orderMaker) orderMakers.Add(orderMaker);
 
                 basetile = '?';
                 ontile = '?';
@@ -92,6 +95,6 @@ public class LevelDesginer
             y++;
         }
         
-        return new(map, player, mapWidth, mapHieght, stations);
+        return new(map, player, mapWidth, mapHieght, stations, orderMakers);
     }
 }

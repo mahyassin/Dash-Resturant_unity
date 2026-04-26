@@ -7,8 +7,9 @@ using System.Collections.Generic;
 public class MapView : MonoBehaviour
 {
 
-    [SerializeField]private TextMeshProUGUI mapPrinter; 
-    [SerializeField]private TextMeshProUGUI progress;
+    [SerializeField] private TextMeshProUGUI mapPrinter; 
+    [SerializeField] private TextMeshProUGUI progress;
+    [SerializeField] private TextMeshProUGUI OrdersUI;
 
     private string _stoveProgress, _chopingProgress, _clock;
 
@@ -57,6 +58,11 @@ public class MapView : MonoBehaviour
     public void DisplayProgress()
     {
         progress.text = _clock + _stoveProgress + _chopingProgress;
+    }
+
+    public void DisplayOrders(string orders)
+    {
+        OrdersUI.text = orders;
     }
 }
 

@@ -8,17 +8,28 @@ public class Dish : ICarriable, IContainer
     private bool _isClean = true;
     private int _maxCapacity = 4;
 
-    public IEnumerable<ICarriable> Carriables => _dish;
+    public IEnumerable<ICarriable> Content => _dish;
     public bool IsClean => _isClean;
+    public List<Ingredient> DishContent => _dish;
     public Dish StackedDish => _stakedDish;
 
 
+    public Dish()
+    {
+        _isClean = true;
+    }
+
+    public Dish(bool isclean)
+    {
+        _isClean = isclean;
+    }
     public void AddToContainer(ICarriable carriable)
     {
         if (_dish.Count >= _maxCapacity) return;
 
         if(carriable is not Ingredient ingredient) return;
-
+        if (!_isClean) return;
+        
         _dish.Add(ingredient);
     }
 
@@ -53,9 +64,9 @@ public struct Recipes
    // 00, 10, 20, 30 cutting grade
    // 01, 02, 03, 04 cooking grade 
 
-    public static string TomatoSuop      = "t33 t33 t33";
-    public static string TomatoWithOnion = "t33 t33 o33";
-    public static string PotatoSuop      = "p33 t33 o33";
+    public static string TomatoSuop      = "t32 t32 t32";
+    public static string TomatoWithOnion = "t32 t32 o32";
+    public static string PotatoSuop      = "p32 t32 o32";
 
     public static string RecepieIncoder(List<Ingredient> ingredients)
     {
@@ -90,6 +101,60 @@ public struct Recipes
 
         return output;
     }
+
+}
+
+public struct Menu
+{
+    private List<string> _currentList;
+    
+    public List<string> CurrentList => _currentList;
+    
+    public Menu(List<string> dishs)
+    {
+        _currentList = dishs;
+    }
+
+    public void AddToMenu(string dish)
+    {
+        _currentList.Add(dish);
+    }
+}
+
+public class Order
+{
+    public string code {get;}
+    private int _patianceMeter;
+    
+    private State state = State.Pending;
+    public enum State
+    {
+        Pending,
+        Success,
+        Fial,
+    }
+    public int OrderMakerId;
+
+    public Order(string dish, int orderMakerId)
+    {
+        code = dish;
+        OrderMakerId = orderMakerId;
+    }
+
+    public void LosePatiance()
+    {
+        if(_patianceMeter > 0) state = State.Fial;
+
+        _patianceMeter--;
+    }
+
+    public void ReciveOrder(string recived)
+    {
+        if(code != recived) {state = State.Fial; return;}
+        state = State.Success;
+    }
+
+    public State GetState => state;
 
 }
 

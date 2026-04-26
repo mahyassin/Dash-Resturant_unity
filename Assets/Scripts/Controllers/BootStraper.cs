@@ -4,7 +4,7 @@ public class BootStraper : MonoBehaviour
 {
 
     private LevelDesginer levelDesginer;
-    private MainOrchistrator mapController;
+    private MainOrchistrator mainOrchestrator;
     [SerializeField]private MapView mapView;
     private GameState state;
     private InputReader inputs;
@@ -18,7 +18,7 @@ public class BootStraper : MonoBehaviour
 
         state = levelDesginer.GetState();
 
-        mapController = new(state, mapView,inputs, timer);
+        mainOrchestrator = new(state, mapView, inputs, timer);
 
         inputs.Moved += Test;
     }
