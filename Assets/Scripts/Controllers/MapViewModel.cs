@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,51 +6,77 @@ using UnityEngine;
 
 public class MapViewModel
 {
-     public string[] DecodeState(GameState state)
+    public string ContainersUiState = "";
+    public string OrdersUiState = "";
+
+    public void UpdateOrderState(OrdersState state)
     {
+        OrdersUiState =  
+        PrintOrders("Completed: ", state.CompletedOrders) + 
+        PrintOrders("Pending: ", state.PendingOrders) + 
+        PrintOrders("Failed: ", state.FialdOrders);
+    }
+
+    private string PrintOrders(string type, List<Order> orders)
+    {
+        string output = type;
+
+        foreach(var order in orders)
+        {
+            output += order.code + ", ";
+        }
+        return output + "\n";
+    }
+    public string[] DecodeState(GameState state)
+    {
+        ContainersUiState = "";
+
         string[] output = new string[state.MapHieght];
         for(int j = 0; j < state.MapHieght; j++)
         {
             for(int i = 0; i < state.MapWidth; i++)
             {
                 var occupier = state.Map[new(i, j)].Ocuppier;
+                IContainer container = null;
 
                 string baseCell;
                 string ontile;
+
+                baseCell = occupier switch
+                {
+                    PlayerState => "▼",
+                    Wall        => "W",
+                    Generator   => "G",
+                    Stove s     => $"<color={(s.IsOn()? "green" : "red")}>S</color>",
+                    CuttingBoard=> "C",
+                    Shelf       => "F",
+                    OrderTable  => "O",
+                    TrashCan    => "T",
+                    _           => ".",
+                };
+
+                if( occupier is ICarrier carrier)
+                {
+                    ontile = DecodeCarriable(carrier.OnCarrier);
+                    if(carrier.OnCarrier is IContainer c) container = c;
+
+                } else
+                {
+                    ontile = occupier is Wall? "W ": ". ";
+                }
                 
-                if (occupier is PlayerState player)
-                {
-                    baseCell = "▼";
-                    ontile = DecodeCarriable(player.OnCarrier);
 
-                }
-                else if (occupier is Wall)
+                if(container != null)
                 {
-                    baseCell = "W";
-                    ontile = "W ";
-                }
-                else if(occupier is Generator gen) {
-                    baseCell = "G";
-                    ontile   = DecodeCarriable(gen.OnCarrier);
-                }
-                else if(occupier is Stove s)
-                {
-                    string color = s.IsOn? "green": "red";
+                    ContainersUiState += $"{container.GetType()}: ";
 
-                    baseCell = $"<color={color}>S</color>";
+                    foreach (var carriable in container.Content)
+                    {
+                        ContainersUiState += DecodeCarriable(carriable) + ", ";
+                    }
 
-                    ontile   = DecodeCarriable(s.OnCarrier);
-                } else if(occupier is CuttingBoard c)
-                {
-                    baseCell = "C";
-                    ontile   = DecodeCarriable(c.OnCarrier);
+                    ContainersUiState += "| ";
                 }
-                else 
-                {
-                    baseCell = ".";
-                    ontile = ". ";
-                }
-
                 output[j] +=  $"{baseCell}{ontile} ";
 
             }
@@ -69,27 +96,29 @@ public class MapViewModel
                 IngredientType.POTATO => "p ",
                 _                     => ". ",
             },
-            Pot => "P ",
+            Pot  => "P ",
+            Dish => "d ",
             _   => ". ",
         };
     }
 
-    public int[] DecodeStoves(GameState state)
+    public (string, int)[] DecodeStoves(GameState state)
     {
-        var output = new List<int>();
+        var output = new List<(string, int)>();
         int id = 0;
         foreach(var station in state.interactables)
         {
             id++;
-            var pair = ("stove " + id, 0);
 
             if(station is not Stove stove) continue;
             if(stove.OnCarrier is not Pot) continue;
 
-            var total = stove.GetCookingProgress();
+            int total = stove.GetCookingProgress();
+            var pair = ($"stove {id} { stove.GetCookingGrade() }", 0);
+
             pair.Item2 = total;
 
-            output.Add(total);
+            output.Add(pair);
 
         
         }
@@ -97,15 +126,18 @@ public class MapViewModel
         return output.ToArray();
     }
 
-    public int[] DecodeCuttingBoards(GameState state)
+    public (string, int)[] DecodeCuttingBoards(GameState state)
     {
-        var output = new List<int>();
+        var output = new List<(string, int)>();
+
+        var id = 0;
         foreach(var station in state.interactables)
         {
+            id++;
             if(station is not CuttingBoard board) continue; 
             if(board.OnCarrier is not Ingredient ingredient) continue;
-            
-            output.Add(ingredient.CuttingProgress);
+
+            output.Add(($"stove {id} { ingredient.cuttingGrade}", ingredient.CuttingProgress));
         }
 
         return output.ToArray();

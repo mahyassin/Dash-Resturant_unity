@@ -29,15 +29,18 @@ public class Ingredient: ICarriable
         >= 5 and < 10  => CookingGrade.MEDUIM_RARE,
         >= 10 and < 15 => CookingGrade.COOKED,
         > 15           => CookingGrade.OVERCOOKED,
-        _              => CookingGrade.RAW,
+        _              => CookingGrade.OVERCOOKED,
     };
 
     public CuttingGrade cuttingGrade => _cutting switch
     {
+
+
+        < 3            => CuttingGrade.WHOLE,
         >= 3 and < 5   => CuttingGrade.BIG,
         >= 5 and < 7   => CuttingGrade.MEDUIM,
         >= 7 and < 10  => CuttingGrade.SMALL,
-        _              => CuttingGrade.WHOLE,
+        _              => CuttingGrade.SMALL,
     };
 
     public int CuttingProgress => _cutting;
