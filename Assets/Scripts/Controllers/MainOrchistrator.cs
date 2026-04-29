@@ -6,21 +6,24 @@ public class MainOrchistrator
 {
 
     private GameState    _gameState;
-    private MapView      _mapview;
-    private MapViewModel _viewModel;
+    private ViewManager  _viewManager;
     private MapSystem    _mapSystem;
     private TicSystem    _ticSystem;
     private OrderSystem  _orderSystem;
     private InputReader  _inputs;
     private Timer        _timer;
     private Vector2Int   _currentDiretion;
+    private ViewsRigistry _registry;
+    private Identfier     _identifier;
 
-    public MainOrchistrator(GameState gameState, MapView mapView, InputReader inputs, Timer timer)
+    public MainOrchistrator(GameState gameState, ViewManager mapView, InputReader inputs, Timer timer, ViewsRigistry characterRigistry)
     {
-        _gameState = gameState;
-        _mapview   = mapView;
-        _inputs    = inputs;
-        _timer     = timer;
+        _gameState   = gameState;
+        _viewManager = mapView;
+        _inputs      = inputs;
+        _timer       = timer;
+        _registry    = characterRigistry;
+
 
         Menu menu = new(new List<string>()
         {
@@ -29,21 +32,20 @@ public class MainOrchistrator
             Recipes.TomatoWithOnion,
         });
 
-        _viewModel   = new();
         _mapSystem   = new();
         _ticSystem   = new();
         _orderSystem = new(menu);
 
         _timer.OnTimerTick += ProcessTic;
 
-
-        _mapview.DisplayMap(_viewModel.DecodeState(_gameState), _viewModel.ContainersUiState);
-
         inputs.Moved             += OnPlayerMoved;
         inputs.Interacted        += OnPlayerCarrying;
         _mapSystem.MapChanged    += OnMapChanged;
+        _mapSystem.Moved         += OnCharacterMoved;
         _ticSystem.OnTicProecess += OnTicProecess;
         _orderSystem.OnOrdersChange += OnOrdersChange;
+
+        _viewManager.FocusCamera(_registry.GetCharacter(gameState.PlayerState.Id));
 
     }
 
@@ -58,13 +60,17 @@ public class MainOrchistrator
 
     private void OnPlayerCarrying()
     {
-            _mapSystem.VarrifyCarrying(_gameState.PlayerState, _gameState, _currentDiretion);
+        _mapSystem.VarrifyCarrying(_gameState.PlayerState, _gameState, _currentDiretion);
     }
 
-    private void OnMapChanged(GameState state)
+    private void OnMapChanged(List<CellState> cells)
     {
-        _mapview.DisplayMap(_viewModel.DecodeState(state), _viewModel.ContainersUiState);
-        _mapview.UpdateChoppingBoard(_viewModel.DecodeCuttingBoards(_gameState));
+        
+    }
+
+    private void OnCharacterMoved(MovmentReport report)
+    {
+        _viewManager.ViewMovment(_registry.GetCharacter(report.ActorId),report.From, report.To);
     }
 
     private void ProcessTic(int clock)
@@ -75,14 +81,11 @@ public class MainOrchistrator
 
     private void OnTicProecess(GameState Changes, int clock)
     {
-        _mapview.UpdateClock(clock);
-        _mapview.UpdateStove(_viewModel.DecodeStoves(_gameState));
+        _viewManager.UpdateClock(clock);
     }
 
     public void OnOrdersChange(OrdersState state)
     {
-        _viewModel.UpdateOrderState(state);
-        _mapview.DisplayOrders(_viewModel.OrdersUiState);
     }
 
 

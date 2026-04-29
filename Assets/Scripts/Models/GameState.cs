@@ -7,7 +7,7 @@ public class GameState
     public Dictionary<Vector2Int, CellState> Map;
     public int MapHieght {get;}
     public int MapWidth {get;}
-    public PlayerState PlayerState;
+    public CharacterState PlayerState;
     public List<IInteractable> interactables;
     public List<IOrderMaker> OrderMakers;
     public List<int> DishsCD = new();
@@ -15,7 +15,7 @@ public class GameState
 
     public GameState(
         Dictionary<Vector2Int, CellState> map, 
-        PlayerState playerState, 
+        CharacterState playerState, 
         int mapWidth, 
         int mapHieght,
         List<IInteractable> stations,

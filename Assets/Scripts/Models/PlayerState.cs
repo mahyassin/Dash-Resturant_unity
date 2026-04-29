@@ -1,9 +1,11 @@
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 
-public class PlayerState : IOcuppier, ICarrier
+public class CharacterState : IOcuppier, ICarrier, IIdentifialbe
 {
     private Vector2Int _pos;
     public Vector2Int Pos => _pos;
+    public int Id {get;}
 
     public ICarriable OnCarrier => _carriable;
 
@@ -11,9 +13,10 @@ public class PlayerState : IOcuppier, ICarrier
 
     private ICarriable _carriable;
 
-    public PlayerState(Vector2Int pos)
+    public CharacterState(Vector2Int pos, int id)
     {
         _pos = pos;
+        Id = id;
     }
   
     public void ChangePos(Vector2Int pos) => _pos = pos;

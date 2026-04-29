@@ -5,41 +5,39 @@ public class LevelDesginer
 {
     string[] _map =
     {
-        "WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW",
-        "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
-        "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
-        "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
-        "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
-        "WW .. .. .. .. .. .. .. .. .. .. .. .. .. .. WW",
-        "WW WW WW WW WW O. WW WW WW SP WW WW .. WW WW WW",
-        "WW Go .. .. .. .. .. .. .. .. SP WW .. .. .. WW",
-        "WW Gt .. .. .. .. .. .. .. .. C. WW .. .. .. WW",
-        "WW Gp .. ▼. .. .. .. .. .. .. F. WW .. .. .. WW",
-        "WW F. .. .. .. .. .. .. .. .. F. WW .. .. .. WW",
-        "WW F. .. .. .. .. .. .. .. .. F. WW .. .. .. WW",
-        "WW F. .. .. .. .. .. .. .. .. F. WW .. .. .. WW",
-        "WW F. F. F. T. F. F. Fd Fd F. F. WW .. .. .. WW",
-        "WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW WW",
+        "F. F. F. F. F. F. F. F. F. F. F. F. F. F. F. F.",
+        "F. .. .. .. .. .. .. .. .. .. .. .. .. .. .. F.",
+        "F. .. .. .. .. .. .. .. .. .. .. .. .. .. .. F.",
+        "F. .. .. .. .. .. .. .. .. .. .. .. .. .. .. F.",
+        "F. .. .. .. .. .. .. .. .. .. .. .. .. .. .. F.",
+        "F. .. .. .. .. .. .. .. .. .. .. .. .. .. .. F.",
+        "F. F. F. F. F. .. F. F. F. SP F. F. .. F. F. F.",
+        "F. .. .. .. .. .. .. .. .. ▼. SP .. .. .. .. F.",
+        "F. .. .. .. .. .. .. .. .. .. C. .. .. .. .. F.",
+        "F. .. .. .. .. .. .. .. .. .. F. .. .. .. .. F.",
+        "F. .. .. .. .. .. .. .. .. .. F. .. .. .. .. F.",
+        "F. .. .. .. .. .. .. .. .. .. F. .. .. .. .. F.",
+        "F. .. .. .. .. .. .. .. .. .. F. .. .. .. .. F.",
+        "F. .. .. .. .. .. .. .. .. .. F. .. .. .. .. F.",
+        "F. F. F. F. F. F. F. F. F. F. F. F. F. F. F. F.",
       
     };
 
 
-    public GameState GetState()
+    public GameState GetState(EntitiesFactory factory, Identfier identfier)
     {
-        return BuildGame(_map);
+        return BuildGame(_map, factory, identfier);
     }
 
-    public GameState BuildGame(string[] mapCode)
+    public GameState BuildGame(string[] mapCode, EntitiesFactory factory, Identfier identfier)
     {
         int mapHieght = mapCode.Length;
         int mapWidth  = mapCode[0].Replace(" ","").Length/ 2;
 
         Dictionary<Vector2Int, CellState> map = new();
-        PlayerState player = null;
+        CharacterState player = null;
         List<IInteractable> stations = new();
         List<IOrderMaker> orderMakers = new();
-        int orderMakerId = -1;
-
         int y = 0;
         foreach(var line in mapCode)
         {
@@ -51,17 +49,18 @@ public class LevelDesginer
             int x = 0;
             foreach(var symbol in _map[y].Replace(" ", ""))
             {
+                Vector2Int pos = new(x - mapWidth / 2, j - mapHieght / 2);
 
                 if(basetile == '?') {basetile = symbol; continue;}
                 if(ontile == '?') {ontile = symbol;}
 
                 ICarriable oncell = ontile switch
                 {
-                    'o' => new Ingredient(IngredientType.ONION),
-                    'p' => new Ingredient(IngredientType.POTATO),
-                    't' => new Ingredient(IngredientType.TOMATO),
-                    'P' => new Pot(),
-                    'd' => new Dish(),
+                    'o' => factory.CreateIngredient(IngredientType.ONION),
+                    'p' => factory.CreateIngredient(IngredientType.POTATO),
+                    't' => factory.CreateIngredient(IngredientType.TOMATO),
+                    'P' => factory.CreatePot(),
+                    'd' => factory.CreateDish(),
                     _   => null,
                 }; 
 
@@ -69,19 +68,19 @@ public class LevelDesginer
                 IOcuppier ocuppier = basetile switch
                 {
                     'W' => new Wall(),
-                    '▼' => new PlayerState(new(x, j)),
-                    'G' => new Generator(10, oncell),
-                    'S' => new Stove(oncell as Pot),
-                    'C' => new CuttingBoard(),
-                    'F' => new Shelf(oncell),
-                    'O' => new OrderTable(orderMakerId++),
-                    'T' => new TrashCan(),
+                    '▼' => factory.CreateCharachter(pos),
+                    'G' => factory.CreateGenerator(10, oncell as Ingredient),
+                    'S' => factory.CreateAStove(oncell as Pot),
+                    'C' => factory.CreatecuttingBoard(),
+                    'F' => factory.CreateShelf(oncell),
+                    'O' => factory.CreateOrderTable(),
+                    'T' => factory.CreateTrashCan(),
                     _   => null,
                 };
 
 
-                if (ocuppier is PlayerState p ) player = p;
-                map[new(x, j)] = new(ocuppier);
+                if (ocuppier is CharacterState p ) player = p;
+                map[pos] = new(ocuppier, pos);
 
                 if (ocuppier is IInteractable interactable) stations.Add(interactable);
                 if (ocuppier is IOrderMaker orderMaker) orderMakers.Add(orderMaker);
