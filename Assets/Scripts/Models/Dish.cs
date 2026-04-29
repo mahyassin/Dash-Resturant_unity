@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class Dish : ICarriable, IContainer
+public class Dish : ICarriable, IContainer, IIdentifialbe
 {
     private List<Ingredient> _dish = new();
     private Dish _stakedDish;
@@ -13,6 +13,7 @@ public class Dish : ICarriable, IContainer
     public List<Ingredient> DishContent => _dish;
     public Dish StackedDish => _stakedDish;
 
+    public int Id {get;}
 
     public Dish()
     {

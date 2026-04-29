@@ -7,7 +7,8 @@ using UnityEngine.AdaptivePerformance;
 public class MapSystem: GameSystem
 {
   
-    public event Action<GameState> MapChanged;
+    public event Action<List<CellState>> MapChanged;
+    public event Action<MovmentReport> Moved;
 
     public void VarifiyMovment(IOcuppier player, GameState state, Vector2Int dir)
     {
@@ -16,20 +17,25 @@ public class MapSystem: GameSystem
 
         var targetPos = new Vector2Int(player.Pos.x + dir.x, player.Pos.y + dir.y);
 
+        CellState targetCell = map[targetPos];
+        CellState actorCell = map[player.Pos];
+
         if (!map.ContainsKey(targetPos)) return;
         if(map[targetPos].IsWalkable)
         {
             MoveOccupier(player, state, targetPos);
+            Moved(new((player as CharacterState).Id, actorCell.Pos, targetCell.Pos));
+
 
         } else
         {
-            var ocuppier = map[targetPos].Ocuppier;
+            var ocuppier = targetCell.Ocuppier;
 
             if( ocuppier is IInteractable interactable) interactable.Interact();
 
             if(ocuppier is OrderTable orderTable) 
             {
-                if(player is not PlayerState p) return;
+                if(player is not CharacterState p) return;
                 if(p.OnCarrier is not Dish dish) return;
 
                 orderTable.ReciveOrder(dish.DishContent,state.ordersState);
@@ -38,15 +44,12 @@ public class MapSystem: GameSystem
                 var dishCd = UnityEngine.Random.Range(10,20);
                 state.DishsCD.Add(dishCd);
 
-                Debug.Log("added dirty dish");
-                Debug.Log(dishCd);
-                Debug.Log(state.DishsCD.Count);
                 p.Carry(null);
             }
 
         }
         
-        MapChanged?.Invoke(state);
+        MapChanged?.Invoke(new(){targetCell, actorCell});
     }
     public void VarrifyCarrying(IOcuppier actor, GameState state, Vector2Int dir)
     {
@@ -66,15 +69,15 @@ public class MapSystem: GameSystem
             Take(giver: actr, taker: holder);
         }
 
-        MapChanged?.Invoke(state);
+        MapChanged?.Invoke(new(){state.Map[targetPos], state.Map[actor.Pos]});
     }
 
     private void  MoveOccupier(IOcuppier player, GameState state, Vector2Int targetPos)
     {
         var map = state.Map;
 
-        map[targetPos] = new(player);
-        map[player.Pos] = new(null);
+        map[targetPos] = new(player, targetPos);
+        map[player.Pos] = new(null, player.Pos);
 
         player.ChangePos(targetPos);
 
@@ -116,9 +119,6 @@ public class MapSystem: GameSystem
 
     
 }
-
-
-
 public class TicSystem: GameSystem
 {
 
@@ -180,6 +180,20 @@ public class OrderSystem: GameSystem
         }
         OnOrdersChange?.Invoke(state.ordersState);
     }
+}
+
+public class SpawningSystem
+{
+    private Identfier _identifier;
+    private EntitiesFactory _factory; 
+
+    public SpawningSystem(Identfier identfier, EntitiesFactory factory)
+    {
+        _identifier = identfier;
+        _factory    = factory;
+    }
+
+
 }
 
 public interface GameSystem{}

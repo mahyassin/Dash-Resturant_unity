@@ -27,80 +27,7 @@ public class MapViewModel
         }
         return output + "\n";
     }
-    public string[] DecodeState(GameState state)
-    {
-        ContainersUiState = "";
 
-        string[] output = new string[state.MapHieght];
-        for(int j = 0; j < state.MapHieght; j++)
-        {
-            for(int i = 0; i < state.MapWidth; i++)
-            {
-                var occupier = state.Map[new(i, j)].Ocuppier;
-                IContainer container = null;
-
-                string baseCell;
-                string ontile;
-
-                baseCell = occupier switch
-                {
-                    PlayerState => "▼",
-                    Wall        => "W",
-                    Generator   => "G",
-                    Stove s     => $"<color={(s.IsOn()? "green" : "red")}>S</color>",
-                    CuttingBoard=> "C",
-                    Shelf       => "F",
-                    OrderTable  => "O",
-                    TrashCan    => "T",
-                    _           => ".",
-                };
-
-                if( occupier is ICarrier carrier)
-                {
-                    ontile = DecodeCarriable(carrier.OnCarrier);
-                    if(carrier.OnCarrier is IContainer c) container = c;
-
-                } else
-                {
-                    ontile = occupier is Wall? "W ": ". ";
-                }
-                
-
-                if(container != null)
-                {
-                    ContainersUiState += $"{container.GetType()}: ";
-
-                    foreach (var carriable in container.Content)
-                    {
-                        ContainersUiState += DecodeCarriable(carriable) + ", ";
-                    }
-
-                    ContainersUiState += "| ";
-                }
-                output[j] +=  $"{baseCell}{ontile} ";
-
-            }
-        }
-
-        return output;
-    }
-
-    public string DecodeCarriable(ICarriable carriable)
-    {
-        return carriable switch
-        {
-            Ingredient i =>  i.Type switch
-            {
-                IngredientType.TOMATO => "t ",
-                IngredientType.ONION  => "o ",
-                IngredientType.POTATO => "p ",
-                _                     => ". ",
-            },
-            Pot  => "P ",
-            Dish => "d ",
-            _   => ". ",
-        };
-    }
 
     public (string, int)[] DecodeStoves(GameState state)
     {
@@ -143,3 +70,4 @@ public class MapViewModel
         return output.ToArray();
     }
 }
+

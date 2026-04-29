@@ -1,15 +1,16 @@
-public class Ingredient: ICarriable
+public class Ingredient: ICarriable, IIdentifialbe
 {
-   
+    public int Id {get;}
     private int _cutting;
     private int _cooking;
     private IngredientType _type;
 
     
     
-    public Ingredient(IngredientType type)
+    public Ingredient(IngredientType type, int id )
     {
         _type = type;
+        Id = id;
     }
 
     public void Cook()

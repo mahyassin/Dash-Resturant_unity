@@ -14,6 +14,12 @@ public interface IInteractable
 }
 public interface ICarriable{}
 
+public interface IIdentifialbe
+{
+    public int Id {get;}
+}
+
+
 public interface ICarrier
 {
     public ICarriable OnCarrier {get;}

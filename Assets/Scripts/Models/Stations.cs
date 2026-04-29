@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-public class Stove: IInteractable, IOcuppier, ICarrier, ICooker
+public class Stove: IInteractable, IOcuppier, ICarrier, ICooker, IIdentifialbe
 {
     public ICarriable OnCarrier => _onStove;
     
@@ -23,9 +23,12 @@ public class Stove: IInteractable, IOcuppier, ICarrier, ICooker
     private Vector2Int _pos;
     public Vector2Int Pos => _pos;
 
-    public Stove(Pot pot)
+    public int Id {get;}
+
+    public Stove(Pot pot, int id)
     {
         _onStove = pot;
+        Id = id;
     }
 
 
@@ -91,7 +94,7 @@ public class Stove: IInteractable, IOcuppier, ICarrier, ICooker
 
 }
 
-public class CuttingBoard: IInteractable, IOcuppier, ICarrier
+public class CuttingBoard: IInteractable, IOcuppier, ICarrier, IIdentifialbe
 {
     public ICarriable OnCarrier => _onboard;
     
@@ -100,6 +103,12 @@ public class CuttingBoard: IInteractable, IOcuppier, ICarrier
     private Vector2Int _pos;
     public Vector2Int Pos => _pos;
 
+    public int Id {get;}
+
+    public CuttingBoard(int id)
+    {
+        Id = id;
+    }
     public void Carry(ICarriable carriable)
     {
         if (carriable is Ingredient ingredient )
@@ -126,7 +135,7 @@ public class CuttingBoard: IInteractable, IOcuppier, ICarrier
 
 }
 
-public class Generator: IOcuppier, ICarrier
+public class Generator: IOcuppier, ICarrier, IIdentifialbe
 {
     private IngredientType _ingredientType;
     public int InStok;
@@ -134,15 +143,19 @@ public class Generator: IOcuppier, ICarrier
 
     private ICarriable _carriable;
 
-    public Generator(int instok, ICarriable carriable)
+    public Generator(int instok, ICarriable carriable, int id)
     {
         InStok = instok;
         _carriable = carriable;
         _ingredientType = (carriable as Ingredient).Type;
+        Id = id;
     }
 
     private Vector2Int _pos;
     public Vector2Int Pos => _pos;
+
+    public int Id {get;}
+
     public void ChangePos(Vector2Int v)
     {
         throw new NotImplementedException();
@@ -154,16 +167,20 @@ public class Generator: IOcuppier, ICarrier
         _carriable = carriable;
         if(InStok > 0 && _carriable == null)
         {
-            _carriable = new Ingredient(_ingredientType);
             InStok--;
         }
     }
 }
 
-public class Pot: ICarriable, IContainer
+public class Pot: ICarriable, IContainer, IIdentifialbe
 {
+    public int Id {get;}
     private List<Ingredient> _ingredients = new();
 
+    public Pot(int id)
+    {
+        Id = id;
+    }
     public IEnumerable<ICarriable> Content => _ingredients;
 
     public void AddToContainer(ICarriable carriable)
@@ -198,21 +215,24 @@ public class Pot: ICarriable, IContainer
     }
 }
 
-public class Shelf: ICarrier, IOcuppier
+public class Shelf: ICarrier, IOcuppier, IIdentifialbe
 {
     private ICarriable _onShelf;
     private Vector2Int _pos;
    
 
-    public Shelf(ICarriable carriable)
+    public Shelf(ICarriable carriable, int id)
     {
         _onShelf = carriable;
+        Id = id;
     }
 
 
     public ICarriable OnCarrier => _onShelf;
 
     public Vector2Int Pos => _pos;
+
+    public int Id {get;}
 
     public void Carry(ICarriable carriable)
     {
@@ -225,7 +245,7 @@ public class Shelf: ICarrier, IOcuppier
     }
 
 }
-public class OrderTable : IOrderMaker, IOcuppier, ICarrier
+public class OrderTable : IOrderMaker, IOcuppier, ICarrier, IIdentifialbe
 {
     public int Id {get;}
 
@@ -308,11 +328,18 @@ public class OrderTable : IOrderMaker, IOcuppier, ICarrier
     public ICarriable OnCarrier => _finishedDish;
 }
 
-public class TrashCan : IOcuppier, ICarrier
+public class TrashCan : IOcuppier, ICarrier,IIdentifialbe
 {
     public Vector2Int Pos => throw new NotImplementedException();
 
     public ICarriable OnCarrier => null;
+
+    public TrashCan(int id)
+    {
+        Id = id;
+    }
+
+    public int Id {get;}
 
     public void Carry(ICarriable carriable)
     {
