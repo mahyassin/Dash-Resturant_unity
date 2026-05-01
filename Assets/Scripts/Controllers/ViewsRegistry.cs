@@ -1,21 +1,26 @@
 using System.Collections.Generic;
+using NUnit.Framework;
+using NUnit.Framework.Constraints;
+using UnityEditor.PackageManager;
 
 public class ViewsRigistry
 {
-    private Dictionary<int , CharacterView> _charachters = new();
-    private Dictionary<int , CarriabaleView> _carriables = new();
+    private Dictionary<int , ITileView> _views = new();
 
 
-    public void AddCharacter(int id, CharacterView view)
+    public void AddView(int id, ITileView view)
     {
-        _charachters.Add(id, view);
+        if (view == null) return;
+        _views.Add(id, view);
     }
 
-    public void AddCarriable(int id, CarriabaleView view)
-    {
-        _carriables.Add(id, view);
-    }
 
-    public CharacterView GetCharacter(int id)  => _charachters[id];
-    public CarriabaleView GetCarraible(int id) => _carriables[id];
+    public ITileView GetOnTile(int id)
+    {
+        if (id == -1) return null;
+        return _views[id];
+
+
+    }
+   
 }

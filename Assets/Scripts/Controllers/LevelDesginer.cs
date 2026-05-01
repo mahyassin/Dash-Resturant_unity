@@ -13,8 +13,8 @@ public class LevelDesginer
         "F. .. .. .. .. .. .. .. .. .. .. .. .. .. .. F.",
         "F. F. F. F. F. .. F. F. F. SP F. F. .. F. F. F.",
         "F. .. .. .. .. .. .. .. .. ▼. SP .. .. .. .. F.",
-        "F. .. .. .. .. .. .. .. .. .. C. .. .. .. .. F.",
-        "F. .. .. .. .. .. .. .. .. .. F. .. .. .. .. F.",
+        "Gt .. .. .. .. .. .. .. .. .. C. .. .. .. .. F.",
+        "Gp .. .. .. .. .. .. .. .. .. F. .. .. .. .. F.",
         "F. .. .. .. .. .. .. .. .. .. F. .. .. .. .. F.",
         "F. .. .. .. .. .. .. .. .. .. F. .. .. .. .. F.",
         "F. .. .. .. .. .. .. .. .. .. F. .. .. .. .. F.",
@@ -77,7 +77,6 @@ public class LevelDesginer
                     'T' => factory.CreateTrashCan(),
                     _   => null,
                 };
-
 
                 if (ocuppier is CharacterState p ) player = p;
                 map[pos] = new(ocuppier, pos);

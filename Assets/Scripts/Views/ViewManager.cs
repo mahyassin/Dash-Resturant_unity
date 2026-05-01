@@ -17,38 +17,43 @@ public class ViewManager : MonoBehaviour
     private Dictionary<Vector2Int, CellView> _cells;
 
   
-    public void ShowMap()
-    {
-        foreach(var view in _cells.Values)
-        {
-            _kitchenGrid.SetTile
-            (
-                (Vector3Int)view.Pos,
-
-                view.Icon switch
-                {
-                    TileCode.Shelf  => Shelf,
-                    TileCode.Stove  => Stove,
-                    TileCode.Wall   => Shelf,
-                    _               => null,
-                }
-            );
-        }
-    }
-
+   
     public Vector3 ToWorldPos(Vector2Int pos) => _kitchenGrid.GetCellCenterWorld((Vector3Int)pos);
     public void InitializeCells(Dictionary<Vector2Int, CellView> cells)
     {
         _cells = cells;
-        ShowMap();
     }
 
     public void ViewMovment(CharacterView character, Vector2Int from, Vector2Int to)
     {
         if(Math.Abs(to.x - from.x) > 0) character.PlayHorizontalDashAnimation();
         if(to.y - from.y > 0) character.PlayUpDashAnimation();
+        if(to.y - from.y < 0) character.PlayDownDashAnimation();
 
         character.MoveCharacter(ToWorldPos(from), ToWorldPos(to));
+    }
+
+    public void ViewCarry(ITileView actor, ITileView holder, CarriabaleView onActor, CarriabaleView onGiver)
+    {
+        if(actor == null || holder == null) return;
+
+        if (onActor != null)
+        {
+            onActor.transform.SetParent(actor.Anchor.transform);
+            onActor.transform.localPosition = Vector3.zero;
+        }
+
+        if (onGiver != null)
+        {
+            onGiver.transform.SetParent(holder.Anchor.transform);
+            onGiver.transform.localPosition = Vector3.zero;
+
+        }
+    }
+
+    public void ViewStationInteraction(StationView station, bool isOn)
+    {
+        station.Interact(isOn);
     }
 
     public void FocusCamera(IViewable target)
@@ -97,27 +102,20 @@ public class ViewManager : MonoBehaviour
 
 public struct CellView
 {
-    public TileCode Icon {get;}
+    public ITileView MainTile {get;}
     public Vector2Int Pos {get;}
 
-    public CellView(TileCode icon, Vector2Int pos)
+    public CellView(ITileView icon, Vector2Int pos)
     {
-        Icon = icon;
+        MainTile = icon;
         Pos = pos;
     }
 }
 
-
-
-public enum TileCode
+public interface ITileView
 {
-    Player,
-    Stove,
-    Shelf,
-    Empty,
-    Wall,
+    public Transform Anchor {get;}
 }
-
 
 
 
