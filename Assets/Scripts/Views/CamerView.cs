@@ -3,7 +3,6 @@ using UnityEngine;
 public class CamerView : MonoBehaviour
 {
     [SerializeField] private int speed;
-    private int _intialV = 0;
     private IViewable target;
 
     void Update()

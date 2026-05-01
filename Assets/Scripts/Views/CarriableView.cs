@@ -1,32 +1,15 @@
 using UnityEditor;
 using UnityEngine;
 
-public class CarriabaleView: MonoBehaviour
+public class CarriabaleView: MonoBehaviour, ITileView
 {
-    [SerializeField] private Icon icon;
     [SerializeField] private SpriteRenderer spriteRenderer;
+
+    public Transform Anchor {get;}
 
     public void RenderIcon(Icon iconToRender, IconsLibrary icons)
     {
-        spriteRenderer.sprite = iconToRender switch
-        {
-            Icon.Dish   => icons.Dish,
-            Icon.ONION  => icons.Onion,
-            Icon.Pot    => icons.Pot,
-            Icon.POTATO => icons.Potato,
-            Icon.TOMATO => icons.Tomato,
-            _           => icons.Error,
-        };
+        spriteRenderer.sprite = icons.GetSprite(iconToRender);
     }
 }
 
-
-public enum Icon
-{
-    Pot,
-    Dish,
-    POTATO,
-    TOMATO,
-    ONION,
-    Error,
-}

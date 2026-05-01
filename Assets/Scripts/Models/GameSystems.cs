@@ -8,7 +8,7 @@ public class MapSystem: GameSystem
 {
   
     public event Action<List<CellState>> MapChanged;
-    public event Action<MovmentReport> Moved;
+    public event Action<IReport> StateChanged;
 
     public void VarifiyMovment(IOcuppier player, GameState state, Vector2Int dir)
     {
@@ -24,14 +24,23 @@ public class MapSystem: GameSystem
         if(map[targetPos].IsWalkable)
         {
             MoveOccupier(player, state, targetPos);
-            Moved(new((player as CharacterState).Id, actorCell.Pos, targetCell.Pos));
+            StateChanged?.Invoke(new MovmentReport((player as CharacterState).Id, actorCell.Pos, targetCell.Pos));
 
 
         } else
         {
             var ocuppier = targetCell.Ocuppier;
 
-            if( ocuppier is IInteractable interactable) interactable.Interact();
+            if( ocuppier is IInteractable interactable)
+            {
+                interactable.Interact();
+                if(interactable is not IIdentifialbe hasId) return;
+
+                bool isOn = false;
+                if (interactable is Stove stove){ isOn = stove.IsOn();}
+                
+                StateChanged?.Invoke(new InteractReport(hasId.Id, isOn));
+            }
 
             if(ocuppier is OrderTable orderTable) 
             {
@@ -54,10 +63,18 @@ public class MapSystem: GameSystem
     public void VarrifyCarrying(IOcuppier actor, GameState state, Vector2Int dir)
     {
 
+
         var targetPos = new Vector2Int(actor.Pos.x + dir.x, actor.Pos.y + dir.y);
 
         if (state.Map[targetPos].Ocuppier is not ICarrier  holder) return;
         if (actor is not ICarrier actr) return;
+
+        if(holder is not IIdentifialbe holderWId) return;
+        if(actor  is not IIdentifialbe actorWId ) return;
+
+        int takerOnHand = -1;
+        int giverOnhand = -1;
+
 
         if (actr.OnCarrier == null)
         {
@@ -69,7 +86,16 @@ public class MapSystem: GameSystem
             Take(giver: actr, taker: holder);
         }
 
-        MapChanged?.Invoke(new(){state.Map[targetPos], state.Map[actor.Pos]});
+        if(holder.OnCarrier is  IIdentifialbe holderOnhandWId) giverOnhand = holderOnhandWId.Id;
+        if(actr.OnCarrier is  IIdentifialbe actorOnhandWithId) takerOnHand = actorOnhandWithId.Id;
+
+        int taker = actorWId.Id;
+        int giver = holderWId.Id;
+
+
+        StateChanged?.Invoke(new CarryReport(taker,takerOnHand, giver, giverOnhand));
+
+        // Debug.Log($"ids {taker}, {giver}, {takerOnHand}, {giverOnhand}");
     }
 
     private void  MoveOccupier(IOcuppier player, GameState state, Vector2Int targetPos)

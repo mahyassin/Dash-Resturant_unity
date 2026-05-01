@@ -26,7 +26,6 @@ public class GameState
         MapHieght = mapHieght;
         MapWidth = mapWidth;
         interactables = stations;
-        Debug.Log(interactables.Count);
         OrderMakers = orderMakers;
     }
 

@@ -2,12 +2,13 @@ using System.Collections;
 using System.Diagnostics;
 using UnityEngine;
 
-public class CharacterView: MonoBehaviour, IViewable
+public class CharacterView: MonoBehaviour, ITileView, IViewable
 {
 
     [SerializeField] private int speed;
     [SerializeField] private Animator animator;
-    [SerializeField] private SpriteRenderer Renderer;
+    public Transform Anchor => HandAnchor;
+
     public Transform HandAnchor;
 
     private Coroutine _moverutine;
@@ -20,7 +21,11 @@ public class CharacterView: MonoBehaviour, IViewable
     private IEnumerator Move(Vector3 from, Vector3 to)
     {
         var dir = to.x - from.x;
-        Renderer.flipX = dir == 0? Renderer.flipX: dir < 0;
+        var scale = transform.localScale;
+        
+        scale.x = dir == 0? scale.x: dir < 0? -1: 1;
+
+        transform.localScale = scale;
 
         while (transform.position != to)
         {
@@ -43,6 +48,7 @@ public class CharacterView: MonoBehaviour, IViewable
     {
         animator.SetBool("isUp", false);
         animator.SetBool("isH", false);
+        animator.SetBool("isD", false);
         
     }
 
@@ -56,6 +62,7 @@ public class CharacterView: MonoBehaviour, IViewable
 
     public void PlayHorizontalDashAnimation() => TriggerAnimation(animations.DashTrigger, "isH");
     public void PlayUpDashAnimation() => TriggerAnimation(animations.DashTrigger, "isUp");
+    public void PlayDownDashAnimation() => TriggerAnimation(animations.DashTrigger, "isD");
 
 }
 

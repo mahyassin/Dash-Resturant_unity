@@ -38,14 +38,14 @@ public class MainOrchistrator
 
         _timer.OnTimerTick += ProcessTic;
 
-        inputs.Moved             += OnPlayerMoved;
-        inputs.Interacted        += OnPlayerCarrying;
-        _mapSystem.MapChanged    += OnMapChanged;
-        _mapSystem.Moved         += OnCharacterMoved;
-        _ticSystem.OnTicProecess += OnTicProecess;
+        inputs.Moved                += OnPlayerMoved;
+        inputs.Interacted           += OnPlayerCarrying;
+        _mapSystem.MapChanged       += OnMapChanged;
+        _mapSystem.StateChanged     += OnStateChanged;
+        _ticSystem.OnTicProecess    += OnTicProecess;
         _orderSystem.OnOrdersChange += OnOrdersChange;
 
-        _viewManager.FocusCamera(_registry.GetCharacter(gameState.PlayerState.Id));
+        _viewManager.FocusCamera(_registry.GetOnTile(gameState.PlayerState.Id) as CharacterView);
 
     }
 
@@ -60,6 +60,7 @@ public class MainOrchistrator
 
     private void OnPlayerCarrying()
     {
+        // Debug.Log("on player carrying");
         _mapSystem.VarrifyCarrying(_gameState.PlayerState, _gameState, _currentDiretion);
     }
 
@@ -68,9 +69,30 @@ public class MainOrchistrator
         
     }
 
-    private void OnCharacterMoved(MovmentReport report)
+    private void OnStateChanged(IReport recievedReport)
     {
-        _viewManager.ViewMovment(_registry.GetCharacter(report.ActorId),report.From, report.To);
+        if(recievedReport is MovmentReport rMovment)
+        {
+            _viewManager.ViewMovment(_registry.GetOnTile(rMovment.ActorId) as CharacterView ,rMovment.From, rMovment.To);  
+        }
+
+        if(recievedReport is CarryReport rCarry)
+        {
+                // Debug.Log(" it is a Carry Event");
+            var taker = _registry.GetOnTile(rCarry.Taker);
+            var giver = _registry.GetOnTile(rCarry.TakenFrom);
+            var onTaker = _registry.GetOnTile(rCarry.TakerOnHand) as CarriabaleView;
+            var onGiver = _registry.GetOnTile(rCarry.TakenOnHand) as CarriabaleView;
+
+            // Debug.Log($"ontaker is null{onTaker == null}, ongiver is null {onGiver == null}");
+
+            _viewManager.ViewCarry(taker, giver, onTaker, onGiver);
+        }
+        if(recievedReport is InteractReport rInteraction)
+        {
+
+            _viewManager.ViewStationInteraction(_registry.GetOnTile(rInteraction.InteractableId) as StationView, rInteraction.IsOn);
+        }
     }
 
     private void ProcessTic(int clock)

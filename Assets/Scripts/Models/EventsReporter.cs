@@ -22,4 +22,35 @@ public struct MovmentReport: IReport
 
 }
 
+public struct CarryReport: IReport
+{
+    public int Taker;
+    public int TakerOnHand;
+    public int TakenFrom;
+    public int TakenOnHand;
+
+    public CarryReport(int taker, int takerOnHand, int takenFrom, int takenOnHand)
+    {
+        Taker = taker;
+        TakerOnHand = takerOnHand;
+
+        TakenFrom = takenFrom;
+        TakenOnHand = takenOnHand;
+        
+    }
+}
+
+public struct InteractReport: IReport
+{
+    public int InteractableId;
+    public bool IsOn;
+    public InteractReport(int id, bool isOn)
+    {
+        InteractableId = id;
+        IsOn = isOn;
+    }
+    
+
+}
+
 public interface IReport{}

@@ -71,7 +71,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Views::PlayerView
   speed: 10
   animator: {fileID: 2847620296144649768}
-  Renderer: {fileID: 1399910544632674120}
   HandAnchor: {fileID: 8920092203102764109}
 --- !u!212 &1399910544632674120
 SpriteRenderer:
@@ -157,7 +156,7 @@ Transform:
   m_GameObject: {fileID: 6248216322378290163}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.21, y: 0.5, z: 0}
+  m_LocalPosition: {x: -0.21, y: 0.57, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

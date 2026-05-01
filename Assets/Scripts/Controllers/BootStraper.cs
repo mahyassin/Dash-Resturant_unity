@@ -14,7 +14,7 @@ public class BootStraper : MonoBehaviour
     private InputReader inputs;
     private ViewsRigistry viewsRegistry;
     private Identfier identfier;
-    private EntitiesFactory factory;
+    private EntitiesFactory stateFactory;
 
     [SerializeField] private Timer timer;
     [SerializeField] private ViewManager mapView;
@@ -28,9 +28,9 @@ public class BootStraper : MonoBehaviour
         levelDesginer     = new();
         inputs            = new();
         identfier         = new();
-        factory           = new(identfier);
+        stateFactory      = new(identfier);
 
-        state = levelDesginer.GetState(factory, identfier);
+        state = levelDesginer.GetState(stateFactory, identfier);
         BuidMap(state);
 
         mainOrchestrator = new(state, mapView, inputs, timer, viewsRegistry);
@@ -48,47 +48,27 @@ public class BootStraper : MonoBehaviour
             var pos = cellstate.Key;
             var worldpos = mapView.ToWorldPos(pos);
 
+            var occupier = cell.Ocuppier;
 
+            
 
-
-            if (cell.Ocuppier is CharacterState character)
+            ITileView tileView = viewFactory.CreateView(occupier, worldpos);
+            if (occupier != null && occupier is IIdentifialbe identifialbe) 
             {
-                viewsRegistry.AddCharacter(character.Id, viewFactory.CreateCharacter(worldpos));
+                viewsRegistry.AddView(identifialbe.Id, tileView);
             }
 
-            TileCode tileCode;
 
-            tileCode = cell.Ocuppier switch
+            if(occupier is ICarrier carrier)
             {
-                Stove => TileCode.Stove,
-                Shelf => TileCode.Shelf,
-                Wall  => TileCode.Wall,
-
-                _     => TileCode.Empty,
-            };
-
-            if(cell.Ocuppier is ICarrier carrier)
-            {
-                if(carrier.OnCarrier is not IIdentifialbe identifialbe) goto Out;
-                var icon = carrier.OnCarrier switch
-                {
-                    Ingredient i => i.Type switch
-                    {
-                        IngredientType.TOMATO => Icon.TOMATO,
-                        IngredientType.ONION  => Icon.ONION,
-                        IngredientType.POTATO => Icon.POTATO,
-                    },
-
-                    Pot  => Icon.Pot,
-                    Dish => Icon.Dish,
-                    _    => Icon.Error
-                };
-                // viewsRegistry.AddCarriable(identifialbe.Id, viewFactory.CreateCarraible(worldpos, icon, )); TODO()
+                if(carrier.OnCarrier is not IIdentifialbe knowCarriable) goto Out;
+               
+                viewsRegistry.AddView(knowCarriable.Id, viewFactory.CreateCarriable(carrier.OnCarrier, tileView.Anchor.transform)); 
             }
 
             Out:;
 
-            map[pos] = new CellView(tileCode, pos);
+            map[pos] = new CellView(tileView, pos);
         }
 
         mapView.InitializeCells(map);
