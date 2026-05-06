@@ -95,6 +95,90 @@ TextureImporter:
   - first:
       213: 418511726172910741
     second: waitress_30
+  - first:
+      213: 8201811278363141817
+    second: waitress_31
+  - first:
+      213: -69524280532405067
+    second: waitress_32
+  - first:
+      213: -4707854915783206658
+    second: waitress_33
+  - first:
+      213: -3403387886952148929
+    second: waitress_34
+  - first:
+      213: -6418971243811644391
+    second: waitress_35
+  - first:
+      213: 8569421498737806823
+    second: waitress_36
+  - first:
+      213: -2818527103696042658
+    second: waitress_37
+  - first:
+      213: 8843647705589681777
+    second: waitress_38
+  - first:
+      213: -3254259524990581170
+    second: waitress_39
+  - first:
+      213: -1849767363018442056
+    second: waitress_40
+  - first:
+      213: -8199145304827561629
+    second: waitress_41
+  - first:
+      213: -7275482509065793782
+    second: waitress_42
+  - first:
+      213: 6416291135668978885
+    second: waitress_43
+  - first:
+      213: -1051049668655503763
+    second: waitress_44
+  - first:
+      213: 748699746364676323
+    second: waitress_45
+  - first:
+      213: -6413476993829742958
+    second: waitress_46
+  - first:
+      213: -8545813022454592462
+    second: waitress_47
+  - first:
+      213: 1940970898488983053
+    second: waitress_48
+  - first:
+      213: -5198163203452489874
+    second: waitress_49
+  - first:
+      213: -6080279721507103201
+    second: waitress_50
+  - first:
+      213: -1267352033091381886
+    second: waitress_51
+  - first:
+      213: 8734076410711083528
+    second: waitress_52
+  - first:
+      213: 6740268396013107363
+    second: waitress_53
+  - first:
+      213: 3309482008818672633
+    second: waitress_54
+  - first:
+      213: 3032677983867919845
+    second: waitress_55
+  - first:
+      213: -1676622855265890745
+    second: waitress_56
+  - first:
+      213: 7126330037029395010
+    second: waitress_57
+  - first:
+      213: 4574793165336564333
+    second: waitress_58
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -162,10 +246,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 8192
-    resizeAlgorithm: 1
+    maxTextureSize: 16384
+    resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -194,7 +278,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 768
+        y: 1024
         width: 256
         height: 256
       alignment: 9
@@ -215,8 +299,8 @@ TextureImporter:
       name: waitress_1
       rect:
         serializedVersion: 2
-        x: 256
-        y: 768
+        x: 263
+        y: 1024
         width: 256
         height: 256
       alignment: 9
@@ -237,8 +321,8 @@ TextureImporter:
       name: waitress_2
       rect:
         serializedVersion: 2
-        x: 512
-        y: 768
+        x: 521
+        y: 1024
         width: 256
         height: 256
       alignment: 9
@@ -259,8 +343,8 @@ TextureImporter:
       name: waitress_3
       rect:
         serializedVersion: 2
-        x: 768
-        y: 768
+        x: 775
+        y: 1024
         width: 256
         height: 256
       alignment: 9
@@ -282,7 +366,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1024
-        y: 768
+        y: 1024
         width: 256
         height: 256
       alignment: 9
@@ -304,7 +388,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1280
-        y: 768
+        y: 1024
         width: 256
         height: 256
       alignment: 9
@@ -326,7 +410,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1536
-        y: 768
+        y: 1024
         width: 256
         height: 256
       alignment: 9
@@ -348,7 +432,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1792
-        y: 768
+        y: 1024
         width: 256
         height: 256
       alignment: 9
@@ -370,7 +454,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2048
-        y: 768
+        y: 1024
         width: 256
         height: 256
       alignment: 9
@@ -392,7 +476,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2304
-        y: 768
+        y: 1024
         width: 256
         height: 256
       alignment: 9
@@ -413,8 +497,8 @@ TextureImporter:
       name: waitress_10
       rect:
         serializedVersion: 2
-        x: 0
-        y: 512
+        x: 4
+        y: 767
         width: 256
         height: 256
       alignment: 9
@@ -436,7 +520,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 512
+        y: 768
         width: 256
         height: 256
       alignment: 9
@@ -458,7 +542,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 512
-        y: 512
+        y: 768
         width: 256
         height: 256
       alignment: 9
@@ -480,7 +564,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 768
-        y: 512
+        y: 768
         width: 256
         height: 256
       alignment: 9
@@ -502,7 +586,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1024
-        y: 512
+        y: 768
         width: 256
         height: 256
       alignment: 9
@@ -524,7 +608,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1280
-        y: 512
+        y: 768
         width: 256
         height: 256
       alignment: 9
@@ -546,7 +630,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1536
-        y: 512
+        y: 768
         width: 256
         height: 256
       alignment: 9
@@ -568,7 +652,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1792
-        y: 512
+        y: 768
         width: 256
         height: 256
       alignment: 9
@@ -590,7 +674,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2048
-        y: 512
+        y: 768
         width: 256
         height: 256
       alignment: 9
@@ -612,7 +696,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2304
-        y: 512
+        y: 768
         width: 256
         height: 256
       alignment: 9
@@ -634,7 +718,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2560
-        y: 512
+        y: 768
         width: 256
         height: 256
       alignment: 9
@@ -656,7 +740,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2816
-        y: 512
+        y: 768
         width: 256
         height: 256
       alignment: 9
@@ -678,7 +762,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 3072
-        y: 512
+        y: 768
         width: 256
         height: 256
       alignment: 9
@@ -700,7 +784,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 3328
-        y: 512
+        y: 768
         width: 256
         height: 256
       alignment: 9
@@ -722,7 +806,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 3584
-        y: 512
+        y: 768
         width: 256
         height: 256
       alignment: 9
@@ -744,7 +828,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 3840
-        y: 512
+        y: 768
         width: 256
         height: 256
       alignment: 9
@@ -766,7 +850,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 4096
-        y: 512
+        y: 768
         width: 256
         height: 256
       alignment: 9
@@ -788,7 +872,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 4352
-        y: 512
+        y: 768
         width: 256
         height: 256
       alignment: 9
@@ -810,6 +894,160 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
+        y: 512
+        width: 256
+        height: 256
+      alignment: 9
+      pivot: {x: 0.3, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0dbb5cb0e96898090800000000000000
+      internalID: -8031740447078106160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waitress_29
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 512
+        width: 256
+        height: 256
+      alignment: 9
+      pivot: {x: 0.3, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a816c0c4a14d2e000800000000000000
+      internalID: 63846554146726282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waitress_30
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 512
+        width: 256
+        height: 256
+      alignment: 9
+      pivot: {x: 0.3, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5943fd4923adec500800000000000000
+      internalID: 418511726172910741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waitress_31
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 512
+        width: 256
+        height: 256
+      alignment: 9
+      pivot: {x: 0.3, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b6a0a117efa2d170800000000000000
+      internalID: 8201811278363141817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waitress_32
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 512
+        width: 256
+        height: 256
+      alignment: 9
+      pivot: {x: 0.3, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b4f9930900090ff0800000000000000
+      internalID: -69524280532405067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waitress_33
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 512
+        width: 256
+        height: 256
+      alignment: 9
+      pivot: {x: 0.3, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef85aaab5e65aaeb0800000000000000
+      internalID: -4707854915783206658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waitress_34
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 512
+        width: 256
+        height: 256
+      alignment: 9
+      pivot: {x: 0.3, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f30995dafbcb4c0d0800000000000000
+      internalID: -3403387886952148929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waitress_35
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 256
         width: 256
         height: 256
@@ -819,16 +1057,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: ee1b73313f52a20f28d3368d53752535
-      internalID: 1454205170
+      spriteID: 91cd825b9ab3be6a0800000000000000
+      internalID: -6418971243811644391
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: waitress_29
+      name: waitress_36
       rect:
         serializedVersion: 2
         x: 256
@@ -841,16 +1079,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 074244df69380ec55a82cad9a9f268c5
-      internalID: 1032974293
+      spriteID: 7edccda4373bce670800000000000000
+      internalID: 8569421498737806823
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: waitress_30
+      name: waitress_37
       rect:
         serializedVersion: 2
         x: 512
@@ -863,16 +1101,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: ed7ed308c783998da88ce842e79c9194
-      internalID: -314952858
+      spriteID: e55036a488492e8d0800000000000000
+      internalID: -2818527103696042658
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: waitress_31
+      name: waitress_38
       rect:
         serializedVersion: 2
         x: 768
@@ -885,16 +1123,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 494d5762ef25e373b8606a568f16372e
-      internalID: -94064355
+      spriteID: 17e0f5a8bb2faba70800000000000000
+      internalID: 8843647705589681777
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: waitress_32
+      name: waitress_39
       rect:
         serializedVersion: 2
         x: 1024
@@ -907,60 +1145,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 658da2a6f4ed64fa2b3058afbf1c0838
-      internalID: 1119432024
+      spriteID: e46410e243c86d2d0800000000000000
+      internalID: -3254259524990581170
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: waitress_33
-      rect:
-        serializedVersion: 2
-        x: 1280
-        y: 256
-        width: 256
-        height: 256
-      alignment: 9
-      pivot: {x: 0.3, y: 0.2}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5b1545fb6b4597628995134fc71db317
-      internalID: -900993893
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: waitress_34
-      rect:
-        serializedVersion: 2
-        x: 1536
-        y: 256
-        width: 256
-        height: 256
-      alignment: 9
-      pivot: {x: 0.3, y: 0.2}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 71ffffc6adacfc0828ab84ef6c427515
-      internalID: 570765813
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: waitress_35
+      name: waitress_40
       rect:
         serializedVersion: 2
         x: 0
@@ -973,16 +1167,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: dd2b1820c077c0949bbd1370321a18f9
-      internalID: 368436555
+      spriteID: 8babc22426e4456e0800000000000000
+      internalID: -1849767363018442056
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: waitress_36
+      name: waitress_41
       rect:
         serializedVersion: 2
         x: 256
@@ -995,16 +1189,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 45ff9909c5e470ab6b4a06330039a71a
-      internalID: -869609674
+      spriteID: 369f0f349c8c63e80800000000000000
+      internalID: -8199145304827561629
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: waitress_37
+      name: waitress_42
       rect:
         serializedVersion: 2
         x: 512
@@ -1017,16 +1211,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 42bb64efe1f73be7aa322c841ab555d3
-      internalID: 524454761
+      spriteID: a0fc095843b480b90800000000000000
+      internalID: -7275482509065793782
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: waitress_38
+      name: waitress_43
       rect:
         serializedVersion: 2
         x: 768
@@ -1039,16 +1233,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 4b85106f5e28fa319882d2a4e7af23dd
-      internalID: 2082374026
+      spriteID: 5c4890dface3b0950800000000000000
+      internalID: 6416291135668978885
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: waitress_39
+      name: waitress_44
       rect:
         serializedVersion: 2
         x: 1024
@@ -1061,10 +1255,208 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 49dda012afbcdde4889c59d6e4f2e372
-      internalID: -1855683240
+      spriteID: d662f7225ebe961f0800000000000000
+      internalID: -1051049668655503763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waitress_45
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 0
+        width: 256
+        height: 256
+      alignment: 9
+      pivot: {x: 0.3, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e8dd79d37ae36a00800000000000000
+      internalID: 748699746364676323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waitress_46
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 0
+        width: 256
+        height: 256
+      alignment: 9
+      pivot: {x: 0.3, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29653a777a0cef6a0800000000000000
+      internalID: -6413476993829742958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waitress_47
+      rect:
+        serializedVersion: 2
+        x: 1792
+        y: 0
+        width: 256
+        height: 256
+      alignment: 9
+      pivot: {x: 0.3, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23ccfaf655c276980800000000000000
+      internalID: -8545813022454592462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waitress_48
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 0
+        width: 256
+        height: 256
+      alignment: 9
+      pivot: {x: 0.3, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0e7ecb9fb6bfea10800000000000000
+      internalID: 1940970898488983053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waitress_49
+      rect:
+        serializedVersion: 2
+        x: 2304
+        y: 0
+        width: 256
+        height: 256
+      alignment: 9
+      pivot: {x: 0.3, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6f25b58b1a6cd7b0800000000000000
+      internalID: -5198163203452489874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waitress_50
+      rect:
+        serializedVersion: 2
+        x: 2560
+        y: 0
+        width: 256
+        height: 256
+      alignment: 9
+      pivot: {x: 0.3, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1ede88dec18e9ba0800000000000000
+      internalID: -6080279721507103201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waitress_51
+      rect:
+        serializedVersion: 2
+        x: 2816
+        y: 0
+        width: 256
+        height: 256
+      alignment: 9
+      pivot: {x: 0.3, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28518366a06796ee0800000000000000
+      internalID: -1267352033091381886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waitress_52
+      rect:
+        serializedVersion: 2
+        x: 3072
+        y: 0
+        width: 256
+        height: 256
+      alignment: 9
+      pivot: {x: 0.3, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80a8d8d683ca53970800000000000000
+      internalID: 8734076410711083528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waitress_53
+      rect:
+        serializedVersion: 2
+        x: 3328
+        y: 0
+        width: 256
+        height: 256
+      alignment: 9
+      pivot: {x: 0.3, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a8372b056e3a8d50800000000000000
+      internalID: 6740268396013107363
       vertices: []
       indices: 
       edges: []
@@ -1073,7 +1465,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 3bba7bb7758b84436b39ed5810b60ae1
+    spriteID: a05c6778213fe39949bca9725f492b0e
     internalID: 0
     vertices: []
     indices: 
@@ -1084,8 +1476,6 @@ TextureImporter:
       entries:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":256.0,"y":256.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.30000001192092898,"y":0.20000000298023225},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":9,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
-      - key: SpriteEditor.SliceOnImport
-        value: False
     nameFileIdTable:
       waitress_0: 9185367378611695444
       waitress_1: 5713009661444485503
@@ -1108,21 +1498,35 @@ TextureImporter:
       waitress_25: -6873147125895601377
       waitress_26: 400280982152793899
       waitress_27: 7523723752532174060
-      waitress_28: 1454205170
-      waitress_29: 1032974293
+      waitress_28: -8031740447078106160
+      waitress_29: 63846554146726282
       waitress_3: 4360226547808857602
-      waitress_30: -314952858
-      waitress_31: -94064355
-      waitress_32: 1119432024
-      waitress_33: -900993893
-      waitress_34: 570765813
-      waitress_35: 368436555
-      waitress_36: -869609674
-      waitress_37: 524454761
-      waitress_38: 2082374026
-      waitress_39: -1855683240
+      waitress_30: 418511726172910741
+      waitress_31: 8201811278363141817
+      waitress_32: -69524280532405067
+      waitress_33: -4707854915783206658
+      waitress_34: -3403387886952148929
+      waitress_35: -6418971243811644391
+      waitress_36: 8569421498737806823
+      waitress_37: -2818527103696042658
+      waitress_38: 8843647705589681777
+      waitress_39: -3254259524990581170
       waitress_4: -8880905051968057824
+      waitress_40: -1849767363018442056
+      waitress_41: -8199145304827561629
+      waitress_42: -7275482509065793782
+      waitress_43: 6416291135668978885
+      waitress_44: -1051049668655503763
+      waitress_45: 748699746364676323
+      waitress_46: -6413476993829742958
+      waitress_47: -8545813022454592462
+      waitress_48: 1940970898488983053
+      waitress_49: -5198163203452489874
       waitress_5: -8432262978026863308
+      waitress_50: -6080279721507103201
+      waitress_51: -1267352033091381886
+      waitress_52: 8734076410711083528
+      waitress_53: 6740268396013107363
       waitress_6: -7840228078774863668
       waitress_7: 9038686198115160973
       waitress_8: 7321715252787785512

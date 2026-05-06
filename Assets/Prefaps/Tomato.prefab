@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7914537820652036344, guid: d73cfb010db49b56e890d34e8a3bd1e6, type: 3}
+  m_Sprite: {fileID: 7561557085157009451, guid: d73cfb010db49b56e890d34e8a3bd1e6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -104,7 +104,7 @@ Animator:
   m_GameObject: {fileID: 682488848539870125}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 88f4fd457097914a781353f0e2d39ace, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -129,6 +129,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Views::CarriabaleView
   spriteRenderer: {fileID: 0}
+  animator: {fileID: 4245865638901661766}
+  type: 2
 --- !u!1 &6903732199157800972
 GameObject:
   m_ObjectHideFlags: 0

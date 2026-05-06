@@ -7,6 +7,7 @@ public class CharacterView: MonoBehaviour, ITileView, IViewable
 
     [SerializeField] private int speed;
     [SerializeField] private Animator animator;
+    [SerializeField] private Type type;
     public Transform Anchor => HandAnchor;
 
     public Transform HandAnchor;
@@ -17,6 +18,8 @@ public class CharacterView: MonoBehaviour, ITileView, IViewable
     private Animations animations;
 
     public Vector3 Pos => transform.position;
+
+    public Type Type => type;
 
     private IEnumerator Move(Vector3 from, Vector3 to)
     {
@@ -61,8 +64,9 @@ public class CharacterView: MonoBehaviour, ITileView, IViewable
     }   
 
     public void PlayHorizontalDashAnimation() => TriggerAnimation(animations.DashTrigger, "isH");
-    public void PlayUpDashAnimation() => TriggerAnimation(animations.DashTrigger, "isUp");
+    public void PlayUpDashAnimation()   => TriggerAnimation(animations.DashTrigger, "isUp");
     public void PlayDownDashAnimation() => TriggerAnimation(animations.DashTrigger, "isD");
+    public void PlayCuttingAnimation()  => animator.SetTrigger("Cutting");
 
 }
 

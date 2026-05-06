@@ -49,7 +49,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -115,12 +115,12 @@ TextureImporter:
       name: Carriables_0
       rect:
         serializedVersion: 2
-        x: 4
-        y: 192
-        width: 88
-        height: 56
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 3
+        y: 168
+        width: 77
+        height: 49
+      alignment: 9
+      pivot: {x: 0.4913822, y: 0.1111472}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -137,12 +137,12 @@ TextureImporter:
       name: Carriables_1
       rect:
         serializedVersion: 2
-        x: 96
-        y: 228
-        width: 40
-        height: 24
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 84
+        y: 200
+        width: 35
+        height: 21
+      alignment: 9
+      pivot: {x: 0.49029496, y: 0.3374612}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -159,12 +159,12 @@ TextureImporter:
       name: Carriables_2
       rect:
         serializedVersion: 2
-        x: 140
-        y: 232
-        width: 28
-        height: 20
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 122
+        y: 203
+        width: 25
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -181,12 +181,12 @@ TextureImporter:
       name: Carriables_3
       rect:
         serializedVersion: 2
-        x: 188
-        y: 216
-        width: 20
-        height: 36
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 91
+        y: 172
+        width: 21
+        height: 21
+      alignment: 9
+      pivot: {x: 0.47346678, y: 0.15443203}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -203,12 +203,12 @@ TextureImporter:
       name: Carriables_4
       rect:
         serializedVersion: 2
-        x: 104
-        y: 196
-        width: 24
-        height: 24
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 126
+        y: 168
+        width: 21
+        height: 28
+      alignment: 9
+      pivot: {x: 0.4915154, y: 0.14771597}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -225,12 +225,12 @@ TextureImporter:
       name: Carriables_5
       rect:
         serializedVersion: 2
-        x: 144
-        y: 192
-        width: 24
-        height: 32
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 87
+        y: 147
+        width: 25
+        height: 21
+      alignment: 9
+      pivot: {x: 0.4897751, y: 0.16852896}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -239,6 +239,116 @@ TextureImporter:
       bones: []
       spriteID: e77193c571772991ba16ec6e7abc0639
       internalID: 606712377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Carriables_7
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 137
+        width: 21
+        height: 28
+      alignment: 9
+      pivot: {x: 0.52905566, y: 0.21769278}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb62c6aaae003e6eda12fd78cfa5a190
+      internalID: -39719440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Carriables_14
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 123
+        width: 17
+        height: 17
+      alignment: 9
+      pivot: {x: 0.47855556, y: 0.0853267}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8acdf08bcc9cc7db3b64379610cf4ddb
+      internalID: -1441554278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Carriables_16
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 116
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f1a7a67013d2ded3a0bea91c336442b
+      internalID: 1193259163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Carriables_17
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 102
+        width: 17
+        height: 14
+      alignment: 9
+      pivot: {x: 0.49490806, y: 0.23587799}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5acf7a9f2daf5a1bdab66edde6eaa2c4
+      internalID: -2076166884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Carriables_18
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 98
+        width: 14
+        height: 14
+      alignment: 9
+      pivot: {x: 0.51976883, y: 0.29808098}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a913eaa877933441195801af36d1053e
+      internalID: 425456851
       vertices: []
       indices: 
       edges: []
@@ -257,15 +367,27 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.0},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":7,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       Carriables_0: 1970189591493279706
       Carriables_1: 8228672258691815213
+      Carriables_10: -210408641
+      Carriables_11: 731660528
+      Carriables_12: 2030915304
+      Carriables_13: 1112238641
+      Carriables_14: -1441554278
+      Carriables_15: -1656258337
+      Carriables_16: 1193259163
+      Carriables_17: -2076166884
+      Carriables_18: 425456851
       Carriables_2: 2803436940877083179
       Carriables_3: 7561557085157009451
       Carriables_4: 7914537820652036344
       Carriables_5: 606712377
       Carriables_6: 1552478778
+      Carriables_7: -39719440
+      Carriables_8: 1687912966
+      Carriables_9: 60230048
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
