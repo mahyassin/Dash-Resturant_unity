@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.AdaptivePerformance;
 
 public class MapSystem: GameSystem
 {
   
     public event Action<List<CellState>> MapChanged;
+    public event Action<IngredientType, int> GenerateIngrid;
     public event Action<IReport> StateChanged;
 
     public void VarifiyMovment(IOcuppier player, GameState state, Vector2Int dir)
@@ -33,13 +34,32 @@ public class MapSystem: GameSystem
 
             if( ocuppier is IInteractable interactable)
             {
-                interactable.Interact();
                 if(interactable is not IIdentifialbe hasId) return;
 
+                interactable.Interact();
+
                 bool isOn = false;
-                if (interactable is Stove stove){ isOn = stove.IsOn();}
+                if (interactable is Stove stove)
+                { 
+                    isOn = stove.IsOn();
+                    StateChanged?.Invoke(new StoveInteract(hasId.Id, isOn));
+                }
                 
-                StateChanged?.Invoke(new InteractReport(hasId.Id, isOn));
+                if(interactable is CuttingBoard board)
+                {
+                    if(actorCell.Ocuppier is not IIdentifialbe cutter) return;
+                    string grade = (board.OnCarrier as Ingredient).cuttingGrade switch
+                    {
+                        CuttingGrade.WHOLE  => "whole",
+                        CuttingGrade.BIG    => "big",
+                        CuttingGrade.MEDUIM => "meduim",
+                        CuttingGrade.SMALL  => "small",
+                        _                   => "whole"
+                    };
+                    int ingredientId = IIdentifialbe.GetId(board.OnCarrier);
+
+                    StateChanged?.Invoke(new CuttingBoardInteract(hasId.Id, cutter.Id, grade, ingredientId));
+                }
             }
 
             if(ocuppier is OrderTable orderTable) 
@@ -88,6 +108,12 @@ public class MapSystem: GameSystem
 
         if(holder.OnCarrier is  IIdentifialbe holderOnhandWId) giverOnhand = holderOnhandWId.Id;
         if(actr.OnCarrier is  IIdentifialbe actorOnhandWithId) takerOnHand = actorOnhandWithId.Id;
+
+        if(holder is Generator g && g.OnCarrier == null && g.InStok > 0)
+        {
+            int id = (g as IIdentifialbe).Id;
+            GenerateIngrid?.Invoke(g.Type, id);
+        }
 
         int taker = actorWId.Id;
         int giver = holderWId.Id;
@@ -208,18 +234,75 @@ public class OrderSystem: GameSystem
     }
 }
 
-public class SpawningSystem
+public class SpawnSystem
 {
     private Identfier _identifier;
     private EntitiesFactory _factory; 
+    public event Action<IReport> carriableSpawned;
 
-    public SpawningSystem(Identfier identfier, EntitiesFactory factory)
+    public SpawnSystem(Identfier identfier, EntitiesFactory factory)
     {
         _identifier = identfier;
         _factory    = factory;
     }
 
+    public void SpawnIngredient(IngredientType type, int carrierid)
+    {
+        var carrier = _identifier.GetEntity(carrierid) as ICarrier;
+        Ingredient ingredient;
+        var pool = RecycledIngrid.GetIngredient(type);
 
+        if (pool != null) ingredient = pool; 
+        else ingredient = _factory.CreateIngredient(type);
+
+        if(carrier.OnCarrier is IContainer container)
+        {
+            container.AddToContainer(ingredient);
+            return;
+        }
+        if(carrier.OnCarrier != null) return;
+
+        carrier.Carry(ingredient);
+
+        var carrierId = (carrier as IIdentifialbe).Id;
+
+
+        carriableSpawned?.Invoke(new SpawnReport(ingredient, carrierid));
+    }
+
+}
+
+public class RecycledIngrid
+{
+    private static Queue<Ingredient> PotatoPool = new();
+    private static Queue<Ingredient> OnionPool = new();
+    private static Queue<Ingredient> TomatoPool = new();
+
+    public static Ingredient GetIngredient(IngredientType type)
+    {
+        return type switch
+        {
+            IngredientType.TOMATO => TomatoPool.Count > 0? TomatoPool.Dequeue(): null,
+            IngredientType.ONION  => PotatoPool.Count > 0? TomatoPool.Dequeue(): null,
+            IngredientType.POTATO => OnionPool.Count > 0? TomatoPool.Dequeue(): null,
+            _ => null
+
+        };
+    }
+
+    public static void AddToPool(IngredientType type, Ingredient ingredient)
+    {
+        Queue<Ingredient> pool = type switch
+        {
+            IngredientType.TOMATO => TomatoPool,
+            IngredientType.ONION  => OnionPool,
+            IngredientType.POTATO => PotatoPool,
+            _ => null
+        };
+        if (pool == null) return;
+
+        pool.Enqueue(ingredient);
+    }
 }
 
 public interface GameSystem{}

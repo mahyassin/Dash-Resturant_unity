@@ -46,8 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dd0f7f2ac2a71e768ae22e5aa98bbb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Views::CarriabaleView
-  icon: 1
   spriteRenderer: {fileID: 1830920795927233408}
+  animator: {fileID: 0}
+  type: 2
 --- !u!95 &3091361526923320147
 Animator:
   serializedVersion: 7

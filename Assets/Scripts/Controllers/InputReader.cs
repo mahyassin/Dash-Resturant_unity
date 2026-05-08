@@ -7,13 +7,15 @@ public class InputReader
     private NewActions inputActions;
     public event Action<Vector2> Moved;
     public event Action Interacted;
+    public event Action Tested;
     public InputReader()
     {
         inputActions = new();
         inputActions.Enable();
 
         inputActions.PCMap.MoveAction.performed += OnMovePressed;
-        inputActions.PCMap.MoveAction.canceled += OnMoveCancel;
+        inputActions.PCMap.MoveAction.canceled  += OnMoveCancel;
+        inputActions.PCMap.Test.performed       += TestPressed;
 
         inputActions.PCMap.InteractionAction.performed += InterActionPressed;
 
@@ -32,5 +34,10 @@ public class InputReader
     private void InterActionPressed(InputAction.CallbackContext ctx)
     {
         Interacted?.Invoke();
+    }
+
+    private void TestPressed(InputAction.CallbackContext ctx)
+    {
+        Tested?.Invoke();
     }
 }

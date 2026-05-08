@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 
 public interface IOcuppier
@@ -17,6 +18,11 @@ public interface ICarriable{}
 public interface IIdentifialbe
 {
     public int Id {get;}
+    public static int GetId(object obj)
+    {
+        if(obj is not IIdentifialbe hasId) return -1;
+        return hasId.Id;
+    }
 }
 
 

@@ -153,6 +153,7 @@ public class Generator: IOcuppier, ICarrier, IIdentifialbe
 
     private Vector2Int _pos;
     public Vector2Int Pos => _pos;
+    public IngredientType Type => _ingredientType;
 
     public int Id {get;}
 

@@ -69,7 +69,7 @@ public class LevelDesginer
                 {
                     'W' => new Wall(),
                     '▼' => factory.CreateCharachter(pos),
-                    'G' => factory.CreateGenerator(10, oncell as Ingredient),
+                    'G' => factory.CreateGenerator(3, oncell as Ingredient),
                     'S' => factory.CreateAStove(oncell as Pot),
                     'C' => factory.CreatecuttingBoard(),
                     'F' => factory.CreateShelf(oncell),

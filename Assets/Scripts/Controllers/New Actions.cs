@@ -109,6 +109,15 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Test"",
+                    ""type"": ""Button"",
+                    ""id"": ""4ad3b938-0b13-4cae-b7bd-3c68b53ee967"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -177,6 +186,17 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
                     ""action"": ""InteractionAction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e325cf4c-cede-41f8-9bd5-2e17cded7c37"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Test"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -187,6 +207,7 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
         m_PCMap = asset.FindActionMap("PCMap", throwIfNotFound: true);
         m_PCMap_MoveAction = m_PCMap.FindAction("MoveAction", throwIfNotFound: true);
         m_PCMap_InteractionAction = m_PCMap.FindAction("InteractionAction", throwIfNotFound: true);
+        m_PCMap_Test = m_PCMap.FindAction("Test", throwIfNotFound: true);
     }
 
     ~@NewActions()
@@ -269,6 +290,7 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
     private List<IPCMapActions> m_PCMapActionsCallbackInterfaces = new List<IPCMapActions>();
     private readonly InputAction m_PCMap_MoveAction;
     private readonly InputAction m_PCMap_InteractionAction;
+    private readonly InputAction m_PCMap_Test;
     /// <summary>
     /// Provides access to input actions defined in input action map "PCMap".
     /// </summary>
@@ -288,6 +310,10 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PCMap/InteractionAction".
         /// </summary>
         public InputAction @InteractionAction => m_Wrapper.m_PCMap_InteractionAction;
+        /// <summary>
+        /// Provides access to the underlying input action "PCMap/Test".
+        /// </summary>
+        public InputAction @Test => m_Wrapper.m_PCMap_Test;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -320,6 +346,9 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
             @InteractionAction.started += instance.OnInteractionAction;
             @InteractionAction.performed += instance.OnInteractionAction;
             @InteractionAction.canceled += instance.OnInteractionAction;
+            @Test.started += instance.OnTest;
+            @Test.performed += instance.OnTest;
+            @Test.canceled += instance.OnTest;
         }
 
         /// <summary>
@@ -337,6 +366,9 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
             @InteractionAction.started -= instance.OnInteractionAction;
             @InteractionAction.performed -= instance.OnInteractionAction;
             @InteractionAction.canceled -= instance.OnInteractionAction;
+            @Test.started -= instance.OnTest;
+            @Test.performed -= instance.OnTest;
+            @Test.canceled -= instance.OnTest;
         }
 
         /// <summary>
@@ -391,5 +423,12 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnInteractionAction(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Test" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTest(InputAction.CallbackContext context);
     }
 }

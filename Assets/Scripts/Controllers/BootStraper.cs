@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Reflection.Emit;
-using Codice.CM.WorkspaceServer;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.Tilemaps;
@@ -33,7 +32,9 @@ public class BootStraper : MonoBehaviour
         state = levelDesginer.GetState(stateFactory, identfier);
         BuidMap(state);
 
-        mainOrchestrator = new(state, mapView, inputs, timer, viewsRegistry);
+        FactoryContext context = new(viewFactory, stateFactory, identfier, viewsRegistry);
+
+        mainOrchestrator = new(state, mapView, inputs, timer, context);
 
         inputs.Moved += Test;
     }

@@ -1,37 +1,36 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class StationView: MonoBehaviour, ITileView
+
+public class StationView: MonoBehaviour,ITileView
 {
-    public Transform Anchor => StationAnchor;
-    public Transform StationAnchor;
-    public Animator animator;
-    private bool _isON;
+    [SerializeField] Animator animator;
+    [SerializeField] Transform anchor;
+    [SerializeField] private Type type;
+    public Transform Anchor => anchor;
 
-    [SerializeField]private SpriteRenderer spriteRenderer;
+    public Type Type => type;
 
-
-    public void SetSprite(Sprite sprite)
+    public void Interact(Context ctx)
     {
-        spriteRenderer.sprite = sprite;
-    }
+        if(ctx is StoveContext stove)
+        {
+            animator.SetBool("isOn", stove.IsOn);
 
-    public void SetAnchor(Transform anchor)
+        } 
+
+            animator.SetTrigger("Interact");
+    }
+}
+public interface Context{}
+
+public struct StoveContext: Context
+{
+    public bool IsOn;
+
+    public StoveContext(bool isOn)
     {
-        StationAnchor.localPosition = anchor.localPosition;
+        IsOn = isOn;
     }
-
-    private void TriggerAnimation()
-    {
-        animator.SetBool("isOn", _isON);
-        animator.SetTrigger("Interact");
-    }
-
-    public void Interact(bool isOn)
-    {
-        _isON = isOn;
-        TriggerAnimation();
-
-    }
-
-
 }

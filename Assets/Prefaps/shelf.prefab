@@ -47,8 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45a318eabf2b5278a831f3edf34f0849, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Views::StationView
-  StationAnchor: {fileID: 1619071640495596251}
-  spriteRenderer: {fileID: 4583962620959531342}
+  animator: {fileID: 0}
+  anchor: {fileID: 1619071640495596251}
 --- !u!212 &4583962620959531342
 SpriteRenderer:
   serializedVersion: 2
