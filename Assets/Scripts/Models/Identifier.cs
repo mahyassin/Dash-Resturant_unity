@@ -33,16 +33,18 @@ public class EntitiesFactory
     }
 
     
-    public Ingredient CreateIngredient(IngredientType type) => Create(it => new Ingredient(type, it));
+    public Ingredient CreateIngredient(IngredientType type)              => Create(it => new Ingredient(type, it));
+    public Generator CreateGenerator(int instock, Ingredient ingredient) => Create<Generator>(id => new(instock, ingredient,id));
+    public CharacterState CreateCharachter(Vector2Int pos)               => Create<CharacterState>(id => new(pos, id));
+
+    public Stove CreateAStove(Pot pot)           => Create(id => new Stove(pot, id));
+    public CuttingBoard CreatecuttingBoard()     => Create<CuttingBoard>(id => new(id));
+    public Shelf CreateShelf(ICarriable onShelf) => Create<Shelf>(id => new(onShelf, id));
+    public OrderTable CreateOrderTable()         => Create<OrderTable>(id => new(id));
+    public TrashCan CreateTrashCan()             => Create<TrashCan>(id => new(id));
+
     public Pot CreatePot()   => Create<Pot>(id => new(id));
     public Dish CreateDish() => Create<Dish>(id => new());
-    public CharacterState CreateCharachter(Vector2Int pos) => Create<CharacterState>(id => new(pos, id));
-    public Generator CreateGenerator(int instock, Ingredient ingredient) => Create<Generator>(id => new(instock, ingredient,id));
-    public Stove CreateAStove(Pot pot) => Create(id => new Stove(pot, id));
-    public CuttingBoard CreatecuttingBoard() => Create<CuttingBoard>(id => new(id));
-    public Shelf CreateShelf(ICarriable onShelf) => Create<Shelf>(id => new(onShelf, id));
-    public OrderTable CreateOrderTable() => Create<OrderTable>(id => new(id));
-    public TrashCan CreateTrashCan() => Create<TrashCan>(id => new(id));
 }
 
 

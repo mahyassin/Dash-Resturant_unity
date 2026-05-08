@@ -118,6 +118,24 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ScreenSwiped"",
+                    ""type"": ""Value"",
+                    ""id"": ""b07f5850-0861-46c8-aabd-a0da226c9255"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ScreenTouched"",
+                    ""type"": ""Button"",
+                    ""id"": ""418437fc-a840-42b7-a767-6d461ddee192"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -197,6 +215,56 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
                     ""action"": ""Test"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9e44b196-67d8-45c9-a364-06f340b95ceb"",
+                    ""path"": ""<Touchscreen>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ScreenSwiped"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4e39bd3a-5811-4d2d-8e0a-e670dbc950f7"",
+                    ""path"": ""<Touchscreen>/Press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ScreenTouched"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""AndroidMap"",
+            ""id"": ""1629a4dc-4532-4811-a33d-455922fbf4b7"",
+            ""actions"": [
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""d835ad05-9a21-4d96-ba6d-0bfe7592956a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""042551c4-ed82-4a5e-a326-017869bc2a56"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -208,11 +276,17 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
         m_PCMap_MoveAction = m_PCMap.FindAction("MoveAction", throwIfNotFound: true);
         m_PCMap_InteractionAction = m_PCMap.FindAction("InteractionAction", throwIfNotFound: true);
         m_PCMap_Test = m_PCMap.FindAction("Test", throwIfNotFound: true);
+        m_PCMap_ScreenSwiped = m_PCMap.FindAction("ScreenSwiped", throwIfNotFound: true);
+        m_PCMap_ScreenTouched = m_PCMap.FindAction("ScreenTouched", throwIfNotFound: true);
+        // AndroidMap
+        m_AndroidMap = asset.FindActionMap("AndroidMap", throwIfNotFound: true);
+        m_AndroidMap_Newaction = m_AndroidMap.FindAction("New action", throwIfNotFound: true);
     }
 
     ~@NewActions()
     {
         UnityEngine.Debug.Assert(!m_PCMap.enabled, "This will cause a leak and performance issues, NewActions.PCMap.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_AndroidMap.enabled, "This will cause a leak and performance issues, NewActions.AndroidMap.Disable() has not been called.");
     }
 
     /// <summary>
@@ -291,6 +365,8 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PCMap_MoveAction;
     private readonly InputAction m_PCMap_InteractionAction;
     private readonly InputAction m_PCMap_Test;
+    private readonly InputAction m_PCMap_ScreenSwiped;
+    private readonly InputAction m_PCMap_ScreenTouched;
     /// <summary>
     /// Provides access to input actions defined in input action map "PCMap".
     /// </summary>
@@ -314,6 +390,14 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PCMap/Test".
         /// </summary>
         public InputAction @Test => m_Wrapper.m_PCMap_Test;
+        /// <summary>
+        /// Provides access to the underlying input action "PCMap/ScreenSwiped".
+        /// </summary>
+        public InputAction @ScreenSwiped => m_Wrapper.m_PCMap_ScreenSwiped;
+        /// <summary>
+        /// Provides access to the underlying input action "PCMap/ScreenTouched".
+        /// </summary>
+        public InputAction @ScreenTouched => m_Wrapper.m_PCMap_ScreenTouched;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -349,6 +433,12 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
             @Test.started += instance.OnTest;
             @Test.performed += instance.OnTest;
             @Test.canceled += instance.OnTest;
+            @ScreenSwiped.started += instance.OnScreenSwiped;
+            @ScreenSwiped.performed += instance.OnScreenSwiped;
+            @ScreenSwiped.canceled += instance.OnScreenSwiped;
+            @ScreenTouched.started += instance.OnScreenTouched;
+            @ScreenTouched.performed += instance.OnScreenTouched;
+            @ScreenTouched.canceled += instance.OnScreenTouched;
         }
 
         /// <summary>
@@ -369,6 +459,12 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
             @Test.started -= instance.OnTest;
             @Test.performed -= instance.OnTest;
             @Test.canceled -= instance.OnTest;
+            @ScreenSwiped.started -= instance.OnScreenSwiped;
+            @ScreenSwiped.performed -= instance.OnScreenSwiped;
+            @ScreenSwiped.canceled -= instance.OnScreenSwiped;
+            @ScreenTouched.started -= instance.OnScreenTouched;
+            @ScreenTouched.performed -= instance.OnScreenTouched;
+            @ScreenTouched.canceled -= instance.OnScreenTouched;
         }
 
         /// <summary>
@@ -402,6 +498,102 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="PCMapActions" /> instance referencing this action map.
     /// </summary>
     public PCMapActions @PCMap => new PCMapActions(this);
+
+    // AndroidMap
+    private readonly InputActionMap m_AndroidMap;
+    private List<IAndroidMapActions> m_AndroidMapActionsCallbackInterfaces = new List<IAndroidMapActions>();
+    private readonly InputAction m_AndroidMap_Newaction;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "AndroidMap".
+    /// </summary>
+    public struct AndroidMapActions
+    {
+        private @NewActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public AndroidMapActions(@NewActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "AndroidMap/Newaction".
+        /// </summary>
+        public InputAction @Newaction => m_Wrapper.m_AndroidMap_Newaction;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_AndroidMap; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="AndroidMapActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(AndroidMapActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="AndroidMapActions" />
+        public void AddCallbacks(IAndroidMapActions instance)
+        {
+            if (instance == null || m_Wrapper.m_AndroidMapActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_AndroidMapActionsCallbackInterfaces.Add(instance);
+            @Newaction.started += instance.OnNewaction;
+            @Newaction.performed += instance.OnNewaction;
+            @Newaction.canceled += instance.OnNewaction;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="AndroidMapActions" />
+        private void UnregisterCallbacks(IAndroidMapActions instance)
+        {
+            @Newaction.started -= instance.OnNewaction;
+            @Newaction.performed -= instance.OnNewaction;
+            @Newaction.canceled -= instance.OnNewaction;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="AndroidMapActions.UnregisterCallbacks(IAndroidMapActions)" />.
+        /// </summary>
+        /// <seealso cref="AndroidMapActions.UnregisterCallbacks(IAndroidMapActions)" />
+        public void RemoveCallbacks(IAndroidMapActions instance)
+        {
+            if (m_Wrapper.m_AndroidMapActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="AndroidMapActions.AddCallbacks(IAndroidMapActions)" />
+        /// <seealso cref="AndroidMapActions.RemoveCallbacks(IAndroidMapActions)" />
+        /// <seealso cref="AndroidMapActions.UnregisterCallbacks(IAndroidMapActions)" />
+        public void SetCallbacks(IAndroidMapActions instance)
+        {
+            foreach (var item in m_Wrapper.m_AndroidMapActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_AndroidMapActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="AndroidMapActions" /> instance referencing this action map.
+    /// </summary>
+    public AndroidMapActions @AndroidMap => new AndroidMapActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PCMap" which allows adding and removing callbacks.
     /// </summary>
@@ -430,5 +622,34 @@ public partial class @NewActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnTest(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ScreenSwiped" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnScreenSwiped(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ScreenTouched" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnScreenTouched(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "AndroidMap" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="AndroidMapActions.AddCallbacks(IAndroidMapActions)" />
+    /// <seealso cref="AndroidMapActions.RemoveCallbacks(IAndroidMapActions)" />
+    public interface IAndroidMapActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "New action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnNewaction(InputAction.CallbackContext context);
     }
 }

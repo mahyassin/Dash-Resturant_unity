@@ -72,7 +72,6 @@ public class BootStraper : MonoBehaviour
             map[pos] = new CellView(tileView, pos);
         }
 
-        mapView.InitializeCells(map);
     }
 
     private void Test(Vector2 dir)

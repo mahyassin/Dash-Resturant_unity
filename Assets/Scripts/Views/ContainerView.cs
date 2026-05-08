@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ContainerView : MonoBehaviour, ITileView
@@ -10,6 +11,8 @@ public class ContainerView : MonoBehaviour, ITileView
     [SerializeField] private SpriteRenderer Slot4;
     [SerializeField] private GameObject FillPos;
     [SerializeField] private float FillSpeed, FillAmont;
+
+    private Coroutine _fillRoutine;
 
     // private int _fill = 0;
     public Transform Anchor => anchor;
@@ -36,6 +39,28 @@ public class ContainerView : MonoBehaviour, ITileView
         temp.sprite = sprite;   
     }
 
+    public void ShowSprites(List<Icon> icons, IconsLibrary library)
+    {
+
+        var list = new List<Icon>()
+        {
+            Icon.Empty,
+            Icon.Empty,
+            Icon.Empty,
+            Icon.Empty,
+        };
+
+        for(var i = 0; i <= 4 && i < icons.Count; i++)
+        {
+            list[i] = icons[i];
+        }
+
+        for(var i = 0; i < 4 || i < icons.Count; i++)
+        {
+            ChangeSlot(i + 1, library.GetSprite(list[i]));
+        }
+    }
+
     [ContextMenu("testFill")]
     public void Test()  
     {
@@ -43,7 +68,16 @@ public class ContainerView : MonoBehaviour, ITileView
     }
     public void StartFilling(float amount)
     {
-        StartCoroutine(FillBar(amount));
+        // _fillRoutine = StartCoroutine(FillBar(amount));
+        var clamped = amount < 0? 0: amount > 100? 100: amount;
+        float movmentMount = (clamped * .006f) - 0.6f;
+
+        var targetPOs = Vector3.zero;
+        targetPOs.x = targetPOs.x + movmentMount;
+
+
+        FillPos.transform.localPosition = targetPOs;
+
     }
 
     private IEnumerator FillBar(float amount)

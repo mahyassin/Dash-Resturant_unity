@@ -65,9 +65,9 @@ public struct Recipes
    // 00, 10, 20, 30 cutting grade
    // 01, 02, 03, 04 cooking grade 
 
-    public static string TomatoSuop      = "t32 t32 t32";
-    public static string TomatoWithOnion = "t32 t32 o32";
-    public static string PotatoSuop      = "p32 t32 o32";
+    public static string TomatoSuop      = "t23t23t23";
+    public static string TomatoWithOnion = "t23t23o23";
+    public static string PotatoSuop      = "p23t23o23";
 
     public static string RecepieIncoder(List<Ingredient> ingredients)
     {
@@ -83,20 +83,20 @@ public struct Recipes
                 _                     => "?",
             }
             +
-            ingriedint.cuttingGrade switch
-            {
-                CuttingGrade.WHOLE  => "0",
-                CuttingGrade.BIG    => "1",
-                CuttingGrade.MEDUIM => "2",
-                _                   => "3",
-            }
-            +  
             ingriedint.cookingGrade switch
             {
                 CookingGrade.RAW         => "0 ",
                 CookingGrade.MEDUIM_RARE => "1 ",
                 CookingGrade.COOKED      => "2 ",
                 _                        => "3 ",
+            }
+            +  
+            ingriedint.cuttingGrade switch
+            {
+                CuttingGrade.WHOLE   => "0",
+                CuttingGrade.BIG     => "1",
+                CuttingGrade.MEDUIM  => "2",
+                _                    => "3",
             };
         }
 

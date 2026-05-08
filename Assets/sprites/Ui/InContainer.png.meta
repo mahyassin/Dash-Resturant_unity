@@ -109,10 +109,10 @@ TextureImporter:
       name: InContainer_1
       rect:
         serializedVersion: 2
-        x: 52
-        y: 63
-        width: 25
-        height: 25
+        x: 245
+        y: 42
+        width: 192
+        height: 168
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,10 +153,10 @@ TextureImporter:
       name: InContainer_2
       rect:
         serializedVersion: 2
-        x: 94
-        y: 56
-        width: 112
-        height: 32
+        x: 52
+        y: 63
+        width: 25
+        height: 25
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -175,10 +175,10 @@ TextureImporter:
       name: InContainer_3
       rect:
         serializedVersion: 2
-        x: 98
-        y: 28
-        width: 105
-        height: 25
+        x: 94
+        y: 56
+        width: 112
+        height: 11
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -189,6 +189,28 @@ TextureImporter:
       bones: []
       spriteID: 1b1ad842533604398bc7893f223cc2cb
       internalID: -1955163918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InContainer_4
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 28
+        width: 105
+        height: 4
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e383458ad63ba96fa99400fe1a4a79f
+      internalID: 1369607502
       vertices: []
       indices: 
       edges: []
@@ -213,6 +235,7 @@ TextureImporter:
       InContainer_1: 8418214584676588340
       InContainer_2: 2720747
       InContainer_3: -1955163918
+      InContainer_4: 1369607502
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

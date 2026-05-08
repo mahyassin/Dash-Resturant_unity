@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Numerics;
 using NUnit.Framework.Constraints;
 using UnityEngine;
@@ -51,6 +53,18 @@ public struct StoveInteract: IReport
     }
 }
 
+public struct ContentChange: IReport
+{
+    public int ContainerId;
+    public List<Icon> Icons;
+
+    public ContentChange(int id, List<Icon> icons)
+    {
+        ContainerId = id;
+        Icons = icons;
+    }
+}
+
 
 public struct CuttingBoardInteract: IReport
 {
@@ -79,6 +93,33 @@ public struct SpawnReport: IReport
         SpanwnCarrierId = carrier;
     }
 
+}
+
+public struct CookStateChange: IReport
+{
+    public int Progress;
+    public int CookedMark;
+    public int OverCookedMark;
+    public int CookerId;
+
+    public CookStateChange(int cookerId, int progress, int cookedMark, int overcookedMarck)
+    {
+        Progress = progress;
+        CookerId = cookerId;
+        CookedMark = cookedMark;
+        OverCookedMark = overcookedMarck;
+
+    }
+}
+
+public struct PendingOrdersReport: IReport
+{
+    public List<String> Orders;
+
+    public PendingOrdersReport(List<string> orders)
+    {
+        Orders = orders;
+    }
 }
 
 public interface IReport{}

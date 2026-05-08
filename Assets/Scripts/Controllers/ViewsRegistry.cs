@@ -19,6 +19,46 @@ public class ViewsRigistry
         return _views[id];
     }
 
+    public StationView GetStation(int id)
+    {
+        if (id == -1) return null;
+        var view = _views[id];
+
+        if(view is not StationView station) return null;
+
+        return station;
+    }
+
+    public CharacterView GetCharacter(int id)
+    {
+        if (id == -1) return null;
+        var view = _views[id];
+
+        if(view is not CharacterView character) return null;
+
+        return character;
+    }
+
+    public CarriabaleView GetCarriable(int id)
+    {
+        if (id == -1) return null;
+        var view = _views[id];
+
+        if(view is not CarriabaleView carriable) return null;
+
+        return carriable;
+    }
+
+    public ContainerView GetContainer(int id)
+    {
+        if (id == -1) return null;
+        var view = _views[id];
+
+        if(view is not ContainerView container) return null;
+
+        return container;
+    }
+
     public void AddToPool(Type poolName, ITileView view)
     {
         if (!_pools.ContainsKey(poolName))

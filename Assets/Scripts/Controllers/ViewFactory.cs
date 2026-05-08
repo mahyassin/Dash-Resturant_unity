@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using UnityEngine;
 
 public class ViewFactory: MonoBehaviour
@@ -33,11 +34,11 @@ public class ViewFactory: MonoBehaviour
          
     }
 
-    public CarriabaleView CreateCarriable(ICarriable carriable, Transform parent)
+    public ITileView CreateCarriable(ICarriable carriable, Transform parent)
     {
-        CarriabaleView view = carriable switch
+        ITileView view = carriable switch
         {
-            Pot => Instantiate(PotPrefap, parent).GetComponent<CarriabaleView>(),
+            Pot => Instantiate(PotPrefap, parent).GetComponent<ContainerView>(),
             Ingredient ingredient => ingredient.Type switch
             {
                 IngredientType.POTATO => Instantiate(PotatoPrefap, parent).GetComponent<CarriabaleView>(),

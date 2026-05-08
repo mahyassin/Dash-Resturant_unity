@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using Codice.Client.Common.Authentication;
 using UnityEngine;
 
 public class MainOrchistrator
@@ -45,12 +43,13 @@ public class MainOrchistrator
         inputs.Moved                  += OnPlayerMoved;
         inputs.Interacted             += OnPlayerCarrying;
         inputs.Tested                 += OnTest;
-        _mapSystem.MapChanged         += OnMapChanged;
-        _mapSystem.StateChanged       += OnStateChanged;
-        _ticSystem.OnTicProecess      += OnTicProecess;
-        _orderSystem.OnOrdersChange   += OnOrdersChange;
+
         _mapSystem.GenerateIngrid     += _spawnSystem.SpawnIngredient;
+
         _spawnSystem.carriableSpawned += OnStateChanged;
+        _mapSystem.StateChanged       += OnStateChanged;
+        _ticSystem.ReportChange       += OnStateChanged;
+        _orderSystem.StateChanged     += OnStateChanged;
 
         _viewManager.FocusCamera(_factoryCtx.ViewsRigistry.GetOnTile(gameState.PlayerState.Id) as CharacterView);
 
@@ -65,8 +64,11 @@ public class MainOrchistrator
 
     private void OnPlayerMoved(Vector2 dirction)
     {
+        int x = dirction.x > 0.85f? 1: dirction.x < -0.85? -1: 0;
+        int y = dirction.y > 0.85f? 1: dirction.y < -0.85? -1: 0;
+        
 
-        Vector2Int dir = new((int)dirction.x, (int)dirction.y);
+        Vector2Int dir = new(x, y);
         
         _mapSystem.VarifiyMovment(_gameState.PlayerState, _gameState, dir);
         _currentDiretion = dir;
@@ -74,74 +76,110 @@ public class MainOrchistrator
 
     private void OnPlayerCarrying()
     {
-        // Debug.Log("on player carrying");
         _mapSystem.VarrifyCarrying(_gameState.PlayerState, _gameState, _currentDiretion);
     }
 
-    private void OnMapChanged(List<CellState> cells)
-    {
-        
-    }
-
-    private void OnStateChanged(IReport recievedReport)
+    private void OnStateChanged(IReport report)
     {
         var registry = _factoryCtx.ViewsRigistry;
 
-        if(recievedReport is MovmentReport rMovment)
+        switch (report)
         {
-            _viewManager.ViewMovment(registry.GetOnTile(rMovment.ActorId) as CharacterView ,rMovment.From, rMovment.To);  
+            case MovmentReport r:
+
+                _viewManager.ViewMovment(registry.GetCharacter(r.ActorId), r.From, r.To);  
+
+            break;
+
+            case CarryReport r:
+
+                ViewCarry(registry, r);
+                
+            break;
+
+            case StoveInteract r:
+
+                StoveContext ctx = new(r.IsOn);
+                _viewManager.ViewStation(registry.GetStation(r.InteractableId), ctx);
+
+            break;
+
+            case CuttingBoardInteract r:
+
+                ViewCutting(registry, r);
+
+            break;
+
+            case SpawnReport r: 
+
+                ViewSpawn(registry, r);
+                
+            break;
+
+
+            case ContentChange r:
+
+                _viewManager.ViewContainerContent(registry.GetOnTile(r.ContainerId), r.Icons);
+
+            break;
+
+            case CookStateChange r:
+
+                _viewManager.ViewCookingProgress(registry.GetStation(r.CookerId), r.Progress, r.CookedMark, r.OverCookedMark);
+
+            break;
+
+            case PendingOrdersReport r:
+
+                _viewManager.ViewPendingOrders(r.Orders);
+            break;
+        }
+    }
+
+    private void ViewSpawn(ViewsRigistry registry, SpawnReport r)
+    {
+        var fromPool = registry.GetFromPool(r.Spwan as IIdentifialbe);
+        if (fromPool == null)
+        {
+            var factory = _factoryCtx.ViewFactory;
+            int id = IIdentifialbe.GetId(r.Spwan);
+
+            var view = factory.CreateCarriable(r.Spwan, registry.GetStation(r.SpanwnCarrierId).Anchor.transform);
+            registry.AddView(id, view);
+            return;
         }
 
-        if(recievedReport is CarryReport rCarry)
-        {
-            var taker = registry.GetOnTile(rCarry.Taker);
-            var giver = registry.GetOnTile(rCarry.TakenFrom);
-            var onTaker = registry.GetOnTile(rCarry.TakerOnHand) as CarriabaleView;
-            var onGiver = registry.GetOnTile(rCarry.TakenOnHand) as CarriabaleView;
+        _viewManager.SpawnFromPool(fromPool as CarriabaleView, registry.GetOnTile(r.SpanwnCarrierId));
 
-            _viewManager.ViewCarry(taker, giver, onTaker, onGiver);
-            var pool = _viewManager.Pool;
-            if (pool.Count > 0)
+    }
+
+    private void ViewCutting(ViewsRigistry registry, CuttingBoardInteract r)
+    {
+        var actor   = registry.GetCharacter(r.CutterId);
+        var board   = registry.GetStation(r.InteractableId);
+        var onBoard = registry.GetCarriable(r.ingredientId);
+
+
+        _viewManager.ViewCutting(actor, onBoard, r.CuttingGrade);
+        _viewManager.ViewStation(board, null);
+            
+    }
+    private void ViewCarry(ViewsRigistry registry, CarryReport r)
+    {
+        var taker   = registry.GetOnTile(r.Taker);
+        var giver   = registry.GetOnTile(r.TakenFrom);
+        var onTaker = registry.GetOnTile(r.TakerOnHand);
+        var onGiver = registry.GetOnTile(r.TakenOnHand);
+
+        _viewManager.ViewCarry(taker, giver, onTaker, onGiver);
+
+        var pool = _viewManager.Pool;
+        if (pool.Count > 0)
+        {
+            foreach (var view in pool)
             {
-                foreach(var view in pool)
-                {
-                    registry.AddToPool(view.Type, view);
-                }
+                registry.AddToPool(view.Type, view);
             }
-        }
-
-        if(recievedReport is StoveInteract rStove)
-        {
-            StoveContext ctx = new(rStove.IsOn);
-            _viewManager.ViewStation(registry.GetOnTile(rStove.InteractableId) as StationView, ctx);
-        }
-
-        if(recievedReport is CuttingBoardInteract rBoard)
-        {
-            var actor = registry.GetOnTile(rBoard.CutterId) as CharacterView;
-            var board = registry.GetOnTile(rBoard.InteractableId) as StationView;
-            var onBoard = registry.GetOnTile(rBoard.ingredientId) as CarriabaleView;
-
-
-            _viewManager.ViewCutting(actor, onBoard, rBoard.CuttingGrade);
-            _viewManager.ViewStation( board, null);
-        }
-
-        if(recievedReport is SpawnReport spawn)
-        {
-            var fromPool = registry.GetFromPool(spawn.Spwan as IIdentifialbe);
-            if (fromPool == null)
-            {
-                var factory = _factoryCtx.ViewFactory;
-                int id = (spawn.Spwan as IIdentifialbe).Id;
-
-                var view = factory.CreateCarriable(spawn.Spwan, (registry.GetOnTile(spawn.SpanwnCarrierId) as StationView).Anchor.transform);
-                registry.AddView(id, view);
-                return;
-            }
-
-            _viewManager.SpawnFromPool(fromPool as CarriabaleView, registry.GetOnTile(spawn.SpanwnCarrierId));
-           
         }
     }
 
@@ -151,14 +189,6 @@ public class MainOrchistrator
         _orderSystem.MakeOrderAfterCoolDown(_gameState);
     }
 
-    private void OnTicProecess(GameState Changes, int clock)
-    {
-        
-    }
-
-    public void OnOrdersChange(OrdersState state)
-    {
-    }
-
+    
 
 }

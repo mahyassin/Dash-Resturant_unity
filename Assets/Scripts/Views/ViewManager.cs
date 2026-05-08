@@ -13,20 +13,16 @@ public class ViewManager : MonoBehaviour
     [SerializeField] private TileBase Shelf;
     [SerializeField] private CamerView cameraView;
     [SerializeField] private Transform PoolRoot;
+    [SerializeField] private IconsLibrary iconsLibrary;
+    [SerializeField] private OrderTracker orderTracker;
     private readonly List<ITileView> _pool = new();
     public IReadOnlyList<ITileView> Pool => _pool.AsReadOnly();
 
     
 
-    private Dictionary<Vector2Int, CellView> _cells;
 
   
-   
     public Vector3 ToWorldPos(Vector2Int pos) => _kitchenGrid.GetCellCenterWorld((Vector3Int)pos);
-    public void InitializeCells(Dictionary<Vector2Int, CellView> cells)
-    {
-        _cells = cells;
-    }
 
 
     public void ViewMovment(CharacterView character, Vector2Int from, Vector2Int to)
@@ -38,6 +34,13 @@ public class ViewManager : MonoBehaviour
         character.MoveCharacter(ToWorldPos(from), ToWorldPos(to));
     }
 
+    public void ViewContainerContent(ITileView container, List<Icon> content)
+    {
+        if (container is not ContainerView containerView) return;
+
+        containerView.ShowSprites(content, iconsLibrary);
+    }
+
      
     public void ViewCutting(CharacterView character, CarriabaleView view, string grade)
     {
@@ -45,13 +48,13 @@ public class ViewManager : MonoBehaviour
         view.ViewGrade(grade);
     }
 
-    public void ViewCarry(ITileView actor, ITileView holder, CarriabaleView onActor, CarriabaleView onGiver)
+    public void ViewCarry(ITileView actor, ITileView holder, ITileView onActor, ITileView onGiver)
     {
         if(actor == null || holder == null) return;
 
         if(actor.Anchor.childCount > 0)
         {
-            var child = actor.Anchor.GetChild(0).GetComponent<CarriabaleView>();
+            var child = actor.Anchor.GetChild(0).GetComponent<ITileView>();
             child.transform.SetParent(PoolRoot);
             _pool.Add(child);
 
@@ -60,7 +63,7 @@ public class ViewManager : MonoBehaviour
 
         if(holder.Anchor.childCount > 0)
         {
-            var child = holder.Anchor.GetChild(0).GetComponent<CarriabaleView>();
+            var child = holder.Anchor.GetChild(0).GetComponent<ITileView>();
             child.transform.SetParent(PoolRoot);
             _pool.Add(child);
 
@@ -98,10 +101,30 @@ public class ViewManager : MonoBehaviour
         view.gameObject.SetActive(true);
     }
 
+    public void ViewCookingProgress(StationView pot, int progress, int cookedMark, int overcookedMark)
+    {   
+        float fill = cookedMark == 0? 0: (float)progress / (float)cookedMark * 100;
+        pot.StartFilling(fill);
+    }
+
 
     public void FocusCamera(IViewable target)
     {
         cameraView.FollowTarget(target);
+    }
+
+    public void ViewPendingOrders(List<string> orders)
+    {
+        int i = orderTracker.OrdersTrack.Count;
+        int start = i;
+
+        foreach(var order in orders)
+        {
+            if(i <= 0) return;
+            var view = orderTracker.GetOrderView(start - i);
+            view.SetOrder(order, iconsLibrary);
+            i--;
+        }
     }
 
 
@@ -123,6 +146,8 @@ public interface ITileView
 {
     public Transform Anchor {get;}
     public Type Type {get;}
+    public Transform  transform {get;}
+    public GameObject gameObject{get;}
 }
 
 public enum Type

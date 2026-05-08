@@ -9,11 +9,12 @@ public class IconsLibrary: MonoBehaviour
     [SerializeField]private Sprite Dish;
     [SerializeField]private Sprite Error;
     [SerializeField]private Sprite Stove;
+    [SerializeField]private Sprite Empty;
     [SerializeField]private Transform StoveAnchor;
     [SerializeField]private Sprite Shelf;
-    [SerializeField]private Transform ShelfAnchor;
-    [SerializeField]private Transform DefualtAnchor;
-    [SerializeField]private Animator StoveAnimation;
+    [SerializeField]private Sprite CutIcon;
+    [SerializeField]private Sprite CookIcon;
+   
 
     public Sprite GetSprite(Icon icon)
     {
@@ -26,31 +27,12 @@ public class IconsLibrary: MonoBehaviour
             Icon.TOMATO => Tomato,
             Icon.Stove  => Stove,
             Icon.Shelf  => Shelf,
+            Icon.Empty  => Empty,
+            Icon.CookIcon => CookIcon,
+            Icon.CutIcon  => CutIcon,
             _           => Error,
         };
     }
 
-    public Transform GetAnchor(Icon icon)
-    {
-        return icon switch
-        {
-            Icon.Stove => StoveAnchor,
-            Icon.Shelf => ShelfAnchor,
 
-            _          => DefualtAnchor,
-        };
-    }
-
-}
-
-public enum Icon
-{
-    Pot,
-    Dish,
-    POTATO,
-    TOMATO,
-    ONION,
-    Error,
-    Stove,
-    Shelf,
 }

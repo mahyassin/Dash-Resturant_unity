@@ -47,8 +47,11 @@ public class MapSystem: GameSystem
                 
                 if(interactable is CuttingBoard board)
                 {
-                    if(actorCell.Ocuppier is not IIdentifialbe cutter) return;
-                    string grade = (board.OnCarrier as Ingredient).cuttingGrade switch
+                    var cutterId = IIdentifialbe.GetId(player);
+
+                    if(board.OnCarrier is not Ingredient i) return;
+
+                    string grade = i.cuttingGrade switch
                     {
                         CuttingGrade.WHOLE  => "whole",
                         CuttingGrade.BIG    => "big",
@@ -58,7 +61,7 @@ public class MapSystem: GameSystem
                     };
                     int ingredientId = IIdentifialbe.GetId(board.OnCarrier);
 
-                    StateChanged?.Invoke(new CuttingBoardInteract(hasId.Id, cutter.Id, grade, ingredientId));
+                    StateChanged?.Invoke(new CuttingBoardInteract(hasId.Id, cutterId, grade, ingredientId));
                 }
             }
 
@@ -121,7 +124,6 @@ public class MapSystem: GameSystem
 
         StateChanged?.Invoke(new CarryReport(taker,takerOnHand, giver, giverOnhand));
 
-        // Debug.Log($"ids {taker}, {giver}, {takerOnHand}, {giverOnhand}");
     }
 
     private void  MoveOccupier(IOcuppier player, GameState state, Vector2Int targetPos)
@@ -138,16 +140,24 @@ public class MapSystem: GameSystem
    
     private void Take(ICarrier giver, ICarrier taker)
     {
-        if(taker.OnCarrier is IContainer container) 
+        if(taker.OnCarrier is IContainer takerContainer) 
         {
             if(giver.OnCarrier is IContainer containergiver)
             {
-                container.AddToContainer(containergiver.Content.ToList());
+                var content = containergiver.Content.ToList();
+
+                takerContainer.AddToContainer(content);
                 containergiver.EmptyTheContainer();
+
+                ReportContentChange(takerContainer, takerContainer.Content.ToList());
+                ReportContentChange(containergiver, new());
                 return;
             }
-            
-            container.AddToContainer(giver.OnCarrier);
+
+            takerContainer.AddToContainer(giver.OnCarrier);
+
+            ReportContentChange(takerContainer, takerContainer.Content.ToList());
+
             giver.Carry(null);
             return;
         }
@@ -169,12 +179,34 @@ public class MapSystem: GameSystem
         giver.Carry(null);
     }
 
-    
+    private void ReportContentChange(IContainer container, List<ICarriable> takercontent)
+    {
+        var icons = takercontent.Select(it => it switch
+        {
+            Ingredient i => i.Type switch
+            {
+                IngredientType.TOMATO => Icon.TOMATO,
+                IngredientType.ONION => Icon.ONION,
+                IngredientType.POTATO => Icon.POTATO,
+                _ => Icon.Error,
+            },
+
+            Pot => Icon.Pot,
+            _ => Icon.Error,
+
+        }).ToList();
+
+        ContentChange report = new(IIdentifialbe.GetId(container), icons);
+
+        StateChanged?.Invoke(report);
+    }
+
 }
 public class TicSystem: GameSystem
 {
 
     public event Action<GameState, int> OnTicProecess;
+    public event Action<IReport> ReportChange;
     public void VarifiyCooking(GameState state, int clock)
     {
         foreach(IInteractable station in state.interactables)
@@ -186,6 +218,24 @@ public class TicSystem: GameSystem
            
             cooker.Cook();
             cooker.UnConfirm();
+
+            Pot pot = (station as ICarrier).OnCarrier as Pot;
+            if(pot != null)
+            {
+                var content = pot.Content.Select(it => it as Ingredient).ToList();
+
+                var cookingProgress = content.Sum(it => it.CookingProgress);
+                var cookedMark = content.Sum(it => it.CookedMark);
+                var overcookedMarck = content.Sum(it => it.OverCookedMark);
+
+                if (pot.Content.Count() <= 0)  {cookingProgress = 0; cookedMark = 0;}
+
+
+                CookStateChange change = new(IIdentifialbe.GetId(station),cookingProgress, cookedMark, overcookedMarck);
+
+                ReportChange?.Invoke(change);
+            }
+
         }
         for(int x = 0; x < state.DishsCD.Count; x++)
         {
@@ -213,7 +263,8 @@ public class OrderSystem: GameSystem
 
 
     private Menu _menu;
-    public event Action<OrdersState> OnOrdersChange;
+
+    public event Action<IReport> StateChanged;
     
     public OrderSystem(Menu menu)
     {
@@ -224,13 +275,23 @@ public class OrderSystem: GameSystem
     {
         foreach(var costumer in state.OrderMakers)
         {
+
             var rng = UnityEngine.Random.Range(0,_menu.CurrentList.Count);
             if (costumer.MakeOrderReady())
             {
                 state.ordersState.AddOrder(new(_menu.CurrentList[rng], costumer.Id));
             }
+
+            var orders = new List<string>();
+
+            foreach(var orderstate in state.ordersState.PendingOrders)
+            {
+                orders.Add(orderstate.code);
+            }
+
+            StateChanged?.Invoke(new PendingOrdersReport(orders));
+
         }
-        OnOrdersChange?.Invoke(state.ordersState);
     }
 }
 
