@@ -24,7 +24,7 @@ public class MainOrchistrator
         _factoryCtx  = factoryContext;
 
 
-        Menu menu = new(new List<string>()
+        Menu menu = new(new List<(string,Icon)>()
         {
             Recipes.PotatoSuop,
             Recipes.TomatoSuop, 
@@ -45,6 +45,7 @@ public class MainOrchistrator
         inputs.Tested                 += OnTest;
 
         _mapSystem.GenerateIngrid     += _spawnSystem.SpawnIngredient;
+        _ticSystem.SpawnDish          += _spawnSystem.SpawnDish;
 
         _spawnSystem.carriableSpawned += OnStateChanged;
         _mapSystem.StateChanged       += OnStateChanged;
@@ -129,9 +130,22 @@ public class MainOrchistrator
 
             break;
 
-            case PendingOrdersReport r:
+            case AddOrderReport r:
 
-                _viewManager.ViewPendingOrders(r.Orders);
+                _viewManager.ViewAddOrder(r.Code, r.Icon, r.Id);
+
+            break;
+
+            case CompelteOrderReport r:
+
+                _viewManager.CompleteOrder(r.Id);
+
+            break;
+
+            case OrderTimerReport r:
+
+                _viewManager.ViewOrderTimer(r.OrderId, r.Paitance, r.MaxPatiance, r.IsFail);
+
             break;
         }
     }
@@ -148,6 +162,7 @@ public class MainOrchistrator
             registry.AddView(id, view);
             return;
         }
+        Debug.Log("SPAWNED FORM POOL"); 
 
         _viewManager.SpawnFromPool(fromPool as CarriabaleView, registry.GetOnTile(r.SpanwnCarrierId));
 
@@ -173,7 +188,7 @@ public class MainOrchistrator
 
         _viewManager.ViewCarry(taker, giver, onTaker, onGiver);
 
-        var pool = _viewManager.Pool;
+        var pool = _viewManager.GetPool();
         if (pool.Count > 0)
         {
             foreach (var view in pool)
@@ -185,7 +200,7 @@ public class MainOrchistrator
 
     private void ProcessTic(int clock)
     {
-        _ticSystem.VarifiyCooking(_gameState, clock);
+        _ticSystem.ProcessTic(_gameState, clock);
         _orderSystem.MakeOrderAfterCoolDown(_gameState);
     }
 

@@ -36,6 +36,7 @@ public class OrdersState
     private List<Order> _pendingOrders = new();
     private List<Order> _completedOrders = new();
     private List<Order> _failedOrders = new();
+    private int _nextId = 0;
 
     public void AddOrder(Order order)
     {
@@ -60,6 +61,12 @@ public class OrdersState
     {
         _pendingOrders.Remove(order);
         _failedOrders.Add(order);
+    }
+
+    public Order MakeOrder(string code, Icon icon, int costumerId)
+    {
+        var paitance = UnityEngine.Random.Range(20, 40);
+        return new(code, icon, costumerId, _nextId++, paitance);
     }
 
     public List<Order> PendingOrders   => _pendingOrders;

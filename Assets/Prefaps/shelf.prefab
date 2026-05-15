@@ -49,6 +49,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Views::StationView
   animator: {fileID: 0}
   anchor: {fileID: 1619071640495596251}
+  type: 0
+  progressBar: {fileID: 0}
 --- !u!212 &4583962620959531342
 SpriteRenderer:
   serializedVersion: 2
@@ -142,7 +144,7 @@ GameObject:
   m_Layer: 0
   m_Name: anchor
   m_TagString: Untagged
-  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1

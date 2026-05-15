@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Numerics;
-using NUnit.Framework.Constraints;
+using NUnit.Framework;
 using UnityEngine;
 
 public class EventsReporter
@@ -112,13 +110,44 @@ public struct CookStateChange: IReport
     }
 }
 
-public struct PendingOrdersReport: IReport
+public struct AddOrderReport: IReport
 {
-    public List<String> Orders;
+    public string Code;
+    public Icon Icon;
+    public int Id;
 
-    public PendingOrdersReport(List<string> orders)
+    public AddOrderReport(string code, Icon icon, int id)
     {
-        Orders = orders;
+        Code = code;
+        Icon = icon;
+        Id = id;
+    }
+}
+
+public struct CompelteOrderReport: IReport
+{
+    public int Id;
+
+    public CompelteOrderReport(int id)
+    {
+        Id = id;
+    }
+}
+
+
+public struct OrderTimerReport: IReport
+{
+    public int OrderId;
+    public int Paitance;
+    public int MaxPatiance;
+    public bool IsFail;
+
+    public OrderTimerReport(int orderId, int paitance, int maxPatiance, bool isFail)
+    {
+        OrderId = orderId;
+        Paitance = paitance;
+        MaxPatiance = maxPatiance;
+        IsFail = isFail;
     }
 }
 

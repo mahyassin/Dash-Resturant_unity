@@ -14,6 +14,14 @@ public class IconsLibrary: MonoBehaviour
     [SerializeField]private Sprite Shelf;
     [SerializeField]private Sprite CutIcon;
     [SerializeField]private Sprite CookIcon;
+    [SerializeField]private Sprite TomatoCut;
+    [SerializeField]private Sprite PotatoCut;
+    [SerializeField]private Sprite OnionCut;
+    [SerializeField]private Sprite TomatoSoup;
+    [SerializeField]private Sprite TomatoOnion;
+    [SerializeField]private Sprite PotatoSoup;
+
+
    
 
     public Sprite GetSprite(Icon icon)
@@ -30,6 +38,12 @@ public class IconsLibrary: MonoBehaviour
             Icon.Empty  => Empty,
             Icon.CookIcon => CookIcon,
             Icon.CutIcon  => CutIcon,
+            Icon.TOMATO_CUT => TomatoCut,
+            Icon.POTATP_CUT => PotatoCut,
+            Icon.ONION_CUT  => OnionCut,
+            Icon.TOMATO_SOUP => TomatoSoup,
+            Icon.TOMATO_ONION => TomatoOnion,
+            Icon.PTATO_SOUP => PotatoSoup,
             _           => Error,
         };
     }

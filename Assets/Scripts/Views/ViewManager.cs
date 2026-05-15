@@ -1,8 +1,9 @@
 using UnityEngine;
-using TMPro;
 using System.Collections.Generic;
 using UnityEngine.Tilemaps;
 using System;
+using TMPro;
+using System.Linq;
 
 
 
@@ -15,12 +16,7 @@ public class ViewManager : MonoBehaviour
     [SerializeField] private Transform PoolRoot;
     [SerializeField] private IconsLibrary iconsLibrary;
     [SerializeField] private OrderTracker orderTracker;
-    private readonly List<ITileView> _pool = new();
-    public IReadOnlyList<ITileView> Pool => _pool.AsReadOnly();
-
     
-
-
   
     public Vector3 ToWorldPos(Vector2Int pos) => _kitchenGrid.GetCellCenterWorld((Vector3Int)pos);
 
@@ -36,9 +32,9 @@ public class ViewManager : MonoBehaviour
 
     public void ViewContainerContent(ITileView container, List<Icon> content)
     {
-        if (container is not ContainerView containerView) return;
+        if (container is not IcontainerView containerView) return;
 
-        containerView.ShowSprites(content, iconsLibrary);
+        containerView.PubleView.ShowSprites(content, iconsLibrary);
     }
 
      
@@ -56,7 +52,6 @@ public class ViewManager : MonoBehaviour
         {
             var child = actor.Anchor.GetChild(0).GetComponent<ITileView>();
             child.transform.SetParent(PoolRoot);
-            _pool.Add(child);
 
             child.gameObject.SetActive(false);
         }
@@ -65,7 +60,6 @@ public class ViewManager : MonoBehaviour
         {
             var child = holder.Anchor.GetChild(0).GetComponent<ITileView>();
             child.transform.SetParent(PoolRoot);
-            _pool.Add(child);
 
             child.gameObject.SetActive(false);
         }
@@ -89,6 +83,19 @@ public class ViewManager : MonoBehaviour
         }
     }
 
+    public List<ITileView> GetPool()
+    {
+        var output = new List<ITileView>();
+        var i = PoolRoot.childCount;
+        while(i > 0)
+        {
+            output.Add(PoolRoot.GetChild(0).GetComponent<ITileView>());
+            i--;
+        }
+
+        return output;
+    }
+
     public void ViewStation(StationView station, StoveContext? ctx)
     {
        station.Interact(ctx);
@@ -98,13 +105,25 @@ public class ViewManager : MonoBehaviour
     {
         view.transform.SetParent(parent.Anchor);
         view.transform.localPosition = Vector3.zero;
+        view.ViewWhole();
         view.gameObject.SetActive(true);
     }
 
     public void ViewCookingProgress(StationView pot, int progress, int cookedMark, int overcookedMark)
     {   
         float fill = cookedMark == 0? 0: (float)progress / (float)cookedMark * 100;
-        pot.StartFilling(fill);
+        pot.progressBar.StartFilling(fill);
+    }
+
+    public void ViewOrderTimer(int id, int current, int max, bool isFail)
+    {
+        var view = orderTracker.GetView(id);
+        if (isFail)
+        {
+            view.FailOrder();
+            return;
+        }
+        view.SetPatainceMeter(current, max);
     }
 
 
@@ -113,21 +132,35 @@ public class ViewManager : MonoBehaviour
         cameraView.FollowTarget(target);
     }
 
-    public void ViewPendingOrders(List<string> orders)
+    public void ViewAddOrder(string code, Icon icon, int id)
     {
-        int i = orderTracker.OrdersTrack.Count;
-        int start = i;
+        OrderView orderView = null;
 
-        foreach(var order in orders)
+        foreach(var order in orderTracker.OrdersTrack)
         {
-            if(i <= 0) return;
-            var view = orderTracker.GetOrderView(start - i);
-            view.SetOrder(order, iconsLibrary);
-            i--;
+            if(order.OrderId != -1) continue;
+            orderView = order;
         }
+
+        if(orderView == null)
+        {
+            // there is no room in the track;
+            Debug.Log("out of room");
+        }
+
+        orderTracker.TrackView(id, orderView);
+
+        orderView.SetOrder(code, iconsLibrary, id);
+        orderView.SetOrderSprite(iconsLibrary.GetSprite(icon));
     }
 
+    public void CompleteOrder(int id)
+    {
+        var orderView = orderTracker.OrdersTrack.FirstOrDefault(it => it.OrderId == id);
+        orderView.CompleteOrder();
 
+        orderTracker.ReleaseView(id);
+    }
 }
 
 public struct CellView

@@ -71,6 +71,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Views::PlayerView
   speed: 10
   animator: {fileID: 2847620296144649768}
+  type: 0
   HandAnchor: {fileID: 8920092203102764109}
 --- !u!212 &1399910544632674120
 SpriteRenderer:
@@ -119,7 +120,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 4877187720003012918, guid: 8dbf9f51fefaf116583603911d5ffed2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

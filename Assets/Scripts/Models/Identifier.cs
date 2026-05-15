@@ -44,7 +44,7 @@ public class EntitiesFactory
     public TrashCan CreateTrashCan()             => Create<TrashCan>(id => new(id));
 
     public Pot CreatePot()   => Create<Pot>(id => new(id));
-    public Dish CreateDish() => Create<Dish>(id => new());
+    public Dish CreateDish() => Create<Dish>(id => new(id));
 }
 
 

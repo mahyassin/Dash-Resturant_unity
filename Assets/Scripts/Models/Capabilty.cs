@@ -52,7 +52,6 @@ public interface IOrderMaker
 {
     public int Id {get;}
     public bool MakeOrderReady();
-    public void RetrunUncleanDish();
     
 }
 

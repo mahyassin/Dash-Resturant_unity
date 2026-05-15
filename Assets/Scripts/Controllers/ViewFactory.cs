@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ViewFactory: MonoBehaviour
 {
-
+    [SerializeField] private Transform Root;
     [SerializeField] private GameObject PlayerPrefap;
     [SerializeField] private GameObject StovePrefap;
     [SerializeField] private GameObject ShelfPrefap;
@@ -12,7 +12,13 @@ public class ViewFactory: MonoBehaviour
     [SerializeField] private GameObject GeneratorPrefap;
     [SerializeField] private GameObject PotatoPrefap;
     [SerializeField] private GameObject TomatoPrefap;
+    [SerializeField] private GameObject OnionPrefap;
     [SerializeField] private GameObject CuttingBoardP;
+    [SerializeField] private GameObject OrderTablePrefap;
+    [SerializeField] private GameObject DishPrefap;
+
+
+
 
   
 
@@ -20,29 +26,37 @@ public class ViewFactory: MonoBehaviour
 
     public ITileView CreateView(IOcuppier ocuppier, Vector3 pos)
     {
-        return ocuppier switch
+        var view = ocuppier switch
         {
-            Stove           => Instantiate(StovePrefap, pos, new()).GetComponent<ITileView>(),
-            Shelf           => Instantiate(ShelfPrefap, pos, new()).GetComponent<ITileView>(),
-            Pot             => Instantiate(PotPrefap, pos, new()).GetComponent<ITileView>(),
-            CharacterState  => Instantiate(PlayerPrefap, pos, new()).GetComponent<CharacterView>(),
-            Generator       => Instantiate(GeneratorPrefap,pos, new()).GetComponent<ITileView>(),
-            CuttingBoard    => Instantiate(CuttingBoardP, pos, new()).GetComponent<ITileView>(),
+            Stove           => GetView(StovePrefap, pos),
+            Shelf           => GetView(ShelfPrefap, pos),
+            Pot             => GetView(PotPrefap, pos),
+            CharacterState  => GetView(PlayerPrefap, pos),
+            Generator       => GetView(GeneratorPrefap,pos),
+            CuttingBoard    => GetView(CuttingBoardP, pos),
+            OrderTable      => GetView(OrderTablePrefap, pos),
             _ => null,
 
         };
-         
+        if(view != null)
+        {
+            view.transform.SetParent(Root);
+        }
+
+        return view;
     }
 
     public ITileView CreateCarriable(ICarriable carriable, Transform parent)
     {
         ITileView view = carriable switch
         {
-            Pot => Instantiate(PotPrefap, parent).GetComponent<ContainerView>(),
+            Pot  => Instantiate(PotPrefap, parent).GetComponent<ContainerView>(),
+            Dish => Instantiate(DishPrefap, parent).GetComponent<DishView>(),
             Ingredient ingredient => ingredient.Type switch
             {
                 IngredientType.POTATO => Instantiate(PotatoPrefap, parent).GetComponent<CarriabaleView>(),
                 IngredientType.TOMATO => Instantiate(TomatoPrefap, parent).GetComponent<CarriabaleView>(),
+                IngredientType.ONION => Instantiate(OnionPrefap,parent).GetComponent<CarriabaleView>(),
                 _ => null,
             },
             _ => null,
@@ -53,4 +67,6 @@ public class ViewFactory: MonoBehaviour
 
         return view;
     }
+
+    public ITileView GetView(GameObject prefap, Vector3 pos) => Instantiate(prefap, pos, new()).GetComponent<ITileView>();
 }

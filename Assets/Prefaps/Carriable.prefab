@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6456974470340432989}
   - component: {fileID: 3596003425662936584}
-  - component: {fileID: 3091361526923320147}
   - component: {fileID: 1830920795927233408}
   m_Layer: 0
   m_Name: Carriable
@@ -47,30 +46,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Views::CarriabaleView
   spriteRenderer: {fileID: 1830920795927233408}
-  animator: {fileID: 0}
-  type: 2
---- !u!95 &3091361526923320147
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3160616385048697671}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  whole: {fileID: 0}
+  big: {fileID: 0}
+  meduim: {fileID: 0}
+  small: {fileID: 0}
+  type: 0
 --- !u!212 &1830920795927233408
 SpriteRenderer:
   serializedVersion: 2

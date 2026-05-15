@@ -4,12 +4,47 @@ using UnityEngine;
 public class OrderView : MonoBehaviour
 {
     [SerializeField] private List<SpriteRenderer> Slots;
-    [SerializeField] private Animator animator;
-   
+    [SerializeField] private AnimatorController animator;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private ProgressBarView PatainceBar;
 
+    private int _orderId = -1;
+    public int OrderId => _orderId;
     private int slotIndex = 0;
     private int cookslot => slotIndex + 1;
     private int cutslot => slotIndex + 2;
+
+
+    void Awake()
+    {
+        animator.OnAnimationFinished += OnAnimationFinished;
+    }
+
+    private void OnAnimationFinished(string name)
+    {
+        switch (name)
+        {
+            case "orderCompleteAnimation":
+
+                PlayExit();
+
+            break;
+
+            case "orderFailed":
+
+                PlayExit();
+
+            break;
+
+            case "orderExit":
+
+                gameObject.SetActive(false);
+                transform.localPosition = Vector3.zero;
+
+            break;
+
+        }
+    }
 
     private void NextSlot()
     {
@@ -18,16 +53,24 @@ public class OrderView : MonoBehaviour
     
     public void PlayExit()
     {
-        animator.SetTrigger("exit");
+        animator.PlayMovment("exit");
+    }
+    public void PlayEnter()
+    {
+        gameObject.SetActive(true);
+        animator.GoIdle();
+        animator.PlayMovment("enter");
+
     }
 
-    public void PlayIdel()
+    public void ViewPatianceBar(float amount)
     {
-        animator.SetTrigger("idle");
+        PatainceBar.StartFilling(amount);
     }
 
-    public void SetOrder(string ordercode, IconsLibrary icons)
+    public void SetOrder(string ordercode, IconsLibrary icons, int id)
     {
+        _orderId = id;
 
         ResetView(icons);
 
@@ -83,7 +126,12 @@ public class OrderView : MonoBehaviour
             NextSlot();
 
         }
-        gameObject.SetActive(true);
+        PlayEnter();
+    }
+
+    public void SetOrderSprite(Sprite sprite)
+    {
+        spriteRenderer.sprite = sprite;
     }
 
     private void ResetView(IconsLibrary icons)
@@ -92,6 +140,24 @@ public class OrderView : MonoBehaviour
         {
             sprite.sprite = icons.GetSprite(Icon.Empty);
         }
+    }
+
+    public void CompleteOrder()
+    {
+        animator.PlayeOverlay("complete");
+        _orderId = -1;
+    }
+
+    public void FailOrder()
+    {
+        animator.PlayeOverlay("fail");
+        _orderId = -1;
+    }
+
+    public void SetPatainceMeter(int current, int max)
+    {
+        float precentge = (float) current / (float) max * 100;
+        PatainceBar.StartFilling(precentge);
     }
 
 }

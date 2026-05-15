@@ -200,13 +200,16 @@ public class Pot: ICarriable, IContainer, IIdentifialbe
         foreach(var ingredient in _ingredients)
         {
             if(ingredient.cookingGrade == CookingGrade.COOKED) continue;
-            ingredient.Cook(); return;
+            ingredient.Cook();
+            return;
         }
 
         foreach(var ingredient in _ingredients)
         {
             if(ingredient.cookingGrade == CookingGrade.OVERCOOKED) continue;
-            ingredient.Cook(); return;
+            ingredient.Cook(); 
+
+            return;
         }
     }
 
@@ -266,24 +269,27 @@ public class OrderTable : IOrderMaker, IOcuppier, ICarrier, IIdentifialbe
         return false;
     }
 
-    public void ReciveOrder(List<Ingredient> order, OrdersState state)
+    public Order ReciveOrder(List<Ingredient> order, OrdersState state)
     {
         string code = Recipes.RecepieIncoder(order).Replace(" ","");
-        Debug.Log(code);
+        foreach(var ingredient in order)
+        {
+            RecycledIngrid.AddToPool(ingredient);   
+        }
 
         var pendingOrders = new List<Order>(state.PendingOrders);
+        Debug.Log(pendingOrders.Count);
 
         foreach(var pending in pendingOrders)
         {
-            string pendingCode = pending.code.Replace(" ","");
+            string pendingCode = pending.Code.Replace(" ","");
 
             if( code != pendingCode) continue;
-            Debug.Log("success receipe");
             if(pending.OrderMakerId != Id) continue;
-            Debug.Log("success costumer");
             state.CompleteOrder(pending);
-            return;
+            return pending;
         }
+        return null;
     }
 
 
@@ -293,23 +299,6 @@ public class OrderTable : IOrderMaker, IOcuppier, ICarrier, IIdentifialbe
         throw new NotImplementedException();
     }
 
-    public void RetrunUncleanDish()
-    {
-        var tempDish = _finishedDish;
-        if( tempDish == null)
-        {
-            _finishedDish = new(false);
-            Debug.Log("plateCreated");
-            return;
-        }
-        while(tempDish.StackedDish != null)
-        {
-            tempDish = tempDish.StackedDish;
-        }
-
-        tempDish.Stack(new(false));
-        
-    }
 
     public void Carry(ICarriable carriable)
     {

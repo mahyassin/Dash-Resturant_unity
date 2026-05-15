@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 public class Dish : ICarriable, IContainer, IIdentifialbe
@@ -15,14 +16,16 @@ public class Dish : ICarriable, IContainer, IIdentifialbe
 
     public int Id {get;}
 
-    public Dish()
+    public Dish(int id)
     {
         _isClean = true;
+        Id = id;
     }
 
-    public Dish(bool isclean)
+    public Dish(bool isclean, int id)
     {
         _isClean = isclean;
+        Id = id;
     }
     public void AddToContainer(ICarriable carriable)
     {
@@ -65,9 +68,9 @@ public struct Recipes
    // 00, 10, 20, 30 cutting grade
    // 01, 02, 03, 04 cooking grade 
 
-    public static string TomatoSuop      = "t23t23t23";
-    public static string TomatoWithOnion = "t23t23o23";
-    public static string PotatoSuop      = "p23t23o23";
+    public static (string, Icon) TomatoSuop      = ("t20t20t20", Icon.TOMATO_SOUP);
+    public static (string, Icon) TomatoWithOnion = ("t03t03o03", Icon.TOMATO_ONION);
+    public static (string, Icon) PotatoSuop      = ("p20t20o20",Icon.PTATO_SOUP);
 
     public static string RecepieIncoder(List<Ingredient> ingredients)
     {
@@ -107,16 +110,16 @@ public struct Recipes
 
 public struct Menu
 {
-    private List<string> _currentList;
+    private List<(string, Icon)> _currentList;
     
-    public List<string> CurrentList => _currentList;
+    public List<(string, Icon)> CurrentList => _currentList;
     
-    public Menu(List<string> dishs)
+    public Menu(List<(string, Icon)> dishs)
     {
         _currentList = dishs;
     }
 
-    public void AddToMenu(string dish)
+    public void AddToMenu((string, Icon) dish)
     {
         _currentList.Add(dish);
     }
@@ -124,8 +127,12 @@ public struct Menu
 
 public class Order
 {
-    public string code {get;}
+    public string Code {get;}
+    public Icon Icon {get;}
+    public int MaxPatiance {get;}
     private int _patianceMeter;
+    private int _id;
+    public int Id => _id;
     
     private State state = State.Pending;
     public enum State
@@ -136,26 +143,25 @@ public class Order
     }
     public int OrderMakerId;
 
-    public Order(string dish, int orderMakerId)
+    public Order(string code, Icon icon, int orderMakerId, int id, int paitance)
     {
-        code = dish;
+        Code = code;
+        Icon = icon;
         OrderMakerId = orderMakerId;
+        _patianceMeter = paitance;
+        MaxPatiance = paitance;
+        _id = id;
+
     }
 
     public void LosePatiance()
     {
-        if(_patianceMeter > 0) state = State.Fial;
+        if(_patianceMeter < 0) state = State.Fial;
 
         _patianceMeter--;
     }
-
-    public void ReciveOrder(string recived)
-    {
-        if(code != recived) {state = State.Fial; return;}
-        state = State.Success;
-    }
-
     public State GetState => state;
+    public int Pataince => _patianceMeter;
 
 }
 

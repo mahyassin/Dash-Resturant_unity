@@ -67,16 +67,30 @@ public class MapSystem: GameSystem
 
             if(ocuppier is OrderTable orderTable) 
             {
-                if(player is not CharacterState p) return;
+                if(player is not ICarrier p) return;
                 if(p.OnCarrier is not Dish dish) return;
 
-                orderTable.ReciveOrder(dish.DishContent,state.ordersState);
+                var order = orderTable.ReciveOrder(dish.DishContent,state.ordersState);
                 dish.EmptyTheContainer();
+
+                if(order == null)
+                {
+                    // no pending order match the recieved order;
+                    Debug.Log("fail to recieve order");
+                }
 
                 var dishCd = UnityEngine.Random.Range(10,20);
                 state.DishsCD.Add(dishCd);
 
+
+                int tableId = IIdentifialbe.GetId(ocuppier);
+                int playerid = IIdentifialbe.GetId(player);
+
+
                 p.Carry(null);
+                StateChanged?.Invoke(new CarryReport(tableId, -1, playerid, -1));
+                StateChanged?.Invoke(new CompelteOrderReport(order.Id));
+
             }
 
         }
@@ -205,9 +219,9 @@ public class MapSystem: GameSystem
 public class TicSystem: GameSystem
 {
 
-    public event Action<GameState, int> OnTicProecess;
     public event Action<IReport> ReportChange;
-    public void VarifiyCooking(GameState state, int clock)
+    public event Action<bool, int> SpawnDish;
+    public void ProcessTic(GameState state, int clock)
     {
         foreach(IInteractable station in state.interactables)
         {
@@ -225,7 +239,7 @@ public class TicSystem: GameSystem
                 var content = pot.Content.Select(it => it as Ingredient).ToList();
 
                 var cookingProgress = content.Sum(it => it.CookingProgress);
-                var cookedMark = content.Sum(it => it.CookedMark);
+                var cookedMark = content.Sum(it => it.MeduimPoint);
                 var overcookedMarck = content.Sum(it => it.OverCookedMark);
 
                 if (pot.Content.Count() <= 0)  {cookingProgress = 0; cookedMark = 0;}
@@ -237,6 +251,7 @@ public class TicSystem: GameSystem
             }
 
         }
+
         for(int x = 0; x < state.DishsCD.Count; x++)
         {
             
@@ -248,12 +263,22 @@ public class TicSystem: GameSystem
             state.DishsCD.RemoveAt(x);
             int rng = UnityEngine.Random.Range(0, state.OrderMakers.Count -1);
 
-            state.OrderMakers[rng].RetrunUncleanDish();
+            SpawnDish?.Invoke(false, state.OrderMakers[rng].Id);
+
         }
-
-
         
-        OnTicProecess?.Invoke(state, clock);
+        var pendingOrders = state.ordersState.PendingOrders;
+        for(var i = 0; i < pendingOrders.Count; i++)
+        {
+            Order order = pendingOrders[i];
+            order.LosePatiance();
+
+            bool isFail = order.GetState == Order.State.Fial;
+            if(isFail) state.ordersState.FailOrder(order);
+            
+
+            ReportChange?.Invoke(new OrderTimerReport(order.Id, order.Pataince, order.MaxPatiance, isFail));
+        }
     }
 
   
@@ -275,21 +300,20 @@ public class OrderSystem: GameSystem
     {
         foreach(var costumer in state.OrderMakers)
         {
-
-            var rng = UnityEngine.Random.Range(0,_menu.CurrentList.Count);
             if (costumer.MakeOrderReady())
             {
-                state.ordersState.AddOrder(new(_menu.CurrentList[rng], costumer.Id));
+                var orderstate = state.ordersState;
+                var rng = UnityEngine.Random.Range(0,_menu.CurrentList.Count);
+                var o = _menu.CurrentList[rng];
+
+                var code = o.Item1;
+                var icon = o.Item2;
+
+                var order = orderstate.MakeOrder(code, icon, costumer.Id);
+
+                orderstate.AddOrder(order);
+                StateChanged?.Invoke(new AddOrderReport(code, icon, order.Id));
             }
-
-            var orders = new List<string>();
-
-            foreach(var orderstate in state.ordersState.PendingOrders)
-            {
-                orders.Add(orderstate.code);
-            }
-
-            StateChanged?.Invoke(new PendingOrdersReport(orders));
 
         }
     }
@@ -313,7 +337,7 @@ public class SpawnSystem
         Ingredient ingredient;
         var pool = RecycledIngrid.GetIngredient(type);
 
-        if (pool != null) ingredient = pool; 
+        if (pool != null) {ingredient = pool; }
         else ingredient = _factory.CreateIngredient(type);
 
         if(carrier.OnCarrier is IContainer container)
@@ -325,10 +349,22 @@ public class SpawnSystem
 
         carrier.Carry(ingredient);
 
-        var carrierId = (carrier as IIdentifialbe).Id;
-
-
         carriableSpawned?.Invoke(new SpawnReport(ingredient, carrierid));
+    }
+
+    public void SpawnDish(bool isclean, int carrierId)
+    {
+        var carrier = _identifier.GetEntity(carrierId) as ICarrier;
+        Dish dish;
+        var pool = RecycledIngrid.GetDish();
+
+        if (pool != null) {dish = pool; }
+        else dish = _factory.CreateDish();
+
+        if(carrier.OnCarrier != null) return;
+
+        carrier.Carry(dish);
+        carriableSpawned?.Invoke(new SpawnReport(dish, carrierId));
     }
 
 }
@@ -338,22 +374,35 @@ public class RecycledIngrid
     private static Queue<Ingredient> PotatoPool = new();
     private static Queue<Ingredient> OnionPool = new();
     private static Queue<Ingredient> TomatoPool = new();
+    private static Queue<Dish> DishesPool = new();
 
     public static Ingredient GetIngredient(IngredientType type)
     {
-        return type switch
+        var output = type switch
         {
             IngredientType.TOMATO => TomatoPool.Count > 0? TomatoPool.Dequeue(): null,
-            IngredientType.ONION  => PotatoPool.Count > 0? TomatoPool.Dequeue(): null,
-            IngredientType.POTATO => OnionPool.Count > 0? TomatoPool.Dequeue(): null,
+            IngredientType.ONION  => PotatoPool.Count > 0? PotatoPool.Dequeue(): null,
+            IngredientType.POTATO => OnionPool.Count > 0?  OnionPool.Dequeue(): null,
             _ => null
 
         };
+
+        if(output == null) return null;
+
+        output.Reset();
+        return output;
     }
 
-    public static void AddToPool(IngredientType type, Ingredient ingredient)
+    public static Dish GetDish()
     {
-        Queue<Ingredient> pool = type switch
+        if(DishesPool.Count <= 0) return null;
+
+        return DishesPool.Dequeue();
+    }
+
+    public static void AddToPool(Ingredient ingredient)
+    {
+        Queue<Ingredient> pool = ingredient.Type switch
         {
             IngredientType.TOMATO => TomatoPool,
             IngredientType.ONION  => OnionPool,

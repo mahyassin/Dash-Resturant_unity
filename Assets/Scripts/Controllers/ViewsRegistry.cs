@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public class ViewsRigistry
 {
@@ -9,7 +10,7 @@ public class ViewsRigistry
     public void AddView(int id, ITileView view)
     {
         if (view == null) return;
-        _views.Add(id, view);
+        _views[id] = view;
     }
 
 
@@ -70,7 +71,7 @@ public class ViewsRigistry
 
     public ITileView GetFromPool(IIdentifialbe state)
     {
-        var poolName = state switch
+        var poolType = state switch
         {
             Ingredient i => i.Type switch
             {
@@ -84,13 +85,12 @@ public class ViewsRigistry
             _ => Type.Fail
         };
 
-        if(poolName == Type.Fail) return null;
-        if(!_pools.ContainsKey(poolName)) return null;
-        if(_pools[poolName].Count <= 0) return null;
+        if(poolType == Type.Fail) return null;
+        if(!_pools.ContainsKey(poolType)) return null;
+        if(_pools[poolType].Count <= 0) return null;
 
-        var view = _pools[poolName].Dequeue();
+        var view = _pools[poolType].Dequeue();
         _views[state.Id] = view;
-
         return view;
     }
 }

@@ -12,6 +12,7 @@ Library: /home/mahmoud/UnityProjects/Dash-Resturant_unity/Temp/BurstOutput/Data/
 --float-mode=Fast
 --generate-link-xml=Temp/burst.link.xml
 --temp-folder=/home/mahmoud/UnityProjects/Dash-Resturant_unity/Temp/Burst
+--debug=Full
 --enable-frame-info-registration
 --key-folder=/home/mahmoud/Unity/Hub/Editor/6000.4.2f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport
 --decode-folder=/home/mahmoud/UnityProjects/Dash-Resturant_unity/Library/Burst
@@ -33,6 +34,7 @@ Library: /home/mahmoud/UnityProjects/Dash-Resturant_unity/Temp/BurstOutput/Data/
 --float-mode=Fast
 --generate-link-xml=Temp/burst.link.xml
 --temp-folder=/home/mahmoud/UnityProjects/Dash-Resturant_unity/Temp/Burst
+--debug=Full
 --enable-frame-info-registration
 --key-folder=/home/mahmoud/Unity/Hub/Editor/6000.4.2f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport
 --decode-folder=/home/mahmoud/UnityProjects/Dash-Resturant_unity/Library/Burst
@@ -52,6 +54,7 @@ Library: /home/mahmoud/UnityProjects/Dash-Resturant_unity/Temp/BurstOutput/Data/
 --target-framework=NetFramework
 --generate-link-xml=Temp/burst.link.xml
 --temp-folder=/home/mahmoud/UnityProjects/Dash-Resturant_unity/Temp/Burst
+--debug=Full
 --enable-frame-info-registration
 --key-folder=/home/mahmoud/Unity/Hub/Editor/6000.4.2f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport
 --decode-folder=/home/mahmoud/UnityProjects/Dash-Resturant_unity/Library/Burst
@@ -169,6 +172,7 @@ Library: /home/mahmoud/UnityProjects/Dash-Resturant_unity/Temp/BurstOutput/Data/
 --target-framework=NetFramework
 --generate-link-xml=Temp/burst.link.xml
 --temp-folder=/home/mahmoud/UnityProjects/Dash-Resturant_unity/Temp/Burst
+--debug=Full
 --enable-frame-info-registration
 --key-folder=/home/mahmoud/Unity/Hub/Editor/6000.4.2f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport
 --decode-folder=/home/mahmoud/UnityProjects/Dash-Resturant_unity/Library/Burst
@@ -286,6 +290,7 @@ Library: /home/mahmoud/UnityProjects/Dash-Resturant_unity/Temp/BurstOutput/Data/
 --target-framework=NetFramework
 --generate-link-xml=Temp/burst.link.xml
 --temp-folder=/home/mahmoud/UnityProjects/Dash-Resturant_unity/Temp/Burst
+--debug=Full
 --enable-frame-info-registration
 --key-folder=/home/mahmoud/Unity/Hub/Editor/6000.4.2f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport
 --decode-folder=/home/mahmoud/UnityProjects/Dash-Resturant_unity/Library/Burst
@@ -332,6 +337,7 @@ Library: /home/mahmoud/UnityProjects/Dash-Resturant_unity/Temp/BurstOutput/Data/
 --target-framework=NetFramework
 --generate-link-xml=Temp/burst.link.xml
 --temp-folder=/home/mahmoud/UnityProjects/Dash-Resturant_unity/Temp/Burst
+--debug=Full
 --enable-frame-info-registration
 --key-folder=/home/mahmoud/Unity/Hub/Editor/6000.4.2f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport
 --decode-folder=/home/mahmoud/UnityProjects/Dash-Resturant_unity/Library/Burst

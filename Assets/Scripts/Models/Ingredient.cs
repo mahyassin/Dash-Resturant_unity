@@ -8,8 +8,8 @@ public class Ingredient: ICarriable, IIdentifialbe
 
     private const int _rawPoint = 5;
     private const int _meduimPoint = 10;
-    private const int _cookedPoint = 20;
-    private const int _overcookedMark = 25;
+    private const int _cookedPoint = 15;
+    private const int _overcookedMark = 30;
 
     public int RawPoint => _rawPoint;
     public int MeduimPoint => _meduimPoint;
@@ -35,14 +35,19 @@ public class Ingredient: ICarriable, IIdentifialbe
     {
         _cutting++;
     }
+    public void Reset()
+    {
+        _cutting = 0;
+        _cooking = 0;
+    }
 
     public IngredientType Type => _type;
     public CookingGrade cookingGrade => _cooking switch
     {
         < _rawPoint                        => CookingGrade.RAW,
         >= _rawPoint and < _meduimPoint    => CookingGrade.MEDUIM_RARE,
-        >= _meduimPoint and < _cookedPoint => CookingGrade.COOKED,
-        > _cookedPoint                     => CookingGrade.OVERCOOKED,
+        >= _meduimPoint and < _overcookedMark => CookingGrade.COOKED,
+        > _overcookedMark                     => CookingGrade.OVERCOOKED,
         _              => CookingGrade.OVERCOOKED,
     };
 
